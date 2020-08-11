@@ -1,0 +1,130 @@
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<form>
+    <header>
+        <div class="row flex-middle">
+            <div class="col xs-2">
+                <h1 class="text-light text-uppercase">Sistema Interno</h1>
+
+            </div>
+            <div class="col xs-7">
+                <input type="text" id='buscar' class="buscar" tabindex='1' onkeypress="ir_a(event);" placeholder="Buscar...">
+            </div>
+        </div>
+    </header>
+    <page class='main_menu' id="main_menu">
+        <div class="sin_icono" style="    background-color: rgb(108, 62, 143); color:white;cursor:initial;" tabindex='2'>Utilidades</div>
+        <br/>
+        
+
+        <br/>
+        <!--<div type="button" name="util_lxxv.home"><i class="fa fa-bar-chart"></i>LXXV | PRESTAMO DIGITAL</div>-->
+    </page>
+</form>
+<script>
+    $(function () {
+        $("#buscar").focus();
+    });
+    $("#buscar").focus();
+    $('#buscar').on('keydown', function () {
+        key = $(this).val();
+        $(".main_menu div").hide();
+        $(".main_menu div").prop("disabled", true)
+        $(".main_menu div:contains('" + key + "')").show();
+        $(".main_menu div:contains('" + key + "')").prop("disabled", false)
+    })
+    $.expr[":"].contains = $.expr.createPseudo(function (arg) {
+        return function (elem) {
+            return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+        };
+    });
+
+    function ir_a(event) {
+        if (validar_enter(event))
+            $(".main_menu div:visible:first ").click();
+    }
+
+    function validar_enter(e) {
+        var key = e.keyCode || e.which;
+        if (key == 13)
+            return true;
+        else
+            return false;
+    }
+</script>
+<style>
+    .main_menu {
+        display: table;
+    }
+
+    .main_menu div {
+        width: 320px;
+        height: 40px;
+        background-color: rgba(143, 62, 132, 0.64);
+        margin: 8px;
+        display: inline-block;
+        color: white;
+        font-size: 14px;
+        text-transform: uppercase;
+        vertical-align: middle;
+        cursor: pointer;
+        text-align: left;
+        padding: 0;
+        text-decoration: none;
+    }
+
+    .importante {
+        background-color: #B17EA1!important;
+    }
+
+    .importante i {
+        border: 1px #B17EA1 solid!important;
+        color: #B17EA1!important;
+    }
+
+    .main_menu div:hover {
+        background-color: rgba(58, 165, 161, 0.8);
+        ;
+    }
+
+    .main_menu a {
+        color: white;
+        text-decoration: none;
+        line-height: 20px;
+        padding: 0px;
+    }
+
+    .main_menu i {
+        border: 1px #35B5B0 solid;
+        font-size: 25px;
+        vertical-align: middle;
+        color: #35B5B0;
+        height: 28px;
+        background-color: #FFFFFF;
+        width: 30px;
+        padding: 5px;
+        margin-right: 10px;
+        line-height: 30px;
+        text-align: center;
+    }
+
+    .sin_icono {
+        padding-left: 50px!important;
+        line-height: 40px!important;
+        width: 270px!important;
+    }
+
+    .sin_icono a {
+        line-height: 40px!important;
+        vertical-align: middle;
+    }
+    .titulo{
+        line-height: 32px;
+    }
+    #buscar {
+        float: right;
+        width: 80%;
+        height: 26px;
+        padding-left: 20px;
+        font-size: 20px;
+    }
+</style>

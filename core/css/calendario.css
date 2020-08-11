@@ -1,0 +1,178 @@
+<style> .calendario {
+    width: 95%;
+    text-align: center;
+    display: table;
+    border: 1px solid #585858;
+    margin: 32px;
+    margin-top: 14px;
+	
+}
+
+.mp {
+    background-color: #FFF;
+}
+
+.mi {
+    background-color: #EEE;
+}
+
+.semana {
+    display: table-row;
+}
+
+.titulo_dia {
+    height: 40px;
+    border-bottom: 5px solid #CCC;
+    display: table-cell;
+    line-height: 40px;
+    color: #CCC;
+    background-color: #4E4E4E;
+}
+
+.numero_dia {
+    text-align: left;
+    padding-left: 3px;
+    padding-top: 3px;
+}
+
+.dia {
+    display: table-cell;
+    text-align: center;
+    vertical-align: top;
+    width: 13%;
+    border-bottom: 1px solid #C3BDBD;
+    border-left: 1px solid #C3BDBD;
+    padding:0px 2px 2px 2px;
+}
+
+.hoy {
+    background-color: #B9B9B9;
+}
+
+span {
+    text-align: left;
+}
+
+.evento {
+    text-align: center;
+    border-bottom: #EEEEEE solid 4px;
+}
+.hoy>.evento{
+    border-bottom: #B9B9B9 solid 4px;
+}
+span{
+    text-align: center!important;   
+}
+/**************************************************/
+/*GENERICO*/
+
+.superior {
+    padding: 7px 7px;
+}
+.medio {
+    padding: 15px;
+}
+.inferior {}
+
+/**************************************************/
+/*VERDE*/
+.verde {
+    background-color: #A4E987;
+}
+
+.verde>.superior {}
+
+.verde>.medio {}
+
+.verde>.inferior {}
+
+/**************************************************/
+/*ROJO*/
+.rojo {
+    background-color: rgb(251, 161, 161);
+}
+
+.rojo>.superior {}
+
+.rojo>.medio {}
+
+.rojo>.inferior {}
+
+/**************************************************/
+/*AMARILLO*/
+.amarillo {
+    background-color: rgba(224, 201, 76, 1);
+}
+
+.amarillo>.superior {}
+
+.amarillo>.medio {}
+
+.amarillo>.inferior {}
+
+/**************************************************/
+/*AZUL*/
+.azul{
+    background-color: rgb(170, 173, 255);
+}
+
+.azul>.superior {}
+
+.azul>.medio {}
+
+.azul>.inferior {}
+/**************************************************/
+
+/**************************************************/
+/*NARANJA*/
+.naranja{
+    background-color: rgb(243, 159, 70);
+}
+
+.naranja>.superior {}
+
+.naranja>.medio {}
+
+.naranja>.inferior {}
+/**************************************************/
+
+.referencias {
+    display: block;
+    text-align: center;
+    padding-top: 14px;
+    margin-bottom: 14px;
+}
+
+.referencia {
+    display: inline-block;
+    padding-left: 16px;
+}
+
+.referencia div {
+    border: 1px solid black;
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+}
+
+.referencia span {
+    padding-left: 5px;
+    vertical-align: super;
+}
+
+.azul[type=button]:hover{
+    background-color: rgba(170, 173, 255, 0.85);
+}
+.rojo[type=button]:hover{
+   background-color: rgba(251, 161, 161, 0.64);
+}
+.verde[type=button]:hover{
+    background-color: rgba(164, 233, 135, 0.69);
+}
+.amarillo[type=button]:hover{
+    background-color: rgba(224, 201, 76, 0.68);
+}
+.naranja[type=button]:hover{
+    background-color: rgba(243, 159, 70, 0.63);
+}
+</style>

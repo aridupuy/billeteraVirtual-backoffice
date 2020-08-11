@@ -1,0 +1,67 @@
+footer 
+	padding: 70px 0
+	background: $color3
+	.footer-top 
+		width: 100%
+		display: flex 
+		flex-direction: row
+		flex-wrap: wrap 
+		justify-content: center 
+		align-items: center
+		align-content: center
+		@media screen and  (max-width: $break-sm)
+			flex-direction: column
+		.logo-footer 
+			width: 12%
+			@media screen and  (max-width: $break-md)
+				width: 20%
+			@media screen and  (max-width: $break-sm)
+				width: 50%
+				margin: 0 auto 25px auto
+		.redes 
+			width: auto 
+			margin-left: 20px
+			display: flex 
+			flex-direction: row
+			flex-wrap: wrap 
+			justify-content: center 
+			align-items: center
+			align-content: center
+			@media screen and  (max-width: $break-sm)
+				width: 100%
+			.red 
+				width: 30px
+				margin: 0 10px
+				transition: all 0.3s ease
+				&:hover 
+					transform: translateY(-3px)
+	.footer-bottom 
+		width: 100%
+		text-align: center
+		margin-top: 40px
+		@media screen and  (max-width: $break-sm)
+			text-align: center 
+			font-size: 110%
+			line-height: 1.5
+			width: 90%
+			margin: 40px auto 0 auto
+		h6 
+			display: flex 
+			flex-direction: row
+			flex-wrap: wrap 
+			justify-content: center 
+			align-items: center
+			align-content: center
+			@media screen and  (max-width: $break-sm)
+				flex-direction: column
+			span 	
+				width: 135px
+				margin-left: 7px 
+				transition: all 0.3s ease
+				&:hover 
+					transform: translateY(-3px)
+				@media screen and  (max-width: $break-sm)
+					margin-top: 10px
+					margin-left: 0
+			&:first-of-type 
+				margin-bottom: 20px

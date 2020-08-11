@@ -1,0 +1,11 @@
+image: trion/ng-cli-karma
+
+deploy_production:
+  stage: deploy
+  environment: Production
+  only:
+    - master
+  script:
+    - ssh tio7 cd /home/relc/PRODcdi/apps && sudo git pull origin master
+    - ls
+   

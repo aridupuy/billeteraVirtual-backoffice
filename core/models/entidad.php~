@@ -1,0 +1,73 @@
+<?php
+// namespace Models;
+class Entidad extends Model{
+
+  const ENTIDAD_MP=19; 
+  const ENTIDAD_MARCHAND=2; 
+  const ENTIDAD_BARCODE=4;
+  const ESTRUCTURA_CLIENTES=11; 
+  const ESTRUCTURA_PRODUCTOS=12; 
+  const ESTRUCTURA_BOLETAS_DE_PAGO=15; 
+  const ESTRUCTURA_PLANTILLA_BOLETAS_DE_PAGO=122;
+  const ESTRUCTURA_CONFIG_MARCHAND=125; 
+  const ENTIDAD_CBUMARCHAND=9;
+  const ENTIDAD_MOVES=14;
+  const ESTRUCTURA_BARCODE=1;
+  const ENTIDAD_COBROS_COBRADOR=10130;
+  const ENTIDAD_LOTE_COBRADOR=10129;
+  const ENTIDAD_COSTEADOR=10132;
+
+  public static $prefijo_tabla='ho_';
+  public static $id_tabla='id_entidad';
+  public static $secuencia=GENERAR_ID_MAXIMO;
+
+  private $id_entidad;
+  private $entidad;
+  private $dentidad;
+  private $descripcion;
+  private $is_productable;
+  private $accept_wse;
+  private $modelised;
+  private $colorsplit;
+  private $ikona;
+  private $contenido;
+  private $unfiltro;
+  private $cannotdup;
+  private $groupedorden;
+
+  public function get_id_entidad(){ return $this->id_entidad;}
+  public function get_entidad(){ return $this->entidad;}
+  public function get_dentidad(){ return $this->dentidad;}
+  public function get_descripcion(){ return $this->descripcion;}
+  public function get_is_productable(){ return $this->is_productable;}
+  public function get_accept_wse(){ return $this->accept_wse;}
+  public function get_modelised(){ return $this->modelised;}
+  public function get_colorsplit(){ return $this->colorsplit;}
+  public function get_ikona(){ return $this->ikona;}
+  public function get_contenido(){ return $this->contenido;}
+  public function get_unfiltro(){ return $this->unfiltro;}
+  public function get_cannotdup(){ return $this->cannotdup;}
+  public function get_groupedorden(){ return $this->groupedorden;}
+
+  public function set_id_entidad($variable){ $this->id_entidad=$variable; return $this->id_entidad;}
+  public function set_entidad($variable){ $this->entidad=$variable; return $this->entidad;}
+  public function set_dentidad($variable){ $this->dentidad=$variable; return $this->dentidad;}
+  public function set_descripcion($variable){ $this->descripcion=$variable; return $this->descripcion;}
+  public function set_is_productable($variable){ $this->is_productable=$variable; return $this->is_productable;}
+  public function set_accept_wse($variable){ $this->accept_wse=$variable; return $this->accept_wse;}
+  public function set_modelised($variable){ $this->modelised=$variable; return $this->modelised;}
+  public function set_colorsplit($variable){ $this->colorsplit=$variable; return $this->colorsplit;}
+  public function set_ikona($variable){ $this->ikona=$variable; return $this->ikona;}
+  public function set_contenido($variable){ $this->contenido=$variable; return $this->contenido;}
+  public function set_unfiltro($variable){ $this->unfiltro=$variable; return $this->unfiltro;}
+  public function set_cannotdup($variable){ $this->cannotdup=$variable; return $this->cannotdup;}
+  public function set_groupedorden($variable){ $this->groupedorden=$variable; return $this->groupedorden;}
+
+}
+
+
+
+
+
+
+

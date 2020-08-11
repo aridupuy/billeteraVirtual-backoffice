@@ -1,0 +1,206 @@
+body
+	position: relative
+
+*
+	padding: 0
+	margin: 0
+	box-sizing: border-box
+
+img
+	width: 100%
+	height: auto
+	display: block
+	margin: 0 auto
+
+input, textarea
+	font-family: $fuente
+	&:focus
+		outline: none
+
+a
+	text-decoration: none
+	color: inherit
+	&:visited
+		color: inherit
+
+.background
+	width: 100%
+	height: 100vh
+	position: relative
+	background: $color1
+	overflow: hidden
+	@media screen and  (max-width: $break-sm)
+		height: auto
+		min-height: 100vh
+		max-height: 150vh
+.contenido
+	width: 100%
+	padding: 25px 0
+	height: auto
+	display: flex
+	flex-direction: row
+	flex-wrap: wrap
+	justify-content: center
+	align-items: center
+	align-content: center
+	.contenedor-form
+		width: 600px 
+		height: auto
+		margin: 0 auto
+		border-radius: 3px
+		background-color: $blanco
+		background-image: url('../img/bg-form.png')
+		background-size: 100% auto
+		background-position: top left
+		background-repeat: no-repeat
+		box-shadow: 0px 5px 14px 5px rgba(0,0,0,0.5)
+		@media screen and  (max-width: $break-sm)
+			width: 90%
+			background-size: 150% auto
+			background-position: top right
+		.form-header
+			width: 100%
+			display: flex
+			flex-direction: column
+			flex-wrap: wrap
+			justify-content: center
+			align-items: center
+			align-content: center
+			.logo
+				width: 23%
+				margin-top: 35px
+				@media screen and  (max-width: $break-sm)
+					width: 40%
+			.titulo-form
+				display: inline-block
+				padding: 8px 15px
+				background: $color3
+				letter-spacing: 1px 
+				margin-top: 25px
+				color: $blanco
+				font-weight: $bold
+				letter-spacing: 1px
+				font-size: 190%
+				text-align: center
+		form 
+			width: 80%
+			margin: 60px 10% 0 10%
+			display: flex
+			flex-direction: row
+			flex-wrap: wrap
+			justify-content: space-between
+			align-items: center
+			align-content: center
+			fieldset
+				width: 100%
+				margin-bottom: 15px
+				&.half 
+					width: 48%
+					@media screen and  (max-width: $break-sm)
+						width: 100%
+				input 
+					width: 100%
+					border: none
+					border-bottom: 1px solid $grisclaro
+					color: $grisoscuro
+					font-family: $fuente
+					background: none
+					padding: 15px 5px
+					margin-bottom: 5px
+					&:focus 
+						border-bottom: 1px solid $color3
+						label 
+							border-bottom: 1px solid $color3!important
+					&.carga-cv
+						width: 0.1px
+						height: 0.1px
+						opacity: 0
+						overflow: hidden
+						position: absolute
+						z-index: -1
+				textarea
+					width: 100%
+					height: 150px
+					border: none
+					border-bottom: 1px solid $grisclaro
+					color: $grisoscuro
+					font-family: $fuente
+					background: none
+					padding: 15px 5px
+					&:focus 
+						border-bottom: 1px solid $color3
+				.falso-cv
+					width: 100%
+					display: block
+					border: none
+					border-bottom: 1px solid $grisclaro
+					color: $grisoscuro
+					font-family: $fuente
+					background: none
+					padding: 15px 5px
+					margin-bottom: 5px
+					margin-top: 5px
+					position: relative
+					cursor: pointer
+					.icono-upload
+						width: 15px
+						position: absolute
+						right: 5px
+						bottom: 10px
+			.btn-enviar
+				background: $color1
+				color: $blanco
+				border-radius: 50px
+				padding: 10px 35px
+				width: 25%
+				margin: 25px 0 25px 75%
+				font-family: $fuente
+				font-weight: $medium
+				letter-spacing: 0.5px
+				font-size: 110%
+				border: none
+				outline: none
+				box-shadow: none
+				cursor: pointer
+				transition: all 0.3s ease 
+				@media screen and  (max-width: $break-sm)
+					width: 100%
+					margin: 25px 0
+					padding: 15px 35px
+					font-size: 150%
+				&:hover 
+					background: $color3
+
+.error
+	color: $color3
+	padding: 0 5px
+	font-weight: $medium
+
+
+.redes
+	width: 100%
+	text-align: center 
+	display: flex
+	flex-direction: row
+	flex-wrap: wrap
+	justify-content: flex-end
+	align-items: center
+	align-content: center
+	position: fixed
+	bottom: 25px
+	left: 0
+	padding-right: 20px
+	@media screen and  (max-width: $break-sm)
+		position: relative
+		justify-content: center
+		bottom: auto 
+		left: auto
+		margin: 25px 0
+		padding: 0
+	.red 
+		width: 25px 
+		margin: 0 7px
+		transition: all 0.3s ease-out
+		cursor: pointer
+		&:hover 
+			transform: translateY(-3px)

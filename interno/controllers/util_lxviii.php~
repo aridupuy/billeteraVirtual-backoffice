@@ -1,0 +1,626 @@
+<?php
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ * Description of util_lxviii
+ *
+ * @author ariel
+ */
+class Util_lxviii extends Controller {
+
+    const PREFIJO_CHECKBOXES = "ch_";
+    const EMISOR = Gestor_de_correo::MAIL_COBRODIGITAL_NORESPONDER;
+
+    //const ARRAY_MP = array(Mp::RETIROS,Mp::ADELANTOS_TRANSFERENCIA);
+
+    private $primero = true;
+
+    public function dispatch($nav, $variables) {
+        switch ($nav) {
+            case "home":
+                $view = $this->home();
+                break;
+            case "filter":
+                $view = $this->home($variables);
+                break;
+            case "rechazar_uno":
+                $view = $this->rechazar_uno($variables);
+                break;
+            case "reversar_uno":
+                $view = $this->reversar_uno($variables);
+                break;
+            case "aprobar_transferencia":
+                $view = $this->aprobar_transferencia($variables);
+                break;
+            case "confirmar_aprobar_todos":
+                $view = $this->confirmar_aprobar_todos($variables);
+                break;
+            case "aprobar_todos":
+                $view = $this->aprobar_todos($variables);
+                break;
+            case "confeccionar_cheque":
+                $view = $this->confeccionar_uno($variables);
+                break;
+            case "confeccionar_todos":
+                $view = $this->confeccionar_todos($variables);
+                break;
+            case "completar_cheque":
+                $view = $this->completar_uno($variables);
+                break;
+            case "completar_cheque_todos":
+                $view = $this->completar_todos($variables);
+                break;
+            case "enviar_x_correo":
+                $moves = new Moves();
+                $moves->get($variables["id"]);
+                if(!$this->enviar_confirmacion_x_mail($moves))
+                    Gestor_de_log::set ('Ha ocurrido un error al enviar el mail');
+                return $this->home($variables);
+                break;
+            case "exportar":
+                $view = $this->exportar($variables);
+                break;
+            case "importar":
+                $view = $this->importar($variables);
+                break;
+        }
+        return $view;
+    }
+
+    public function home($variables = false) {
+        //hacer un filtro para fechas liq y move idm, mercalpha , tipo, estado 
+        $this->view->cargar("views/util_lxviii.html");
+        $fecha2 = new DateTime("now");
+        $fecha = clone $fecha2;
+        //$fecha2->add(new DateInterval("P1D"));
+        $fecha->sub(new DateInterval("P1D"));
+        $fecha_hasta = $this->view->getElementById("fecha_hasta");
+        $fecha_hasta->setAttribute("value", $fecha2->format("Y-m-d"));
+        $fecha_desde = $this->view->getElementById("fecha_desde");
+        $fecha_desde->setAttribute("value", $fecha->format("Y-m-d"));
+        if (!isset($variables["tipo_fecha"]))
+            $variables["tipo_fecha"] = 1;
+        if (!isset($variables["fecha_desde"]))
+            $variables["fecha_desde"] = $fecha->format("Y-m-d");
+        if (!isset($variables["fecha_hasta"]))
+            $variables["fecha_hasta"] = $fecha2->format("Y-m-d");
+        if (isset($variables['cantidad'])) {
+            $form = $this->view->getElementById("tabla");
+            $confirmacion = $this->view->getElementById("confirmacion");
+            $mensaje = $this->view->createElement("div");
+            $mensaje->appendChild($this->view->createTextNode("Confirma la aprobacion de los siguientes registros:"));
+            $cantidad = $this->view->createElement("div");
+            $cantidad->appendChild($this->view->createTextNode("Cantidad: " . $variables['cantidad']));
+            $monto_total = $this->view->createElement("div");
+            $monto_total->appendChild($this->view->createTextNode("Monto total: $ " . $variables['monto_total']));
+
+            $confirmacion->appendChild($mensaje);
+            $confirmacion->appendChild($cantidad);
+            $confirmacion->appendChild($monto_total);
+
+            $boton = $this->view->createElement("input");
+            $boton->setAttribute('name', 'util_lxviii.aprobar_todos');
+            $boton->setAttribute('value', 'Confirmar');
+            $boton->setAttribute('class', 'btn outline btn-primary');
+            $boton->setAttribute('type', 'button');
+            $confirmacion->appendChild($boton);
+
+            $form->appendChild($confirmacion);
+            $this->view->appendChild($form);
+            //$confirmacion->setAttribute("hidden", false);
+
+            unset($variables['cantidad']);
+        }
+
+//        $vars=array("tipo_fecha"=>"2","fecha_desde"=>$fecha->format("Y-m-d"),"fecha_hasta"=>$fecha2->format("Y-m-d"));
+        $rs_cheques = Moves::select_retiros($variables);
+        $acciones = array();
+        $mifuncion = function ($registro, $tr, $accion, Table $table) {
+            if ($registro["tipo_num"] == Mp::ADELANTOS_TRANSFERENCIA OR $registro["tipo_num"] == Mp::RETIROS) {
+                if ($registro["id_authstat"] == Authstat::TRANSACCION_RETIRO_PENDIENTE) {
+                    $td = $table->createElement('td');
+                    $i = $table->createElement("i");
+                    $td->appendChild($i);
+                    $i->setAttribute('class', 'fa fa-check green');
+                    $td->setAttribute('type', 'button');
+                    $td->setAttribute('name', get_class($this) . ".aprobar_transferencia");
+                    $td->setAttribute('id', $registro[$accion["campo"]]);
+                    $td->appendChild($table->createTextNode("Aprobar"));
+                    $tr->appendChild($td);
+                    return true;
+                }
+            } else
+            if (($registro["tipo_num"] == Mp::ADELANTOS_CHEQUE) OR ( $registro["tipo_num"] == Mp::RETIROS_CHEQUE ) OR ( $registro["tipo_num"] == Mp::RETIROS_CHEQUE_POR_CORREO )) {
+                $td = $table->createElement('td');
+                $td->setAttribute('class', 'link acciones');
+                $td->setAttribute('type', 'button');
+                if ($registro["id_authstat"] == Authstat::TRANSACCION_RETIRO_PENDIENTE) {
+                    $i = $table->createElement("i");
+                    $i->setAttribute('class', 'fa fa-check green');
+                    $td->appendChild($i);
+                    $td->setAttribute('name', get_class($this) . ".confeccionar_cheque");
+                    $td->appendChild($table->createTextNode("Confeccionar"));
+                    $td->setAttribute('id', $registro[$accion['campo']]);
+                } else
+                if ($registro["id_authstat"] == Authstat::TRANSACCION_CHEQUE_CONFECCIONADO) {
+                    $i = $table->createElement("i");
+                    $i->setAttribute('class', 'fa fa-chevron-circle-down green');
+                    $td->appendChild($i);
+                    $td->setAttribute('name', get_class($this) . ".completar_cheque");
+                    $td->appendChild($table->createTextNode("Compĺetar"));
+                    $td->setAttribute('id', $registro[$accion['campo']]);
+                } else
+                    $td = $table->createElement('td');
+//                    if($registro["id_authstat"]== Authstat::TRANSACCION_RETIRO_COMPLETADO){
+//                        $td->appendChild($table->createTextNode("Reversar"));
+//                        $td->setAttribute('campo', $registro[$accion['campo']]);
+//                    }
+                $tr->appendChild($td);
+
+                return true;
+            }
+
+            return false;
+        };
+        $mifuncion_correo = function ($registro, $tr, $accion, Table $table) {
+            $td2 = $table->createElement('td');
+            $i2 = $table->createElement("i");
+            $i2->setAttribute('class', 'fa fa-send green');
+            $td2->appendChild($i2);
+            $td2->setAttribute('class', 'link acciones');
+            $td2->setAttribute('name', get_class($this) . ".enviar_x_correo");
+            $td2->setAttribute('type', 'button');
+            $td2->appendChild($table->createTextNode("Reenviar correo"));
+            $td2->setAttribute('id', $registro[$accion['campo']]);
+            $tr->appendChild($td2);
+        };
+//        $markadores = function ($registro, DOMNode $tr, $accion, Table $table) {
+//            $td = $table->createElement('td');
+//            $checkbox = $table->createElement("input");
+//            $checkbox->setAttribute("type", "checkbox");
+//            $checkbox->setAttribute("name", self::PREFIJO_CHECKBOXES . $accion["id"]);
+//            $td->appendChild($checkbox);
+//            $firstChild = $tr->childNodes->item(0);
+//            $tr->insertBefore($td, $firstChild);
+//            if ($this->primero) {
+//                $this->primero = false;
+//                $firstTH = $table->childNodes->item(0)->childNodes->item(0)->childNodes->item(0)->childNodes->item(0);
+//                $checkbox2 = $table->createElement("input");
+//                $checkbox2->setAttribute("type", "checkbox");
+//                $checkbox2->setAttribute("name", "todos");
+//                $firstTH->appendChild($checkbox2);
+//            }
+//        };
+        $rechazos = function ($registro, DOMNode $tr, $accion, Table $table) {
+            $td = $table->createElement('td');
+            $td->setAttribute('class', 'link acciones');
+            $td->setAttribute('type', 'button');
+            $i = $table->createElement("i");
+
+            $td->appendChild($i);
+            $td->appendChild($table->createElement("br"));
+            $td->setAttribute('id', $registro[$accion['campo']]);
+            if ($registro["id_authstat"] == Authstat::TRANSACCION_RETIRO_COMPLETADO) {
+                $i->setAttribute('class', 'fa fa-times red');
+                $td->setAttribute('name', get_class($this) . ".reversar_uno");
+                $td->appendChild($table->createTextNode("Reversar   "));
+            } else {
+                $i->setAttribute('class', 'fa fa-times-circle red');
+                $td->setAttribute('name', get_class($this) . ".rechazar_uno");
+                $td->appendChild($table->createTextNode("Cancelar   "));
+            }
+            $tr->appendChild($td);
+            return true;
+        };
+        $acciones[] = array('etiqueta' => "Reversar", 'token' => 'util_lxviii.reversar', 'id' => 'id_moves', "callback" => $rechazos, "campo" => "id_moves");
+        $acciones[] = array('etiqueta' => "Reenviar correo", 'token' => 'util_lxviii.enviar_x_correo', 'id' => 'id_moves', "callback" => $mifuncion_correo, "campo" => "id_moves");
+        $acciones[] = array('etiqueta' => "Aprobar", 'token' => 'util_lxviii.aprobar', 'id' => 'id_moves', "callback" => $mifuncion, "campo" => "id_moves");
+        $table = new Table($rs_cheques, 1, $rs_cheques->rowCount(), $acciones);
+        $tabla = $this->view->getElementById("tabla");
+        //$table->cambiar_encabezados(array());
+        $table->eliminar_columna(1);
+        $table->eliminar_columna(7);
+        $table->eliminar_columna(7);
+        //$table->cambiar_encabezados(array("Fecha de emisión", "Fecha de Pago", "IDM", "MERCALPHA", "RAZON SOCIAL", "TIPO", "ESTADO", "CDI_FIX","CDI_VAR", "MONTO A PAGAR", "SALDO", "OBSERVACIóN", "BANCO", "ACCIONES"));
+        $tabla->appendChild(($this->view->importNode($table->documentElement, true)));
+        $this->view->cargar_variables($variables);
+        return $this->view;
+    }
+
+    private function confeccionar_todos($variables) {
+        //var_dump($variables);
+        return $this->cambiar_estado_cheque_todos($variables, Authstat::TRANSACCION_RETIRO_PENDIENTE, Authstat::TRANSACCION_CHEQUE_CONFECCIONADO);
+    }
+
+    private function cambiar_estado_cheque_todos($variables, $id_authstat_actual, $id_authstat_nuevo) {
+        $un_cheque = false;
+        if (isset($variables["id_cheque"])) {
+            $id_cheque = $variables["id_cheque"];
+            $un_cheque = true;
+        }
+        $array_mp = array(Mp::RETIROS_CHEQUE, Mp::RETIROS_CHEQUE_POR_CORREO, Mp::ADELANTOS_CHEQUE);
+        if (!(list($cantidad, $total, $id_moves_error) = $this->cambiar_estado($variables, $id_authstat_actual, $id_authstat_nuevo, $array_mp, $un_cheque, $id_cheque))) {
+            Gestor_de_log::set("Ha ocurrido un error al procesar el cheque para el id_move: $id_moves_error", 0);
+        } else
+            Gestor_de_log::set("Ha procesado ($cantidad de $total) cheques correctamente.", 0);
+        return $this->home($variables);
+    }
+
+    private function cambiar_estado($variables, $id_authstat_actual, $id_authstat_nuevo, $array_mp, $uno = false, $id = false) {
+        $rs_cheques = Moves::select_retiros($variables, true);
+        Model::StartTrans();
+        $id_moves_error = "ninguno";
+        $cantidad = $rs_cheques->rowCount();
+        $i = 0;
+        foreach ($rs_cheques as $row) {
+            if (!Model::HasFailedTrans())
+                if (in_array($row["tipo_num"], $array_mp) != false) {
+
+                    $moves = new Moves($row);
+                    if ($uno and $id != false and $moves->get_id() !== $id) {
+                        continue;
+                    }
+                    if ($moves->get_id_authstat() == $id_authstat_actual) {
+                        $moves->set_id_authstat($id_authstat_nuevo);
+                        if (!$moves->set()) {
+                            $id_moves_error = $moves->get_id();
+                            Model::FailTrans();
+                        } else {
+                            $i++;
+                            //var_dump($i);
+                        }
+                    }
+                }
+        }
+        if (!Model::HasFailedTrans() and Model::CompleteTrans()) {
+            return array($i, $cantidad, $id_moves_error);
+        }
+    }
+
+    private function cambiar_estado2(Moves $moves, $id_authstat_actual, $id_authstat_nuevo) {
+        Model::StartTrans();
+        if (!Model::HasFailedTrans()) {
+            if ($moves->get_id_authstat() == $id_authstat_actual) {
+                $moves->set_id_authstat($id_authstat_nuevo);
+                if (!$moves->set()) {
+                    $id_moves_error = $moves->get_id();
+                    Model::FailTrans();
+                }
+            }
+        }
+        return (!Model::HasFailedTrans() and Model::CompleteTrans());
+    }
+
+    private function confeccionar_uno($variables) {
+        $variables["id_cheque"] = $variables["id"];
+        unset($variables["id"]);
+        return $this->confeccionar_todos($variables);
+    }
+
+    private function completar_uno($variables) {
+        $variables["id_cheque"] = $variables["id"];
+        unset($variables["id"]);
+        return $this->completar_todos($variables);
+    }
+
+    private function completar_todos($variables) {
+        return $this->cambiar_estado_cheque_todos($variables, Authstat::TRANSACCION_CHEQUE_CONFECCIONADO, Authstat::TRANSACCION_RETIRO_COMPLETADO);
+    }
+
+    private function cambiar_estado_transferenciaadel_todos($variables, $id_authstat_actual, $id_authstat_nuevo) {
+        $una_transf = false;
+        if (isset($variables["id_transf"])) {
+            $id_transf = $variables["id_transf"];
+            $una_transf = true;
+        }
+        $array_mp = array(Mp::RETIROS, Mp::ADELANTOS_TRANSFERENCIA);
+        if (!(list($cantidad, $total, $id_moves_error) = $this->cambiar_estado($variables, $id_authstat_actual, $id_authstat_nuevo, $array_mp, $una_transf, $id_transf))) {
+            Gestor_de_log::set("Ha ocurrido un error al procesar la transferencia para el id_move: $id_moves_error", 0);
+        }
+        Gestor_de_log::set("Ha aprobado ($cantidad de $total) transferencias correctamente.", 0);
+        return $this->home($variables);
+    }
+
+    private function aprobar_uno($variables) {
+        $variables["id_transf"] = $variables["id"];
+        unset($variables["id"]);
+        return $this->aprobar_todos($variables);
+    }
+
+    private function aprobar_transferencia($variables) {
+        $moves = new Moves();
+        $moves->get($variables['id']);
+        if ($this->aprobar_un_registro($moves)) {
+            $this->enviar_confirmacion_x_mail($moves);
+            Gestor_de_log::set("Ha aprobado la transferencia del IDM " . $moves->get_id_marchand(), 0);
+        }
+        return $this->home($variables);
+    }
+
+    private function aprobar_un_registro($moves) {
+        $aprobado = $this->cambiar_estado2($moves, Authstat::TRANSACCION_RETIRO_PENDIENTE, Authstat::TRANSACCION_RETIRO_COMPLETADO);
+        return $aprobado;
+    }
+
+    private function confirmar_aprobar_todos($variables) {
+        $rs_cheques = Moves::select_retiros($variables, true);
+        $monto_total = 0;
+        $cantidad = 0;
+        foreach ($rs_cheques as $row) {
+            if ($row['id_authstat'] == Authstat::TRANSACCION_RETIRO_PENDIENTE) {
+                $valor = str_replace('$', '', $row['monto_a_pagar']);
+                $monto_total = $monto_total + $valor;
+                $cantidad ++;
+            }
+        }
+        $variables['cantidad'] = $cantidad;
+        $variables['monto_total'] = $monto_total;
+
+        return $this->home($variables);
+        //return $this->cambiar_estado_transferenciaadel_todos($variables,Authstat::TRANSACCION_RETIRO_PENDIENTE, Authstat::TRANSACCION_RETIRO_COMPLETADO);
+    }
+
+    private function aprobar_todos($variables) {
+        $rs_cheques = Moves::select_retiros($variables, true);
+        $cantidad = 0;
+        $cantidad_enviadas = 0;
+        $total = 0;
+        foreach ($rs_cheques as $row) {
+            if ($row['id_authstat'] == Authstat::TRANSACCION_RETIRO_PENDIENTE) {
+                developer_log("Cambiando authstat a id_move " . $row['id_moves']);
+                $moves = new Moves();
+                $moves->get($row['id_moves']);
+                if ($this->aprobar_un_registro($moves)) {
+                    if ($this->enviar_confirmacion_x_mail($moves))
+                        $cantidad_enviadas ++;
+                    $cantidad ++;
+                    $total ++;
+                }else {
+                    $total ++;
+                    developer_log("Error al cambiar authstat a id_move " . $row['id_moves']);
+                }
+            }
+        }
+        Gestor_de_log::set("Ha aprobado ($cantidad de $total) transferencias correctamente.", 0);
+        # CORROBORANDO QUE SE HAYAN ENVIADO TODOS LOS MAILS
+        $authmail = Application::$usuario->get_authmail();
+        Gestor_de_correo::enviar(Gestor_de_correo::MAIL_COBRODIGITAL_NORESPONDER, $authmail, 'Aprobación de transferencias', "Se han enviado $cantidad_enviadas correos de un total de $cantidad transferencias aprobadas.");
+        return $this->home($variables);
+        //return $this->cambiar_estado_transferenciaadel_todos($variables,Authstat::TRANSACCION_RETIRO_PENDIENTE, Authstat::TRANSACCION_RETIRO_COMPLETADO);
+    }
+
+    private function rechazar_uno($variables) {
+        $id_rech = $variables["id"];
+        unset($variables["id"]);
+        return $this->reversar($id_rech, $variables);
+    }
+
+    private function reversar_uno($variables) {
+        $id_rev = $variables["id"];
+        unset($variables["id"]);
+        return $this->reversar($id_rev, $variables);
+    }
+
+    private function reversar($id, $variables) {
+        $moves = new Moves();
+        $moves->get($id);
+        $transaccion = new Transaccion();
+        Model::StartTrans();
+        $actualizado = false;
+        if (!$transaccion->reversar($moves)) {
+            Gestor_de_log::set("Error al reversar el retiro $id");
+            Model::FailTrans();
+        } else {
+            $array_mp = array($moves->get_id_mp());
+            $uno = true;
+            $id = $moves->get_id();
+            switch ($moves->get_id_authstat()) {
+                case Authstat::TRANSACCION_RETIRO_PENDIENTE:
+                    if ($this->cambiar_estado($variables, Authstat::TRANSACCION_RETIRO_PENDIENTE, Authstat::TRANSACCION_RETIRO_CANCELADO, $array_mp, $uno, $id) !== false)
+                        $actualizado = true;
+                    break;
+                case Authstat::TRANSACCION_RETIRO_COMPLETADO:
+                    if ($this->cambiar_estado($variables, Authstat::TRANSACCION_RETIRO_COMPLETADO, Authstat::TRANSACCION_RETIRO_CANCELADO, $array_mp, $uno, $id) !== false)
+                        $actualizado = true;
+                    break;
+                case Authstat::TRANSACCION_CHEQUE_CONFECCIONADO:
+                    if ($this->cambiar_estado($variables, Authstat::TRANSACCION_CHEQUE_CONFECCIONADO, Authstat::TRANSACCION_RETIRO_CANCELADO, $array_mp, $uno, $id) !== false)
+                        $actualizado = true;
+                    break;
+            }
+            if (!$actualizado)
+                Model::FailTrans();
+        }
+        if (!Model::HasFailedTrans() and Model::CompleteTrans())
+            Gestor_de_log::set("reversar con exito el retiro $id");
+        else {
+            Gestor_de_log::set("Error al reversar el retiro $id");
+        }
+        return $this->home($variables);
+    }
+
+    private function exportar($variables) {
+        try{
+                        /*
+            $recordset = Moves::select_retiros_export($variables);
+    //        var_dump($recordset);
+            $fecha = new DateTime("now");
+            $archivo = "Retiros_" . $fecha->format("Y_m_d H_i_s");
+            $path = PATH_CDEXPORTS . $archivo;
+            $content = array();
+            foreach ($recordset as $row) {
+
+            }*/
+            $this->view->cargar("views/util_lxviii.export.html");
+            if(
+                empty($variables['tipo_fecha'])
+                OR
+                empty($variables['fecha_desde'])
+                OR
+                empty($variables['fecha_hasta'])
+                OR
+                empty($variables['tipo'])
+                OR
+                empty($variables['estado'])
+            ){
+                $utilDOM = new Utilidades_DOM();
+                $utilDOM->crearAlerta('Los datos ingresados son incorrectos o faltantes.', $this->view, '', 'alerta-error');
+            }
+
+            if($variables['tipo_fecha']){
+               ; /*$fecha_tipo = */
+            }
+
+            $recordset = Moves::select_retiros_export($tipo, $estado, $fecha_tipo, $fecha_hasta, $fecha_desde);
+                    
+            return $this->view;
+            
+        } catch (Exception $ex) {
+            error_log("(!)Excepcion capturada >Error > util_lxviii.php > function exportar() > " . $error->getMessage() . ">Linea: ". (string)$error->getLine());
+            echo "<br>(!) Excepción capturada: " . $error->getMessage() . ">Linea: ". (string)$error->getLine() . "<br>";
+            return NULL; 
+        }
+
+
+    }
+
+    private function importar($variables) {
+        $nombre_archivo = $this->preparar_archivo();
+        $archivo = PATH_CDEXPORTS . $nombre_archivo;
+        $gestor_de_disco = new Gestor_de_disco();
+        $filas = $gestor_de_disco->importar_xls(dirname($archivo) . '/', basename($archivo));
+
+        if (!$this->procesar_filas($filas))
+            Gestor_de_log::set("Error al importar el archivo " . $nombre_archivo);
+    }
+
+    private function enviar_confirmacion_x_mail(Moves $moves) {
+        $marchand = new Marchand();
+        $marchand->get($moves->get_id_marchand());
+        developer_log("Marchand obtenido");
+        $mensaje = new View();
+        $mensaje->loadHTMLFile('views/notificacion.html');
+        $this->reemplazar_datos($moves, $mensaje);
+
+        $fecha = DateTime::createFromFormat("Y-m-d H:i:s", $moves->get_fecha_liq());
+        $asunto = "Transferencia " . $moves->get_id() . " ok " . $fecha->format('d m y');
+        return Gestor_de_correo::enviar(Gestor_de_correo::MAIL_COBRODIGITAL_NORESPONDER, $marchand->get_email(), $asunto, $mensaje->saveHTML());
+    }
+
+    function reemplazar_datos(Moves $moves, $mensaje) {
+        if ($moves->get_id_entidad() == Entidad::ENTIDAD_CBUMARCHAND) {
+            $cbumarchand = new Cbumarchand();
+            $cbumarchand->get($moves->get_id_referencia());
+
+            $banco = new Banco();
+            $banco->get($cbumarchand->get_id_banco());
+
+            $datos['rs'] = $cbumarchand->get_titular();
+            $datos['cuit'] = $cbumarchand->get_cuit();
+            $datos['monto'] = $moves->get_monto_pagador();
+            $datos['banco'] = $banco->get_banco();
+        } else {
+            return false;
+        }
+
+        $datos['id_moves'] = $moves->get_id();
+        $fecha = DateTime::createFromFormat("Y-m-d H:i:s", $moves->get_fecha_liq());
+        $datos['timestamp'] = $fecha->format('d/m/Y H:i:s');
+
+        foreach ($datos as $clave => $valor) {
+            $span = $mensaje->getElementById($clave);
+            $span->appendChild($mensaje->createTextNode($valor));
+        }
+    }
+
+    private function procesar_filas($filas) {
+        foreach ($filas as $fila) {
+            $registro = new Registro_cheque($fila);
+            var_dump($registro->registro_valido());
+            exit();
+
+            if ($registro->registro_valido()) {
+                $this->cambiar_estado_cheque($registro);
+            }
+        }
+    }
+
+    private function preparar_archivo() {
+        if ($_FILES['archivo']['error']) {
+            Gestor_de_log::set('Ha ocurrido un error al subir el archivo', 0);
+            return $this->home();
+        }
+        if (!is_file($_FILES['archivo']['tmp_name'])) {
+            Gestor_de_log::set("El archivo '" . $_FILES['archivo']['name'] . "' no existe.", 0);
+            return $this->home();
+        }
+//         if($_FILES['archivo']['type']!='text/csv' AND $_FILES['archivo']['type']!='application/wps-office.xlsx'){
+//              Gestor_de_log::set('Formato de archivo no soportado. Intente con otro archivo.',0);
+//              return $this->home();
+//         }
+        if ($_FILES['archivo']['size'] > Gestor_de_disco::MAXIMO_PESO_PERMITIDO) {
+            Gestor_de_log::set('Archivo demasiado extenso. Pruebe subirlo por partes.', 0);
+            return $this->home();
+        }
+        if ($_FILES['archivo']['size'] < Gestor_de_disco::MINIMO_PESO_PERMITIDO) {
+            Gestor_de_log::set('Archivo demasiado pequeño. Ha ocurrido un error.', 0);
+            return $this->home();
+        }
+        $gestor_de_disco = new Gestor_de_disco();
+        $nombre_archivo = $_FILES['archivo']['name'];
+        $directorio = PATH_CDEXPORTS;
+        $forzar_escritura = true;
+        if (!($archivo_movido = $gestor_de_disco->mover_archivo_subido($_FILES['archivo']['tmp_name'], $directorio, $nombre_archivo, $forzar_escritura))) {
+            Gestor_de_log::set('Ha ocurrido un error no se pudo mover el archivo' . $_FILES["archivo"]["tmp_name"], 0);
+            return $this->home();
+        }
+        return $nombre_archivo;
+    }
+
+    private function cambiar_estado_cheque(Registro_cheque $registro) {
+        $id_moves = $registro->obtener_id_moves();
+        $cheque = new Cheque_por_sucursal();
+        $cheque->get($registro->obtener_id_cheque_por_sucursal());
+
+        $moves = new Moves();
+        $moves->get($id_moves);
+
+        $estado_cheque = $registro->obtener_estado_cheque();
+
+        switch ($estado_cheque) {
+            case "00": # A emitir
+                //do nothing
+                break;
+            case "01": # Emitido - Pendiente
+                $cheque->set_id_authstat(Authstat::TRANSACCION_RETIRO_PENDIENTE);
+                $moves->set_id_authstat(Authstat::TRANSACCION_RETIRO_PENDIENTE);
+                break;
+            case "02":
+            case "04":
+            case "08": # Pagado por caja / Pagado cámara 48 hs / Realizado - Coontabilizado
+                $cheque->set_id_authstat(Authstat::TRANSACCION_RETIRO_COMPLETADO);
+                $moves->set_id_authstat(Authstat::TRANSACCION_RETIRO_COMPLETADO);
+                break;
+            case "06":
+            case "07": # Rechazado cámara 48 hs / Anulado
+                $cheque->set_id_authstat(Authstat::TRANSACCION_RETIRO_CANCELADO);
+                $moves->set_id_authstat(Authstat::TRANSACCION_RETIRO_CANCELADO);
+                break;
+        }
+        Model::StartTrans();
+        if ($moves->set() && $cheque->set())
+            Model::CompleteTrans();
+        if (Model::HasFailedTrans()) {
+            Gestor_de_log::set("Ha habido un error al cambiar el estado del cheque", 0);
+            return false;
+        }
+
+        return true;
+    }
+
+}
