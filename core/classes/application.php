@@ -4,9 +4,11 @@
 abstract class Application {
 
     public static $usuario = false;
+    public static $template_cargado = false;
     public static $login = false; # LOGIN_DE_USUARIO_INTERNO si es login desde boffice, LOGIN_DE_USUARIO_EXTERNO si es desde el sitio, false si no esta logeado
     public static $instancia = false; # El numero de ejecucion del usuario. Es decir, uno por cada pestaña (por.ej.)
     public static $no_log_navegador = false;
+    public static $json = false; //variable que determina la salida
 
     const USUARIO_INTERNO_LOG_NAVEGADOR = 67;
     const USUARIO_EXTERNO_LOG_NAVEGADOR = 4067;
@@ -18,10 +20,10 @@ abstract class Application {
                     return false;
                 $resultado = $this->login_de_usuario_interno($id_usuario);
                 break;
-            case 'Cobro_digital':
+            case 'Efectivo_digital':
                 if ($id_usuario_cookie == null OR ! $id_usuario = Gestor_de_cookies::get($id_usuario_cookie, LOGIN_DE_USUARIO_EXTERNO))
                     return false;
-                $resultado = $this->login_de_usuario_externo($id_usuario);
+                $resultado = $this->login_de_usuario_interno($id_usuario);
                 break;
             default: exit();
                 break;
@@ -59,72 +61,64 @@ abstract class Application {
 
     public function navigate($nav, $variables) {
         # Solo usuarios logeados
+
         $gestor_de_hash = $this->hacer_gestor_de_hash();
 
         $tratar_variables = true;
-
         if ($nav === null) {
-            // var_dump($variables);
-            $render_template = true;
+            $render_template = false;
+//            developer_log(json_encode($variables));
             $nav = 'main_controller.index';
-            // if (isset($variables['precarga_marchand']) and !isset($variables['id_subrubro'])) {
-            //     $nav = 'main_controller.combo_subrubro';
-            // }
-            // if (isset($variables['alta_post'])) {
-            //     $nav = 'main_controller.alta_post';
-            // }
-            
-            if (isset($variables['logout_post'])) {
+            if ((isset($variables['id']) and $gestor_de_hash->descifrar($variables['id']) == 'logout_post') OR ( $variables['logout_post'] == 'logout_post')) {
                 if (ACTIVAR_LOG_APACHE_LOGIN)
                     developer_log('El usuario intenta cerrar sesion.');
                 $nav = 'main_controller.logout_post';
             }
+            else
             if (isset($variables['login_post'])) {
                 if (!Application::$usuario) {
                     if (ACTIVAR_LOG_APACHE_LOGIN)
                         developer_log('El usuario intenta iniciar sesion.');
                     $tratar_variables = false;
                     $nav = 'main_controller.login_post';
+                    $render_template = true;
                 }
                 else {
                     if (ACTIVAR_LOG_APACHE_LOGIN)
                         developer_log('El usuario reenvía los datos de inicio de sesion. Redireccion.');
-                    $nav = 'main_controller.main_menu';
+                    if ($gestor_de_hash->descifrar($nav) != "main_controller.logout")
+                        $nav = 'main_controller.main_menu';
+                    else {
+                        $render_template = true;
+                    }
                 }
             }
-        }
-        else {
-            switch ($nav){
-                case "main_controller.asociar":
-                    if (ACTIVAR_LOG_APACHE_LOGIN)
-                        developer_log('El usuario intenta cerrar sesion.');
-                    $nav = 'main_controller.contacto_mail_front_asociar';
-                    break;
-                case "main_controller.contacto_landing" :
-                    if (ACTIVAR_LOG_APACHE_LOGIN)
-                        developer_log('El usuario intenta cerrar sesion.');
-                    $nav = 'main_controller.contacto_mail_front_contacto_landing';
-                    break;
-                    
-            }
-            
+        } else {
+            if($nav === 'main_controller.contacto_mail_front')
+                $tratar_variables = false;
             $render_template = false;
             if ($gestor_de_hash)
                 $nav = $gestor_de_hash->descifrar($nav);
         }
 
-
+        $render_template = $this->obtener_render_template($nav);
+//        var_dump($render_template);
         if ($tratar_variables)
             $variables = $this->tratamiento_de_variables($variables);
         if ($gestor_de_hash)
             $variables = $gestor_de_hash->unmask($variables);
-
+        if (isset($variables["hidden_instancia"])) {
+            self::$template_cargado = true;
+            unset($variables["identificador_template"]);
+        }
         $nav = strtolower($nav);
         if (ACTIVAR_LOG_APACHE_LOGIN) {
             if (Application::$usuario)
                 developer_log(' [IDU:' . self::$usuario->get_id() . '| IDM:' . self::$usuario->get_id_marchand() . '] Navega: ' . $nav);
-            else
+            else {
+//                $nav="main_controller.index";
                 developer_log('Usuario: No Logeado ' . 'Navega: ' . $nav);
+            }
         }
         if (($variables = $this->administrar_instancias($variables, $nav)) === false) {
             Gestor_de_log::set('Ha ocurrido un error fatal al integrar las instancias.', 0);
@@ -145,7 +139,7 @@ abstract class Application {
         }
         ##############################################
         try {
-            //var_dump($variables);
+//            var_dump($nav);
             $view = $this->dispatch($nav, $variables);
         } catch (Exception $e) {
             error_log($e->getTraceAsString());
@@ -158,9 +152,13 @@ abstract class Application {
         if ($nav == 'main_controller.login_post' AND Application::$usuario) {
             if (ACTIVAR_LOG_APACHE_LOGIN)
                 developer_log('El usuario acaba de iniciar sesion.');
-
             $gestor_de_hash = $this->hacer_gestor_de_hash();
         }
+        if ($nav == 'main_controller.login_post' AND ! Application::$usuario) {
+
+            $render_template = false;
+        }
+
         if ($nav == 'main_controller.logout_post' AND ! Application::$usuario) {
             if (ACTIVAR_LOG_APACHE_LOGIN)
                 developer_log('El usuario acaba de cerrar sesion.');
@@ -168,32 +166,40 @@ abstract class Application {
             $gestor_de_hash = false;
             $render_template = true;
         }
-        if ($gestor_de_hash)
-            $view = $gestor_de_hash->mask($view);
+        if ($gestor_de_hash) {
+            if (!is_array($view))
+                $view = $gestor_de_hash->mask($view);
+        }
 
         if (CONSOLA) {
-            if (!is_string($view))
+            if (!CONSOLA and (is_object($view) OR !is_string($view) OR !json_decode($view))){
+                
                 return false;
+            }
             # View tiene el nombre del controller cuando se ejecuta correctamente
             return $view;
         }
         elseif (is_object($view) AND get_class($view) == 'View') {
-            if ($render_template)
-                return $this->render_template($view);
-            else
-                return $this->render($view);
+            if ($nav == 'main_controller.logout_post' and get_class($this) == 'Efectivo_digital') {
+                return $this->render($view, "borrar");
+            }
+            if ($render_template) {
+                return $this->render_template($view, $nav);
+            } else
+                return $this->render($view, $nav);
         }
+        
+//        var_dump($render_template);
         return false;
     }
 
     protected abstract function dispatch($nav, $variables);
 
-    protected final function render_template($view) {
+    protected function render_template($view) {
         $documento = new View();
+        developer_log("SISTEMA_".$GLOBALS['SISTEMA']);
         if (Application::$usuario) {
-            if ($GLOBALS['SISTEMA'] == 'INTERFAZ')
-                $documento->cargar('template_interfaz.html');
-            else
+            
                 $documento->cargar('template.html');
             $gestor_de_hash = $this->hacer_gestor_de_hash();
             $documento = $gestor_de_hash->mask($documento);
@@ -227,15 +233,13 @@ abstract class Application {
         $main = $documento->getElementById('main');
         if ($main) {
             //$nodo=$documento->importNode($view->documentElement, true);
-            if ($GLOBALS['SISTEMA'] === 'INTERFAZ')
-                $main->appendChild($documento->importNode($form, true));
-            else
+            
                 $main->appendChild($documento->importNode($view->documentElement, true));
         }
         return $documento->saveHTML();
     }
 
-    protected final function render($view) {
+    protected function render($view) {
         if (is_object($view) AND get_class($view) == 'View') {
             $forms = $view->getElementsByTagName('form');
             $div = $view->getElementById("home");

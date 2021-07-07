@@ -14,7 +14,7 @@ class Gestor_de_correo{
     const SERVIDOR_USER='noresponder';
     const SERVIDOR_PASS='cuandoveo1pajaronoveolabandada';
     const SERVIDOR_AUTH=false;
-    const ACTIVAR_TEST=false;
+    const ACTIVAR_TEST=TRUE;
     public static function enviar($emisor, $destinatario, $asunto, $mensaje,$file_path=false)
     {
         if(self::ACTIVAR_TEST)

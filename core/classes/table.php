@@ -12,27 +12,28 @@ class Table extends View {
     const REEMPLAZO_NO_DETERMINADO = 'No determinado';
     const COLOR = "color";
     const BOTON_MICROSITIO = "BOTON";
+    const BOTON_MAS = "+";
 
     private $procesa_colores = true;
 
     # Retorna la tabla. Recibe un recordset y un conjunto de acciones
 
-    public function __construct($registros, $desde_registro, $hasta_registro, $acciones = null, $fcond = false, $order = false) {
+    public function __construct($registros, $desde_registro, $hasta_registro, $acciones = null, $fcond = false) {
         parent::__construct();
         if ($desde_registro == null AND $hasta_registro == null) {
             if (is_array($registros))
-                return $this->construir_desde_array($registros, $acciones, $fcond, $order);
+                return $this->construir_desde_array($registros, $acciones, $fcond);
         }
         if (is_numeric($desde_registro) AND is_numeric($hasta_registro)) {
-            if (is_object($registros) AND (get_class($registros) == 'ADORecordSet_postgres8' OR get_class($registros) == 'ADORecordSet_array'))
-                return $this->construir_desde_recordset($registros, $desde_registro, $hasta_registro, $acciones, $fcond, $order);
+            if (is_object($registros) AND get_class($registros) == 'ADORecordSet_postgres8')
+                return $this->construir_desde_recordset($registros, $desde_registro, $hasta_registro, $acciones, $fcond);
         }
 //	error_log("error");
         return $this->retornar_tabla_vacia();
     }
 
     private function construir_desde_recordset(ADORecordSet $registros, $desde_registro, $hasta_registro, $acciones = null, $fcond = false, $order = false) {
-        
+
         $table = $this->createElement('table');
         $table->setAttribute("id", "dataTable");
         $table->setAttribute("class", "table hover border bordered table-data dataTable no-footer");
@@ -41,19 +42,19 @@ class Table extends View {
         if ($registros === false)
             return $table;
 
-        if($order){
+        if ($order) {
             $input = $this->createElement('input');
             $input->setAttribute('type', 'hidden');
 //            $input->setAttribute('name', 'ordering');
             $input->setAttribute('id', 'col-ordering');
-            $input->setAttribute('value', $order[0] );
+            $input->setAttribute('value', $order[0]);
             $table->appendChild($input);
-            
+
             $input2 = $this->createElement('input');
             $input2->setAttribute('type', 'hidden');
 //            $input->setAttribute('name', 'ordering');
             $input2->setAttribute('id', 'way-ordering');
-            $input2->setAttribute('value', $order[1] );
+            $input2->setAttribute('value', $order[1]);
             $table->appendChild($input2);
         }
         #Encabezado de la tabla
@@ -146,20 +147,19 @@ class Table extends View {
                 }
             }
         endforeach;
-
-        if(isset($acciones)){
+        if ($acciones != null)
             foreach ($acciones as $accion):
                 $th = $this->createElement('th');
                 $tr->appendChild($th);
                 $tr->appendChild($th);
             endforeach;
-        }
 
         $table_head->appendChild($tr);
 
         #Cuerpo de la tabla
 //	var_dump($desde_registro);
         $registros->Move($desde_registro - 1);
+        $verificados = array();
         while ($desde_registro <= $hasta_registro):
 
             $registro = $registros->FetchRow();
@@ -193,9 +193,55 @@ class Table extends View {
                         case 'X':
                             # Si son textos o XML recorto X caracteres
                             $td = $this->createElement('td');
-                            $td->setAttribute('style', "text-align:center");
-                            $td->appendChild($this->createTextNode(substr($valor, 0, MAXIMO_CARACTERES_CELDA)));
-                            $td->setAttribute('title', $valor);
+//                            var_dump($valor);
+                            if (strstr($valor, ".png")) {
+                                $options['http'] = array(
+                                    'method' => "HEAD",
+                                    'ignore_errors' => 1,
+                                    'max_redirects' => 0
+                                );
+//                                var_dump($_SERVER);
+                                $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $valor;
+                                if (in_array($valor, $verificados)) {
+                                    $img = $this->createElement("img");
+                                    $img->setAttribute("src", $valor);
+                                    $img->setAttribute("style", "width: 50%;");
+                                    $td->appendChild($img);
+                                    $img->setAttribute("title",str_replace("-", " ", str_replace(".png", "", str_replace("/medios-pagos/", "",$valor))));
+                                    //$img->setAttribute("title",$url);
+                                } else {
+                                    $body = @file_get_contents($url, NULL, stream_context_create($options));
+                                    if (isset($http_response_header)) {
+                                        sscanf($http_response_header[0], 'HTTP/%*d.%*d %d', $httpcode);
+
+                                        $accepted_response = array(200, 301, 302);
+                                        if (in_array($httpcode, $accepted_response)) {
+                                            $img = $this->createElement("img");
+                                            $img->setAttribute("src", $valor);
+                                            $img->setAttribute("style", "width: 50%;");
+                                            $td->appendChild($img);
+                                            $img->setAttribute("title",str_replace("-", " ", str_replace(".png", "", str_replace("/medios-pagos/", "",$valor))));
+                                            $verificados[] = $valor;
+                                        } else {
+                                            $td->appendChild($this->createTextNode(str_replace(".png", "", str_replace("/medios-pagos/", "", $valor))));
+                                            $td->appendChild($this->createTextNode($url));
+                                        }
+                                    } else {
+                                        $td->appendChild($this->createTextNode(str_replace(".png", "", str_replace("/medios-pagos/", "", $valor))));
+//                                        $td->appendChild($this->createTextNode($url));
+                                    }
+                                }
+//                                var_dump(file_exists());
+//                                    if (file_exists($_SERVER["REQUEST_SCHEME"]."://".$_SERVER["SERVER_ADDR"].":".$_SERVER["SERVER_PORT"].$valor)){
+//                                    }
+//                                    else{
+//                                        
+//                                    }
+                            } else {
+                                $td->setAttribute('style', "text-align:center");
+                                $td->appendChild($this->createTextNode(substr($valor, 0, MAXIMO_CARACTERES_CELDA)));
+                                $td->setAttribute('title', $valor);
+                            }
                             $tr->appendChild($td);
                             break;
                         case 'D':
@@ -207,6 +253,8 @@ class Table extends View {
                                 $td->setAttribute('title', 'El campo se encuentra vacío en la base de datos.');
                             } else {
                                 $td->appendChild($this->createTextNode(formato_fecha($valor)));
+//                                var_dump(strstr($valor,".png"));
+//                              
                                 $td->setAttribute('title', $valor);
                             }
                             $tr->appendChild($td);
@@ -233,50 +281,51 @@ class Table extends View {
 
             $desde_registro++;
         endwhile;
+
         return $table;
     }
 
-    private function construir_desde_array($registros, $acciones = null, $fcond = false, $order=false) {
+    private function construir_desde_array($registros, $acciones = null, $fcond = false, $order = false) {
         $table = $this->createElement('table');
         $table->setAttribute("id", "dataTable");
         $table->setAttribute("class", "table hover border bordered table-data dataTable no-footer");
         $this->appendChild($table);
         if (count($registros) === 0)
             return $table;
-        
-        if($order){
+
+        if ($order) {
             $input = $this->createElement('input');
             $input->setAttribute('type', 'hidden');
 //            $input->setAttribute('name', 'ordering');
             $input->setAttribute('id', 'col-ordering');
-            $input->setAttribute('value', $order[0] );
+            $input->setAttribute('value', $order[0]);
             $table->appendChild($input);
-            
+
             $input2 = $this->createElement('input');
             $input2->setAttribute('type', 'hidden');
 //            $input->setAttribute('name', 'ordering');
             $input2->setAttribute('id', 'way-ordering');
-            $input2->setAttribute('value', $order[1] );
+            $input2->setAttribute('value', $order[1]);
             $table->appendChild($input2);
         }
-        
+
         $table_head = $this->createElement('thead');
         $table->appendChild($table_head);
         $tr = $this->createElement('tr');
         $tr->setAttribute("role", "row");
         foreach ($registros[0] as $clave => $valor) {
             $th = $this->createElement('th', $valor);
-            if(validar_fecha($valor)){
+            if (validar_fecha($valor)) {
                 $th->setAttribute('class', 'dateorder');
             }
-            
+
             $span = $this->createElement('span');
             $span->setAttribute('class', 'fa fa-sort');
             $span->setAttribute('style', 'margin-right: 3%; margin-left: 0%');
             $th->appendChild($span);
             $tr->appendChild($th);
         }
-        if(!$acciones == null){
+        if (!$acciones == null) {
             foreach ($acciones as $accion):
                 $th = $this->createElement('th');
                 if (isset($meta->name) and strlen($meta->name) > 20)
@@ -285,7 +334,7 @@ class Table extends View {
                 $tr->appendChild($th);
             endforeach;
         }
-        
+
         $table_head->appendChild($tr);
 //        array_shift($registros);
         foreach ($registros as $registro) {
@@ -293,7 +342,7 @@ class Table extends View {
             $tr->setAttribute("role", "row");
             foreach ($registro as $clave => $valor) {
                 $td = $this->createElement('td', $registro[$clave]);
-                if(numeric_comma($registro[$clave])){
+                if (numeric_comma($registro[$clave])) {
                     $td->setAttribute('data-order', basic_num_order($registro[$clave]));
                 }
                 $td->setAttribute('style', "text-align:center");
@@ -305,25 +354,25 @@ class Table extends View {
         return $table;
     }
 
-    public static function procesar_acciones_interfaz(DOMDocument $view,$tr, $registro, $acciones){
-         $lacc = true; //default
+    public static function procesar_acciones_interfaz(DOMDocument $view, $tr, $registro, $acciones) {
+        $lacc = true; //default
 
         if (is_array($acciones) AND count($acciones)) {
             foreach ($acciones as $accion):
-                    $td = $view->createElement('td');
-                    $td->setAttribute('class', 'link acciones');
-                    $td->setAttribute('type', 'button');
-                    if (isset($accion['token']))
-                        $td->setAttribute('name', $accion['token']);
-                    if (isset($accion['id']))
-                        $td->setAttribute('id', $registro[$accion['id']]);
+                $td = $view->createElement('td');
+                $td->setAttribute('class', 'link acciones');
+                $td->setAttribute('type', 'button');
+                if (isset($accion['token']))
+                    $td->setAttribute('name', $accion['token']);
+                if (isset($accion['id']))
+                    $td->setAttribute('id', $registro[$accion['id']]);
 
-                        if (isset($accion['etiqueta'])) {
-                            if ($lacc) {
-                                $td->appendChild($view->createTextNode($accion['etiqueta']));
-                            }
-                        }
-                    $tr->appendChild($td);
+                if (isset($accion['etiqueta'])) {
+                    if ($lacc) {
+                        $td->appendChild($view->createTextNode($accion['etiqueta']));
+                    }
+                }
+                $tr->appendChild($td);
             endforeach;
         }
     }
@@ -331,9 +380,9 @@ class Table extends View {
     private function procesar_acciones($tr, $registro, $acciones, $fcond = false) {
 
         $lacc = true; //default
-
         if (is_array($acciones) AND count($acciones)) {
             foreach ($acciones as $accion):
+//                var_dump($accion);
                 if (isset($accion['etiqueta']) AND $accion['etiqueta'] == 'checkbox') {
                     $this->procesar_selectores($tr, $registro, $accion);
                 } elseif (isset($accion['etiqueta']) AND $accion['etiqueta'] == self::COLOR) {
@@ -347,22 +396,22 @@ class Table extends View {
                         $tr_res->insertBefore($th, $th_res);
                         $this->procesa_colores = false;
                     }
-                } elseif (isset($accion['etiqueta']) AND ($accion['etiqueta'] == self::BOTON_MICROSITIO)) {
+                } elseif (isset($accion['etiqueta']) AND ( $accion['etiqueta'] == self::BOTON_MICROSITIO)) {
                     if ($accion["campo"] != null) {
 
-                        
-                        if (isset($accion["callback"]) and !$accion["callback"]($registro,$tr,$accion,$this)) {
-                            
+
+                        if (isset($accion["callback"]) and ! $accion["callback"]($registro, $tr, $accion, $this)) {
+
                             return false;
                         }
                     }
-                }else if(isset($accion['etiqueta']) and isset ($accion["callback"])){
-                    if (isset($accion["callback"]) and !$accion["callback"]($registro,$tr,$accion,$this)) {
-                            
-                            return false;
-                        }
-                }
-                else {
+                } else if (isset($accion['etiqueta']) and isset($accion["callback"])) {
+                    if (isset($accion["callback"]) and ! $accion["callback"]($registro, $tr, $accion, $this)) {
+//                        if($accion['etiqueta']=="colores")
+
+                        return false;
+                    }
+                } else {
                     $td = $this->createElement('td');
                     $td->setAttribute('class', 'link acciones');
                     $td->setAttribute('type', 'button');
@@ -373,6 +422,8 @@ class Table extends View {
 
                     if (isset($accion['etiqueta']) AND $accion['etiqueta'] == self::INTERRUPTOR) {
                         $td = $this->armar_interruptor($td, $accion, $registro);
+                    } else if (isset($accion['etiqueta']) AND $accion['etiqueta'] == self::BOTON_MAS) {
+                        $td = $this->armar_boton($td, $accion, $registro);
                     } else {
                         if (isset($accion['etiqueta'])) {
 
@@ -390,8 +441,6 @@ class Table extends View {
 
                             if ($lacc) {
                                 $td->appendChild($this->createTextNode($accion['etiqueta']));
-                            }else{
-                                $td->setAttribute('type', 'text');
                             }
                         }
                     }
@@ -422,16 +471,16 @@ class Table extends View {
 
     public function procesar_selectores($tr, $registro, $accion) {
         $prefijo_para_names = $accion['prefijo'];
-	if(isset($accion['checked']))
-          $checked = $accion['checked'];
-	else
-	  $checked=null;
+        if (isset($accion['checked']))
+            $checked = $accion['checked'];
+        else
+            $checked = null;
         $valor = $registro[$accion['id']];
         $td = $this->createElement('td');
         $checkbox = $this->createElement('input');
         $checkbox->setAttribute('type', 'checkbox');
         $checkbox->setAttribute('name', $prefijo_para_names . $valor);
-        if ($checked!=null and in_array($valor, $checked)) {
+        if ($checked != null and in_array($valor, $checked)) {
             $checkbox->setAttribute('value', '1');
             $checkbox->setAttribute('checked', 'checked');
         }
@@ -446,16 +495,15 @@ class Table extends View {
         $i = 0;
 //        var_dump(count($encabezados));
         foreach ($ths as $th) {
-            foreach ($th->childNodes as $node){
-                        $th->removeChild($node);
-                    }
+            foreach ($th->childNodes as $node) {
+                $th->removeChild($node);
+            }
             if (isset($encabezados[$i])) {
                 $span = $this->createElement('span');
                 if ($th->childNodes->length == 1)
                     $span->setAttribute('class', 'fa fa-sort');
-                
+
 //                if ($th->childNodes->length !== 0){
-                    
 //                }
                 if ($th->childNodes->length === 0)
                     $th->appendChild($span);
@@ -501,10 +549,10 @@ class Table extends View {
             $accion['campo'] = "id_authstat";
 //                $registro[$accion['campo']]="id_authstat";
         }
-        if(!isset($accion["id_activo"]))
-            $accion["id_activo"]=0;
-        if(!isset($accion["id_inactivo"]))
-            $accion["id_inactivo"]=0;
+        if (!isset($accion["id_activo"]))
+            $accion["id_activo"] = 0;
+        if (!isset($accion["id_inactivo"]))
+            $accion["id_inactivo"] = 0;
         switch ($registro[$accion['campo']]) {
             case $accion["id_activo"]:
             case Authstat::ACTIVO:
@@ -529,6 +577,19 @@ class Table extends View {
         $table = $this->createElement('table');
         $this->appendChild($table);
         return $table;
+    }
+
+    private function armar_boton($td, $accion, $registro) {
+        $td->setAttribute('title', 'VER MAS');
+        $img = $this->createElement("img");
+        $img->setAttribute("class", "mostrar-detalle");
+        $img->setAttribute("src", "public/img/icono-agregar.svg");
+//        $td->removeAttribute('type');
+//        $td->removeAttribute('name');
+//        $td->setAttribute('type', 'button');
+//        $td->setAttribute("id",$accion["id"]);
+        $td->appendChild($img);
+        return $td;
     }
 
 }

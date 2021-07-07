@@ -274,7 +274,6 @@ class Pdf
         }
         $command = $this->getCommand();
         $fileName = $this->getPdfFilename();
-
         $command->addArgs($this->_options);
         foreach ($this->_objects as $object) {
             $command->addArgs($object);

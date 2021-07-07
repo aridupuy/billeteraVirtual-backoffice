@@ -50,7 +50,7 @@ class Gestor_de_cookies{
 	}
 	public static function get($value,$tipo_usuario){
 		$value=html_entity_decode($value);
-		if($tipo_usuario==LOGIN_DE_USUARIO_INTERNO) $authcode=1;
+                $authcode=1;
 		$recordset=Useris::select(array('cstr'=>$value,'id_authcode'=>$authcode));
 		if(!$recordset) return false;
 		if($recordset->RowCount()==0 OR $recordset->RowCount()>1) return false;

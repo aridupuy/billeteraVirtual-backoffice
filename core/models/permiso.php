@@ -8,8 +8,8 @@ class Permiso extends Model{
 	const ID_MINIMO_NUEVOS_PERMISOS=50000; #Permisos con id superiores a 50000 son nuevos
 	const ID_MINIMO_NUEVOS_PERMISOS_EXTERNO=60000;
         const PUEDE_MENU_HERRAMIENTAS_COBRANZAS='site_servicio_menu';
-        const PUEDE_MENU_DATOS_CUENTA='site_cuenta_menu';
-        const PUEDE_MENU_MOVIMIENTOS="site_historial_menu";
+        const PUEDE_MENU_DASHBOARD='main_controller';
+        const PUEDE_MENU_USUARIOS="util_i";
         const PUEDE_MENU_RETIROS="site_retiro_menu";
 	private $id_permiso;
 	private $permiso;

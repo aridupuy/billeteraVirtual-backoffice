@@ -270,6 +270,10 @@ class Usuario extends Model {
 
     /* para ser llamada cueando es auth */
 
+    public function select_usuarios() {
+        $sql = " select A.*, b.authstat as estado from ef_usuario a left join ho_authstat b on  a.id_authstat = b.id_authstat ";
+        return self::execute($sql);
+    }
     public function updatePassword_auth($password) {
         $sql = " update ho_auth set authpass=crypt('" . $password . "','MA') where 
                id_auth=" . $this->get_id();

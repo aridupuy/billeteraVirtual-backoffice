@@ -16,12 +16,11 @@ $(function () {
 
 });
 function cargar_modulo(nav) {
-    //select_browser();
-    // $(".datepicker").datepicker();
-    // $(".datepicker").datepicker( "option", "dateFormat", 'dd/mm/yy' );   
-    jQuery(".debug-container").append(jQuery(".debug"));
-    jQuery("[type='submit']").off('click');
-    jQuery("[type='submit']").on('click', function (event) {
+    // jQuery(".datepicker").datepicker();
+    // jQuery(".datepicker").datepicker( "option", "dateFormat", 'dd/mm/yy' );   
+    jQuery("#miFormulario .debug-container").append(jQuery(".debug"));
+    //jQuery("[type='submit']").off('click');
+    jQuery("#miFormulario [type='submit']").click(function (event) {
         if (jQuery('#miFormulario')[0].checkValidity()) {
             jQuery(this).attr('type', 'button');
             if (jQuery("[type='file']").size() == '1')
@@ -31,9 +30,9 @@ function cargar_modulo(nav) {
         }
     });
 
-    jQuery("[type='button']").off('click');
-    jQuery("[type='button']").on('click', function (event) {
-        link(jQuery(this).attr('name'), jQuery(this).attr('id'), '');
+    //jQuery("[type='button']").off('click');
+    jQuery("#miFormulario [type='button']").click(function (event) {
+        link(jQuery(this).attr('name'), jQuery(this).attr('id'), '', url_servidor);
     });
     jQuery('[data-toggle="tooltip"]').tooltip();
     jQuery('[data-toggle="popover"]').popover();

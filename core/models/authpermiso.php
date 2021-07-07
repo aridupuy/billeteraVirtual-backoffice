@@ -53,4 +53,13 @@ class Authpermiso extends Model{
 		$sql="SELECT B.puede FROM ho_authpermiso A LEFT JOIN ho_permiso B ON A.id_permiso=B.id_permiso WHERE A.id_auth=?";
 		return self::execute_select($sql,array('id_auth'=>$id_auth));
 	}
+        
+        public function select_authpermiso_sitetodo($id_usumarchand){
+            $sql="SELECT * FROM cd_authpermiso A "
+            . "left join  ho_Controlador_sitio B  on A.id_permiso=B.id_permiso "
+            . "WHERE A.id_auth= ? and B.id_permiso > ?";
+            $variables[]=$id_usumarchand;
+            $variables[]=50000;
+            return self::execute_select($sql,$variables);
+        }
 }

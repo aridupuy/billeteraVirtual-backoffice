@@ -522,7 +522,7 @@ class MPRestClient {
                     $message .= " - ".$response['response']['cause']['code'].': '.$response['response']['cause']['description'];
                 } else if (is_array ($response['response']['cause'])) {
                     foreach ($response['response']['cause'] as $cause) {
-			var_dump($response);
+//			var_dump($response);
                         $message .= " - ".$cause['code'].': '.$cause['description'];
                     }
                 }

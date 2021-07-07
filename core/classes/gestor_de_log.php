@@ -7,6 +7,12 @@ class Gestor_de_log {
 
     const LOGLEVEL_WEBSERVICE = '20';
     const LOGLEVEL_MICROSITIO = '22';
+    private static $last_ulog=array();
+    public static function ultimos_ulogs($cantidad=5)
+	{
+		$ultimo=count(self::$last_ulog)-1;
+		return self::$last_ulog[$ultimo];
+	}
 
     public static function ultimos_logs($cantidad = 5, $separador = "") {
         $ultimo = count(self::$last_log) - 1;
@@ -222,11 +228,11 @@ class Gestor_de_log {
             developer_log($ulog->get_mensaje());
         # Lo comento, el usuario no debe ver mensajes de nivel 100 o 10
         #self::$last_log[]=$mensaje;
-        if (SOLO_REPLICA === 'true') {
-            return true;
-        } else {
-            //developer_log("master");
-        }
+//        if (SOLO_REPLICA === 'true') {
+//            return true;
+//        } else {
+//            //developer_log("master");
+//        }
         if ($ulog->set())
             return $ulog;
         return false;

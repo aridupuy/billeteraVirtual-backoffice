@@ -23,11 +23,7 @@ class Gestor_de_permisos{
 			$permitir=$authpermiso->FetchRow(0);
 			if($permitir[0]>=1)	$respuesta=true; 
 		}
-		elseif($tipo_usuario=='Usumarchand'){
-			$usupermiso=Usupermiso::puede(Application::$usuario->get_id(),$permiso['id_permiso']);
-			$permitir=$usupermiso->FetchRow(0);
-			if($permitir[0]>=1)	$respuesta=true; 
-		}
+		
 			
 		if($respuesta AND ACTIVAR_LOG_APACHE_DE_PERMISOS) 
 			developer_log('Permiso aceptado | id_'.strtolower($tipo_usuario).': '.Application::$usuario->get_id().' | puede: '.$puede);
@@ -48,14 +44,12 @@ class Gestor_de_permisos{
 		if($id_usuario){
 			$tipo_usuario=false;
 			if(get_class(Application::$usuario)=='Auth') $tipo_usuario='Auth';
-			elseif(get_class(Application::$usuario)=='Usumarchand') $tipo_usuario='Usumarchand';
+			
 			if($tipo_usuario){
 				if($tipo_usuario=='Auth'){
 					$recordset=Authpermiso::select_cadena_de_permisos(Application::$usuario->get_id()); 
 				}
-				elseif($tipo_usuario=='Usumarchand'){
-					$recordset=Usupermiso::select_cadena_de_permisos(Application::$usuario->get_id());
-				}
+				
 				if($recordset AND $recordset->RowCount()>0){
 					foreach ($recordset as $row) {
 						$cadena_de_permisos.=$row['puede'].self::SEPARADOR_PERMISOS;

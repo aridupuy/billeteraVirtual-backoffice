@@ -2,8 +2,8 @@
 var decidir = null
 var selectedForm = undefined
 var decidirAgro = undefined
-const URL_LOCAL = "http://localhost:456/externo/landing_pagos_tc.php";
-//const URL_LOCAL = "https://www.cobrodigital.com:14365/externo/landing_pagos_tc.php";
+//const URL_LOCAL = "http://localhost:456/externo/landing_pagos_tc.php";
+const URL_LOCAL = "https://www.cobrodigital.com:14365/externo/landing_pagos_tc.php";
 //Aux variables
 var decidirDevelConCS = new Decidir('https://live.decidir.com/api/v2', true);
 decidirDevelConCS.setPublishableKey('792ead6671d24c59933a7394f13e7101'); //para generar el device-fingerprint-id
