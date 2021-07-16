@@ -67,7 +67,7 @@ abstract class Application {
         $tratar_variables = true;
         if ($nav === null) {
             $render_template = false;
-//            developer_log(json_encode($variables));
+            developer_log(json_encode($variables));
             $nav = 'main_controller.index';
             if ((isset($variables['id']) and $gestor_de_hash->descifrar($variables['id']) == 'logout_post') OR ( $variables['logout_post'] == 'logout_post')) {
                 if (ACTIVAR_LOG_APACHE_LOGIN)

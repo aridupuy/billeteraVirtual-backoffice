@@ -123,10 +123,9 @@ class Main_controller extends Controller{
     }
 	
 	private function logout() {
-
-//        $this->view->cargar('views/logout.html');
-        return $this->logout_post();
-//        return $this->view;
+        $this->view->cargar('views/logout.html');
+//        return $this->logout_post();
+        return $this->view;
     }
 
     private function logout_post() {

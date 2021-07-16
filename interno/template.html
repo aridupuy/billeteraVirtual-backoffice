@@ -45,12 +45,12 @@
         <script type="text/javascript" src="public/plugins/bootstrap.min.js"/>
         <script type="text/javascript" src="public/plugins/jquery.dataTables.js"/>
         <script type="text/javascript" src="public/efectivo_digital.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
-        <script type="text/javascript" src="https://www.gstatic.com/firebasejs/8.2.1/firebase-messaging.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>
+        <!--<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>-->
+        <!--<script type="text/javascript" src="https://www.gstatic.com/firebasejs/8.2.1/firebase-messaging.js"></script>-->
+        <!--<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>-->
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
         <script type="text/javascript" src="public/modernizr-custom.js"></script>
-        <script type="text/javascript" src="public/js/firebase-messaging.js"></script>
+        <!--<script type="text/javascript" src="public/js/firebase-messaging.js"></script>-->
         <script type="text/javascript" src="public/js/global.js"></script>
         <script type="text/javascript" src="public/js/sweetalert2.all.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
@@ -94,8 +94,9 @@
                <a href="">Reportes</a>
                <a href="">Administración</a>-->
             </nav>
+            <a class="logout header-logout"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
         </aside>
-        <!-- Contenedor General de pagina (cambia clase segun pagina pero siempre se mantiene la class main-content) -->
+        <!--  name="main_controller.logout" Contenedor General de pagina (cambia clase segun pagina pero siempre se mantiene la class main-content) -->
         <div id="main">
             
         <form class="main-content usuarios" id="miFormulario">
@@ -105,23 +106,26 @@
         </div>
     </main>
 </html>
-<!--<style>
-    .titulo-developer{
-        margin-bottom: 10px; 
+<style>
+    
+    .logout{
+        color: #fff;
+        text-decoration: none;
+        font-weight: 700;
+        padding: 20px 30px;
+        width: 100%;
+        transition: all 0.3s ease-in-out;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: center;
+        align-content: center;
     }
-    .titulo-ayuda{
-        margin-bottom: 3px !important;
-    }
-    #CashFlow{
-        width: 50%;
-        height: 50%;
-    }
-    .indentado{
-        margin-left: 14%;
-    }
-    </style>-->
+    </style>
    
     <script>
+        
 //    var ctx = document.getElementById('CashFlow');
 //var myChart = new Chart(ctx, {
 //    type: 'line',
@@ -189,6 +193,7 @@ var token = localStorage.getItem('abcd1478');
 //             alert(data); 
           });
 $(document).ready(function(){
+    popLogout();
     $("#cerrar").click(function (){
         $("#popNoti").removeClass("active");
     });
