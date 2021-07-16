@@ -1,0 +1,380 @@
+h1 {
+  font-weight: 400;
+  font-size: 250%;
+  color: #414141;
+  width: 100%;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: 140%;
+  color: #414141;
+  width: 100%;
+}
+
+p {
+  white-space: pre-line;
+  line-height: 1.5;
+  width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  margin: 0 !important;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #606060;
+  background: #F7F7F7;
+}
+
+::-moz-selection {
+  background: #007C68;
+  color: #00BDA8;
+}
+
+::selection {
+  background: #007C68;
+  color: #00BDA8;
+}
+
+section {
+  padding: 5% 0;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-content: flex-start;
+  width: 85%;
+  padding: 2%;
+}
+
+.content-80 {
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+.content-20 {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-content: flex-start;
+  width: 18%;
+}
+
+@media screen and (max-width: 800px) {
+  .main-content {
+    width: 100%;
+    flex-direction: column-reverse;
+  }
+
+  .content-80 {
+    width: 100%;
+  }
+
+  .content-20 {
+    width: 100%;
+  }
+}
+.contenedor {
+  width: 100%;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 20px;
+  background: #fff;
+  margin: 10px 0;
+  overflow: hidden;
+  overflow-x: auto;
+}
+.contenedor::-webkit-scrollbar {
+  width: 2px;
+  height: 5px;
+  background: #F7F7F7;
+}
+.contenedor::-webkit-scrollbar-thumb {
+  background: #007C68;
+  border-radius: 20px;
+}
+
+input, textarea, select {
+  padding: 10px 5px;
+  border: none;
+  border-bottom: 1px solid #D0D0D0;
+  width: 100%;
+  background: none;
+  color: #D0D0D0;
+  -webkit-appearance: none;
+}
+input:focus, textarea:focus, select:focus {
+  outline: none;
+}
+input::placeholder, textarea::placeholder, select::placeholder {
+  color: #D0D0D0;
+}
+
+select {
+  background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat right;
+  background-size: 10px;
+  background-position: 95%;
+}
+
+.btn-outline {
+  border: 2px solid #007C68;
+  background: #fff;
+  color: #007C68;
+  border-radius: 20px;
+  padding: 10px 25px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.btn {
+  border: 2px solid #007C68;
+  border-radius: 20px;
+  padding: 10px 25px;
+  font-weight: 600;
+  color: #fff;
+  background: #007C68;
+  text-align: center;
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: center;
+  padding: 20px 2%;
+  background: #007C68;
+}
+header .logo {
+  max-width: 8%;
+}
+header .hamburger {
+  color: #fff;
+  width: 15%;
+  font-size: 150%;
+  padding-left: 10px;
+  display: none;
+}
+
+@media screen and (max-width: 800px) {
+  header .hamburger {
+    display: block;
+  }
+
+  header .logo {
+    max-width: 30%;
+  }
+}
+.sidebar {
+  width: 15%;
+  border-right: 1px solid #D0D0D0;
+  background: #00BDA8;
+  height: 100vh;
+  font-weight: 700;
+  transition: all 0.3s ease-in-out;
+}
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+  width: 100%;
+}
+.sidebar nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 20px 30px;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: center;
+}
+.sidebar nav a:hover {
+  background: rgba(0, 124, 103, 0.4);
+}
+.sidebar nav a.active {
+  background: rgba(0, 124, 103, 0.4);
+}
+.sidebar nav a .icon {
+  width: 20%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
+@media screen and (max-width: 800px) {
+  .sidebar {
+    width: 55%;
+    position: absolute;
+    left: -300px;
+  }
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+table thead tr {
+  border-bottom: 2px solid #00BDA8;
+}
+table thead th {
+  padding: 10px 10px 20px 10px;
+}
+table tbody tr {
+  border-bottom: 1px solid #D0D0D0;
+}
+table tbody tr:last-of-type {
+  border: none;
+}
+table tbody td {
+  padding: 15px 10px;
+}
+
+.search-bar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  margin-bottom: 20px;
+}
+.search-bar input {
+  width: 96%;
+  padding: 10px 0;
+  border: none;
+  border-bottom: 1px solid #D0D0D0;
+}
+.search-bar input:focus {
+  outline: none;
+}
+.search-bar .btn-search {
+  background: #00BDA8;
+  padding: 5px;
+  border-radius: 5px;
+  width: 30px;
+  height: 30px;
+  color: #fff;
+  text-align: center;
+}
+
+.filtros-wrapper h3 {
+  font-weight: 500;
+  padding-bottom: 10px;
+  width: 100%;
+}
+.filtros-wrapper .fecha {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+}
+.filtros-wrapper .fecha input {
+  width: 45%;
+}
+.filtros-wrapper .filtros .filtro {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+}
+.filtros-wrapper .filtros .filtro input {
+  width: 100%;
+}
+.filtros-wrapper .filtros .filtro label {
+  width: 100%;
+  padding-bottom: 10px;
+}
+.filtros-wrapper .filtros .filtro .prefijo-pais {
+  width: 10%;
+  color: #414141;
+}
+.filtros-wrapper .filtros .filtro .cod-area {
+  width: 10%;
+}
+.filtros-wrapper .filtros .filtro .numero {
+  width: 65%;
+}
+.filtros-wrapper .filtros .filtros-actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+}
+.filtros-wrapper .filtros .filtros-actions .btn, .filtros-wrapper .filtros .filtros-actions .btn-outline {
+  width: 45%;
+}
+
+.usuarios .encabezado {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-end;
+  align-content: flex-end;
+  margin-bottom: 20px;
+}
+.usuarios .encabezado h1 {
+  width: auto;
+}
+.usuarios .encabezado .total-count {
+  padding-left: 10px;
+  width: auto;
+}
+
+/*# sourceMappingURL=style.css.map */

@@ -1,0 +1,100 @@
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<!--            <div class="form-group chico">
+                <input class="filter_control" type="date" name="fecha_desde" title="Desde">
+            </div>
+            <div class="form-group chico">
+            <input class="filter_control" type="date" name="fecha_hasta" title="Hasta">
+            </div>
+            <div class="form-group chico">
+            <input class="filter_control" type="text" name="email" placeholder="E-mail">
+           </div>
+            <div class="form-group chico">
+            <input class="filter_control" type="text" name="telefono" placeholder="Nº Telf">
+           </div>
+            <div class="form-group chico">
+            <input class="filter_control" type="text" name="nombre" placeholder="Nombre y Apellido">
+            </div>
+            <div class="form-group tercio">
+                <select  id="estado" name="id_authstat" title="Estado">
+                    <option value="">Todos los estados</option>
+                    <option value="1">Activos</option>
+                    <option value="4">Inactivos</option>
+                </select>
+            </div>
+            <div class="form-group chico">
+            <input class="filter_control" type="text" name="motivo" placeholder="Motivo">
+            </div>
+            <div class="form-group chico">
+                <input class="filter_control" type="text" name="documento" placeholder="Documento" title="DNI-CUIT/CUIL">
+            </div>
+            <div class="form-group chico">
+            <input class="filter_control" type="text" name="razon_social" placeholder="Razón Social">
+           </div>
+            <div class="form-group tercio">
+                <select  id="estado" name="id_authstat" title="Condicón">
+                    <option value="">Todos los estados</option>
+                    <option value="1">Activos</option>
+                    <option value="4">Inactivos</option>
+                </select>
+            </div>-->
+
+<div class="content-20 filtros-wrapper">
+              <!-- Encabezado -->
+              <div class="encabezado">
+                <h2>Filtros</h2>
+                
+              </div>
+              <!-- Clase contenedor es generica y da el box model generico y fecha le da los estilos de los filtros de la fecha para que queden inline -->
+              <div class="contenedor fecha">
+                <h3>Fecha</h3>
+                <input type="text" placeholder="Desde">
+                <input type="text" placeholder="Hasta">
+              </div>
+              <!-- Clase contenedor es generica y da el box model generico y filtros le da los estilos de los filtros para que queden inline -->
+              <div class="contenedor filtros">
+                <!-- Cada filtro debe estar contenido en este div para poder respetar los margenes y paddings correspondientes, despues los nombres o id de los input son indiferentes -->
+                <div class="filtro">
+                  <label for="dni">DNI / CUIT / CUIL</label>
+                  <input type="text" id="dni" placeholder="XXXXXXX">
+                </div>
+                <div class="filtro">
+                  <label for="razonsocial">Razon social</label>
+                  <input type="text" id="razonsocial" placeholder="Nombre de razón social">
+                </div>
+                <div class="filtro">
+                  <label for="email">E-mail</label>
+                  <input type="text" id="email" placeholder="pepe@gmail.com">
+                </div>
+                <div class="filtro">
+                  <label for="telefono">Número de teléfono</label>
+                  <span class="prefijo-pais">+54</span>
+                  <input type="text" id="telefono" class="cod-area" placeholder="11">
+                  <input type="text" id="telefono" class="numero" placeholder="Numero">
+                </div>
+                <div class="filtro">
+                  <label for="condicion">Condicion</label>
+                  <select name="condicion" id="condicion" aria-placeholder="Todos">
+                    <option value="Opcion 1">Opcion 1</option>
+                  </select>
+                </div>
+                <div class="filtro">
+                  <label for="estado">Estado</label>
+                  <select name="estado" id="estado" aria-placeholder="Todos">
+                    <option value="Opcion 1">Opcion 1</option>
+                  </select>
+                </div>
+                <div class="filtro">
+                  <label for="motivo">Motivo</label>
+                  <select name="motivo" id="motivo" aria-placeholder="Todos">
+                    <option value="Opcion 1">Opcion 1</option>
+                  </select>
+                </div>
+                <div class="filtros-actions">
+                  <div class="btn-outline">Limpiar</div>
+                  <div class="btn">Filtrar</div>
+                </div>
+              </div>
+            <div class="botones-filtros" style="    margin-top: 7%;" id="div_buttons">
+                <div type="submit" name="util_i.filter" class="button btn-aplicar-filtros" >Aplicar filtros</div>    
+            </div>
+</div>

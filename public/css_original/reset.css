@@ -1,0 +1,209 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+
+
+
+.contenedor-pop-up {
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 5000;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  display: none; }
+  /* line 165, ../../assets/sass/layout/_global.sass */
+  .contenedor-pop-up.active {
+    display: flex; }
+  /* line 167, ../../assets/sass/layout/_global.sass */
+  .contenedor-pop-up .pop-up {
+    width: auto;
+    height: auto;
+    position: relative;
+    min-width: 30vw;
+    max-width: 40vw;
+    min-height: 30vh;
+    padding: 35px 15px;
+    border-radius: 5px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center; 
+    margin: auto;
+  }
+    @media screen and (max-width: 800px) {
+      /* line 167, ../../assets/sass/layout/_global.sass */
+      .contenedor-pop-up .pop-up {
+        min-width: 90vw;
+        max-width: 90vw; } }
+    /* line 181, ../../assets/sass/layout/_global.sass */
+    .contenedor-pop-up .pop-up .cerrar-popup {
+      width: 18px;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      cursor: pointer; }
+    /* line 187, ../../assets/sass/layout/_global.sass */
+    .contenedor-pop-up .pop-up .icono-popup {
+      width: 50px;
+      margin: 0 auto; }
+    /* line 190, ../../assets/sass/layout/_global.sass */
+    .contenedor-pop-up .pop-up .txt-pop-up {
+      width: 90%;
+      font-family: "Roboto", Arial, sans-serif;
+      font-size: 135%;
+      color: #151A24;
+      text-align: center;
+      margin-top: 35px;
+      line-height: 1.5;
+      font-weight: 500; }
+      @media screen and (max-width: 800px) {
+        /* line 190, ../../assets/sass/layout/_global.sass */
+        .contenedor-pop-up .pop-up .txt-pop-up {
+          font-size: 160%; } }
+    /* line 201, ../../assets/sass/layout/_global.sass */
+    .contenedor-pop-up .pop-up .caja-popup {
+      border: 1px solid rgba(97, 97, 97, 0.4);
+      padding: 25px;
+      width: 100%;
+      margin-top: 30px; }
+      /* line 206, ../../assets/sass/layout/_global.sass */
+      .contenedor-pop-up .pop-up .caja-popup .ctas-pop-up {
+        margin-top: 30px; }
+    /* line 208, ../../assets/sass/layout/_global.sass */
+    .contenedor-pop-up .pop-up .txt-caja-popup {
+      width: 100%;
+      text-align: center;
+      font-size: 120%;
+      color: #151A24; }
+    /* line 213, ../../assets/sass/layout/_global.sass */
+    .contenedor-pop-up .pop-up .ctas-pop-up {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+      align-content: center;
+      margin-top: 100px;
+      font-size: 90%; }
+      /* line 218, ../../assets/sass/layout/_global.sass */
+      .contenedor-pop-up .pop-up .ctas-pop-up .button {
+        padding: 0 20px;
+        text-transform: uppercase;
+        font-size: 120%;
+        font-weight: 700;
+        color: #616161;
+        transition: all 0.3s ease; }
+        /* line 225, ../../assets/sass/layout/_global.sass */
+        .contenedor-pop-up .pop-up .ctas-pop-up .button:hover {
+          color: #FF4545; }
+        /* line 227, ../../assets/sass/layout/_global.sass */
+        .contenedor-pop-up .pop-up .ctas-pop-up .button:last-of-type {
+          color: #FF4545; }
+    /* line 229, ../../assets/sass/layout/_global.sass */
+    .contenedor-pop-up .pop-up .contenido-popup-correo {
+      padding: 25px 35px; }
+      @media screen and (max-width: 800px) {
+        /* line 229, ../../assets/sass/layout/_global.sass */
+        .contenedor-pop-up .pop-up .contenido-popup-correo {
+          font-size: 80%; } }
+      /* line 233, ../../assets/sass/layout/_global.sass */
+      .contenedor-pop-up .pop-up .contenido-popup-correo h1 {
+        font-size: 130%;
+        margin-bottom: 25px;
+        line-height: 1.5; }
+      /* line 238, ../../assets/sass/layout/_global.sass */
+      .contenedor-pop-up .pop-up .contenido-popup-correo .datos-correo-enviado .dato {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: center;
+        align-content: center;
+        line-height: 1.5; }
+        @media screen and (max-width: 800px) {
+          /* line 238, ../../assets/sass/layout/_global.sass */
+          .contenedor-pop-up .pop-up .contenido-popup-correo .datos-correo-enviado .dato {
+            margin-bottom: 10px; } }
+        /* line 244, ../../assets/sass/layout/_global.sass */
+        .contenedor-pop-up .pop-up .contenido-popup-correo .datos-correo-enviado .dato .label {
+          margin-right: 5px; }
+          @media screen and (max-width: 800px) {
+            /* line 244, ../../assets/sass/layout/_global.sass */
+            .contenedor-pop-up .pop-up .contenido-popup-correo .datos-correo-enviado .dato .label {
+              width: 100%; } }
+        @media screen and (max-width: 800px) {
+          /* line 248, ../../assets/sass/layout/_global.sass */
+          .contenedor-pop-up .pop-up .contenido-popup-correo .datos-correo-enviado .dato .info {
+            width: 100%; } }
+      /* line 251, ../../assets/sass/layout/_global.sass */
+      .contenedor-pop-up .pop-up .contenido-popup-correo .rojo {
+        margin-top: 30px; }
+        /* line 253, ../../assets/sass/layout/_global.sass */
+        .contenedor-pop-up .pop-up .contenido-popup-correo .rojo span {
+          cursor: pointer; }
+          /* line 255, ../../assets/sass/layout/_global.sass */
+          .contenedor-pop-up .pop-up .contenido-popup-correo .rojo span:hover {
+            color: #616161; }
+        @media screen and (max-width: 800px) {
+          /* line 251, ../../assets/sass/layout/_global.sass */
+          .contenedor-pop-up .pop-up .contenido-popup-correo .rojo {
+            text-align: center;
+            font-size: 100%; } }
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, main {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}

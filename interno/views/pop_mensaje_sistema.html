@@ -1,0 +1,71 @@
+<meta charset="UTF-8"/>
+<div class="contenedor-pop-up" id="mensaje_sistema">
+    <form>
+        <div class="pop-up">
+            <div class="titulo-not-importante">
+                <div class="titulo">
+                    <!--<s--->
+                    <!--</span>pan class="icono-importante">-->
+                    <!--<img class="img-titulo" src="public/img/icono-importante.svg">-->
+                    <!--</span>--> 
+                    <h5 class="text-titulo">
+                        
+                    </h5>
+                </div>
+            </div>
+            <img class="img-titulo" src="" id="icono">
+            <div class="txt-pop-up" id="texto"></div>
+            <div class="bajada-popup" id="bajada">
+            </div>	
+            <div class="ctas-pop-up" id="botonera">
+                <div class="button" name="" id="101">Atención al cliente</div>
+                <div class="button rojo" id="100" type="button" name="mod_xxxi.home">Pago a proveedores</div>
+                <div  class="button active" id="boton_pop_ok">Ok</div>
+                <div  class="button active" id="99"><a class="no_unline" href="/">Ok</a></div>
+            </div>		
+        </div>
+    </form>
+</div>
+<style>
+    .titulo{
+        float: inherit;
+        display: inline-block!important;
+        margin-left: -2em;
+    }
+    .img-titulo{
+        margin-top: 2em;
+        width: 3em;
+        height: inherit;
+        display: inline-flex;
+        vertical-align: middle;
+        text-align: center;
+    }
+    a:active, a:hover {
+        outline: none;
+        text-decoration: none !important;
+    }   
+    .text-titulo{
+        width: auto;
+        display: inline-flex;
+        vertical-align: middle;
+        line-height: 1;
+        margin-left: 2em;
+        text-align: center;
+    }
+    .ctas-pop-up{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        align-items: center;
+        align-content: center;
+        margin-top: 5em;
+        font-size: 90%;
+    }
+</style>
+<script>
+    $("#boton_pop_ok").click(function () {
+        $(this).parent().parent().parent().removeClass("active");
+    })
+</script>

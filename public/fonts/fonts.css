@@ -1,0 +1,49 @@
+@font-face {
+    font-family: 'dinlight';
+    src: url('din-light-webfont.woff2') format('woff2'),
+         url('din-light-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'dinmedium';
+    src: url('din-medium-webfont.woff2') format('woff2'),
+         url('din-medium-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'dinbold';
+    src: url('din-bold-webfont.woff2') format('woff2'),
+         url('din-bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'dinblack';
+    src: url('din-black-webfont.woff2') format('woff2'),
+         url('din-black-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'dincond-lightregular';
+    src: url('dincond-light-webfont.woff2') format('woff2'),
+         url('dincond-light-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'dincond-mediumregular';
+    src: url('dincond-medium-webfont.woff2') format('woff2'),
+         url('dincond-medium-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}

@@ -1,0 +1,111 @@
+.tabs
+  width: 100%
+  +flexbox(row,wrap,flex-start,center,center)
+  .tab
+    border-top-left-radius: 5px
+    border-top-right-radius: 5px
+    padding: 25px 30px
+    text-align: center
+    background: $white
+    margin: 0 5px
+    cursor: pointer
+    box-shadow: $box-shadow
+    transition: all 0.3s ease-in-out
+    &:hover
+      background: $secundario
+      color: $white
+      &::before
+        color: $white
+    &::before
+      font-family: 'Font Awesome 5 Pro'
+      color: $light-gray
+      font-weight: $bold
+      padding-right: 10px
+    &.datos-generales::before
+      content: '\f007'
+    &.datos-bancarios::before
+      content: '\f19c'
+    &.historial::before
+      content: '\f337'
+    &.configuracion::before
+      content: '\f013'
+    &.agenda-contactos::before
+      content: '\f2b9'
+    &.new-password::before
+      content: '\f023'
+
+    &.active
+      background: $principal
+      color: $white
+      &::before
+        color: $white
+
+.tab-content
+  margin: 0
+  display: grid
+  grid-template-columns: repeat(4, 1fr)
+  grid-gap: 10px
+  .cardbox
+    +flexbox(row,wrap,center,center,flex-start)
+    background: $body-bg
+    padding: 10px 30px
+    width: 100%
+    border-radius: 10px
+    &.multiple
+      background: $white
+      padding: 0
+      .cardbox
+        margin-bottom: 10px
+        &:last-of-type
+          margin-bottom: 0
+    .encabezado
+      display: flex
+      width: 100%
+      margin: 10px 0
+      h3
+        font-size: 110%
+        width: 90%
+      .link
+        width: 10%
+    .dato
+      width: 100%
+      margin: 5px 0
+      h4
+        font-weight: $medium
+      span
+        width: 100%
+        display: block
+        padding: 2px 0
+    .documento
+      background: $white
+      border-radius: 5px
+      padding: 15px 25px
+      margin: 5px 0
+      width: 100%
+      position: relative
+      color: $light-gray
+      cursor: pointer
+      transition: all 0.3s ease-in-out
+      &::before
+        content: '\f15c'
+        font-family: 'Font Awesome 5 Pro'
+        color: $light-gray
+        font-weight: $bold
+        padding-right: 10px
+      &::after
+        content: '\f06e'
+        font-family: 'Font Awesome 5 Pro'
+        color: $dark-gray
+        font-weight: $bold
+        padding-left: 20%
+        right: 15px
+        transition: all 0.3s ease-in-out
+      &:hover
+        &::after
+          color: $secundario
+    .monto-saldo
+      text-align: left
+      width: 100%
+      color: $secundario
+      font-size: 160%
+      font-weight: $regular

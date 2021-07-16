@@ -1,0 +1,261 @@
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <!--<meta http-equiv="X-UA-Compatible" content="IE=11">--> 
+        <title>Efectivo Digital</title>
+        <meta property="og:title" content="Cobro Digital" />
+        <!-- <meta property="og:description" content="" />
+        <meta property="og:image" content="" />
+        <meta property="og:url" content="" />
+
+        <meta name="description" content="type">		
+        <meta name="keywords" content="">  -->
+        <link rel="icon" type="image/png"  href="/public/img/edicon.png">
+        <meta name="viewport" content="width=device-width,  user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+        <!--<link rel="stylesheet" href="public/css/reset.css">-->
+        <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
+        <link rel="stylesheet" type="text/css" href="public/css/objets/labels.css"/>
+        <!--//cambia los colores a celeste-->
+        <link rel="stylesheet" type="text/css" href="public/css/chamy.min.css"/>
+        <link rel="stylesheet" type="text/css" href="public/css/objets/labels.css"/>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css"/>
+        
+        <script type="text/javascript" src="public/jquery-1.11.2.min.js"></script>
+        <script type="text/javascript" src="public/plugins/jquery-1.11.3.min.js"></script>
+        <script type="text/javascript" src="public/jquery-ui.js"></script>
+        <!--<script type="text/javascript" src="public/plugins/bootstrap.min.js"/>-->
+        <script type="text/javascript" src="public/plugins/jquery.dataTables.js"/>
+        <script type="text/javascript" src="public/cobro_digital.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+        <script type="text/javascript" src="https://www.gstatic.com/firebasejs/8.2.1/firebase-messaging.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+        <script type="text/javascript" src="public/modernizr-custom.js"></script>
+        <script type="text/javascript" src="public/js/firebase-messaging.js"></script>
+        <script type="text/javascript" src="public/js/global.js"></script>
+        <script type="text/javascript" src="public/js/sweetalert2.all.min.js"></script>
+<!--        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+        <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>-->
+<!--        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>-->
+        <link rel="stylesheet" href="public/css/sweetalert2.min.css">
+        <link rel="manifest" href="public/js/manifest.json">
+        <link rel="stylesheet" href="public/Font-Awesome/css/font-awesome.min.css">
+
+        <!--<link rel="stylesheet" href="public/css/reset.css">-->
+        
+        
+        <link rel="stylesheet" href="css/style-global_new.css">
+        <link rel="stylesheet" href="public/css/style1.css">
+        <!--<link rel="stylesheet" href="css/style.css">-->
+        
+        
+        
+        
+        
+    <input id="json_notificacion" type="hidden" name='mod_liii.obtener_estados'>
+    <script type="text/javascript" src="public/js/global.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+</head>
+<body>
+    <input type="hidden" data-value="" id="mercalpha">
+    <input type="hidden" data-value="" id="sid">
+    <div class="contenedor">
+        <!--<form >-->
+
+        <!--Sidebar-->
+
+        <div class="sidebar">
+            
+            <div class="sidebar-top">
+                <div class="logo">
+                    <span class="iso" name="main_controller.index" type="button"><img style="height: 70px;" src="public/img/logo_efectivo.png" alt="logo_CobroDigital"></span>
+                    <span class="txt"><img style="height: 70px;" src="public/img/efectivo_digital.png" alt="logo_CobroDigital"></span>
+                </div>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+
+            <div class="sidebar-mid">
+                <ul id="menu_principal">
+                    
+                </ul>
+                <div class="sidebar-logout"><div class="button" type="button" name="main_controller.logout">Cerrar sesión</div></div>
+            </div>	
+
+            <div class="solapa-sidebar"><img src="public/img/icono-solapa.svg"></div>
+
+        </div>
+        <div class="contenedor-pantalla">
+            <header>
+                <div class="header-pre">
+                    <div class="logo">
+                        <span class="iso"><img src="public/img/logo_efectivo.png" alt="efectivo_digital_blanco"></span>
+                        <span class="txt"><img src="public/img/efectivo_digital.png" alt="efectivo_digital_blanco"></span>
+                    </div>
+                </div>
+                <div class="header-contenido">
+                    
+                    <div class="header-right">
+                        <div class="header-accesos">
+                        </div>
+                        <div class="header-usuario">
+                            <div class="nombre-usuario" id="nombre_usuario"></div>
+                            <div class="cargo-usuario" id="area_usuario"></div>
+                        </div>
+                        <!-- Botón Logout -->
+                        <div class="header-logout"><div class="button trigger-logout"  name=""><img src="public/img/icono-power.svg"></div></div>
+                    </div>
+
+                </div>
+            </header>
+
+            <!-- Pop Up Logout -->
+            <div class="contenedor-pop-up" id="pop-logout">
+                <div class="pop-up">
+                    <div class="txt-pop-up">¿Estás seguro de que querés cerrar sesión?</div>
+                    <div class="ctas-pop-up">
+                        <div class="button" type="button" name="">No</div>
+                        <div class="button" type="button" id="logout_post" value="1">Si</div>
+                    </div>		
+                </div>
+            </div>
+
+            <!-- Pop Up Sesión Expirada -->
+            <div class="contenedor-pop-up" id="sesion_expirada">
+                <div class="pop-up">
+                    <div class="txt-pop-up">¡UPS! Tu sesión ha expirado</div>
+                    <div class="ctas-pop-up">
+                        <a class="button active" name="" href="./index.php">Ingresar</a>
+                    </div>		
+                </div>
+            </div>
+
+            <!-- Pop Up Notificación importante -->
+            <div class="not-importante" id="popNoti"><!-- Agregar class "active" para que sea visible -->
+                <div class="contenedor-not-importante">
+                    <div class="titulo-not-importante">
+                        <h6>Aviso importante</h6>
+                        <h5><span class="icono-importante"><img src="public/img/icono-importante.svg"></span>Lorem ipsum dolor sit amet!</h5>
+                    </div>
+                    <div class="contenido-not-importante"></div>
+                    <div class="actions-not-importante">
+                        <div class="ayuda">¿Tenés alguna duda? <a type="button" id="cerrar_a" name="main_controller.contactanos">Contactanos</a></div>
+                        <div  class="button btn-aceptar" id="cerrar">Aceptar</div>
+                    </div>
+                </div>
+            </div>
+            <div class="main" id="main">
+
+                <form id="miFormulario">
+                    <div class="contenedor-contenido">
+                        <div class="bienvenida">
+                            <h1>¡Bienvenidos al BackOffice de Efectivo Digital!</h1>
+                            <h5>
+                                Efectivo Digital es tu nueva billetera digital.
+                            </h5>
+                            <canvas id="CashFlow" width="400" height="400"></canvas>
+                            <h5 class="manual">Para descargar el manual de implementación técnico, <a class="rojo bold underline" href="#">click aquí</a>.</h5>
+                        </div>	
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--</form>-->		
+    </div>
+    <script>menssaggin_start()</script>
+</body>
+</html>
+<style>
+    .titulo-developer{
+        margin-bottom: 10px; 
+    }
+    .titulo-ayuda{
+        margin-bottom: 3px !important;
+    }
+    #CashFlow{
+        width: 50%;
+        height: 50%;
+    }
+    .indentado{
+        margin-left: 14%;
+    }
+    </style>
+   
+    <script>
+//    var ctx = document.getElementById('CashFlow');
+//var myChart = new Chart(ctx, {
+//    type: 'line',
+//    data: {
+//        labels: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
+//        datasets: [{
+//            responsive: true,
+//            label: 'Cash',
+//            data: [12, 19, 3, 5, 2, 3],
+//            backgroundColor: [
+//                'rgba(255, 99, 132, 0.2)',
+//                'rgba(54, 162, 235, 0.2)',
+//                'rgba(255, 206, 86, 0.2)',
+//                'rgba(75, 192, 192, 0.2)',
+//                'rgba(153, 102, 255, 0.2)',
+//                'rgba(255, 159, 64, 0.2)'
+//            ],
+//            borderColor: [
+//                'rgba(255, 99, 132, 1)',
+//                'rgba(54, 162, 235, 1)',
+//                'rgba(255, 206, 86, 1)',
+//                'rgba(75, 192, 192, 1)',
+//                'rgba(153, 102, 255, 1)',
+//                'rgba(255, 159, 64, 1)'
+//            ],
+//            borderWidth: 1
+//        }]
+//    },
+//    options: {
+//        scales: {
+//            yAxes: [{
+//                ticks: {
+//                    beginAtZero: true
+//                }
+//            }]
+//        }
+//    }
+//});
+
+var date=new Date();
+var day =date.getDay();
+var month=date.getMonth();
+if(month<=10){
+    month="0"+month;
+}
+var year = date.getFullYear();
+var fecha = "01"+month+year;
+var hasta = "30"+month+year;
+var dominio = document.domain;
+var port = location.port;
+var token = localStorage.getItem('abcd1478');
+    
+    
+//    alert(nav);
+//    alert(id);
+   
+//    time.
+  
+    
+//        console.log("ejecutando");
+//        
+    
+  $.post('https://'+dominio+":"+port+'/externo/script_landing_service.php',{token:token,metodo_service:"estadisticas_tenencias",fecha_desde:fecha,fecha_hasta:hasta,sentido_transaccion:"ingresos"})
+          .done(function (data){
+//             alert(data); 
+          });
+$(document).ready(function(){
+    $("#cerrar").click(function (){
+        $("#popNoti").removeClass("active");
+    });
+});
+
+</script>
