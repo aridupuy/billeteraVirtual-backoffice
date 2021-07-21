@@ -10,6 +10,9 @@ class Permiso extends Model{
         const PUEDE_MENU_HERRAMIENTAS_COBRANZAS='site_servicio_menu';
         const PUEDE_MENU_DASHBOARD='main_controller';
         const PUEDE_MENU_USUARIOS="util_i";
+        const PUEDE_MENU_MOVIMIENTOS="util_ii";
+        const PUEDE_MENU_REPORTES="util_iii";
+        const PUEDE_MENU_ADMINISTRACION="util_iv";
         const PUEDE_MENU_RETIROS="site_retiro_menu";
 	private $id_permiso;
 	private $permiso;
