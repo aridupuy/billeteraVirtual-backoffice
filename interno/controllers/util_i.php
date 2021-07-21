@@ -65,23 +65,24 @@ class Util_i extends Controller {
         $form = $this->view->createElement('form');
         $form->setAttribute('id', 'miFormulario');
         $form->setAttribute('class', 'main-content usuarios');
-        $section = $this->view->createElement('section');
+        $div_80 = $this->view->createElement('div');
 //        $nav = 'create';
 //        $value = 'NUEVO';
-        $encabezado = new Encabezado(self::$modulo, self::$mensaje);
-//        $section->setAttribute('class', 'main-content usuarios');
-        $section->appendChild($this->view->importNode($encabezado->documentElement, true));
+        $total_usr = 'Total: 1500';
+        $encabezado = new Encabezado(self::$modulo, $total_usr);
+        $div_80->setAttribute('class', 'content-80');
+        $div_80->appendChild($this->view->importNode($encabezado->documentElement, true));
 //        $header = $this->view->createElement('header');
 
 //        $titulo = $this->view->createElement('div');
 //        $titulo->setAttribute('class', 'titulo');
 //        $titulo->appendChild($this->view->createTextNode(self::$nombre));
 //        $header->appendChild($titulo);
-//        $section->appendChild($header);
-        $section->appendChild($this->view->importNode($filters->documentElement, true));
-//        $section->appendChild($this->view->importNode($pager->documentElement, true));
-//        $section->appendChild($this->view->importNode($table->documentElement, true));
-//        $section->appendChild($input);
+//        $div_80->appendChild($header);
+//        $div_80->appendChild($this->view->importNode($filters->documentElement, true)); Filtros
+//        $div_80->appendChild($this->view->importNode($pager->documentElement, true));
+//        $div_80->appendChild($this->view->importNode($table->documentElement, true));
+//        $div_80->appendChild($input);
         
         $detalle = new Detalle("nombre_completo");
 //        var_dump($recordset);
@@ -89,23 +90,25 @@ class Util_i extends Controller {
         $acciones[] = (new Accion())->set_campo_id("id_clima")->set_nav("util_i.ver_mas")->set_titulo_nav("Ver más");
         $acciones[] = (new Toggle())->set_nav_estado("util_i.cambiar_estado")->set_id_estado("id_authstat")->set_campo_id("id_authstat");
 //        var_dump($detalle);
-        $container = new Container($recordset, $detalle, $acciones);
+        $container = new Table($recordset,1, 100);
 //                $container->eliminar_columna(0);
-                $container->eliminar_columna(2);
-                $container->eliminar_columna(3);
-                $container->eliminar_columna(4);
-                $container->eliminar_columna(6);
-                $container->eliminar_columna(9);
-                $container->eliminar_columna(10);
-                $container->eliminar_columna(11);
-        $container->crear_desde_recordset();
-        $div_contenido = $this->view->createElement('div');
-       
+//                $container->eliminar_columna(2);
+//                $container->eliminar_columna(3);
+//                $container->eliminar_columna(4);
+//                $container->eliminar_columna(6);
+//                $container->eliminar_columna(9);
+//                $container->eliminar_columna(10);
+//                $container->eliminar_columna(11);
+//        $container->crear_desde_recordset();
+//        $div_contenido = $this->view->createElement('div');
+//       
         $div_cajita = $this->view->createElement('div');
-        $div_cajita->setAttribute('class', 'contenido contenedor-cuentas-bancarias');
+        $div_cajita->setAttribute('class', 'contenedor');
         $div_cajita->appendChild($this->view->importNode($container->documentElement, true));
-        $section->appendChild($div_cajita);
-        $form->appendChild($section);
+        $div_80->appendChild($div_cajita);
+        $form->appendChild($div_80);
+//        $form->appendChild($total_usr);
+        $form->appendChild($this->view->importNode($filters->documentElement, true));
         $this->view->appendChild($form);
         return $this->view;
     }

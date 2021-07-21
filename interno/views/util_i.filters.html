@@ -1,4 +1,4 @@
-<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<!--<meta http-equiv="content-type" content="text/html; charset=utf-8">-->
 <!--            <div class="form-group chico">
                 <input class="filter_control" type="date" name="fecha_desde" title="Desde">
             </div>
@@ -47,23 +47,23 @@
               <!-- Clase contenedor es generica y da el box model generico y fecha le da los estilos de los filtros de la fecha para que queden inline -->
               <div class="contenedor fecha">
                 <h3>Fecha</h3>
-                <input type="text" placeholder="Desde">
-                <input type="text" placeholder="Hasta">
+                <input type="date" name="fecha_desde" title="Desde">
+                <input type="date" name="fecha_hasta" title="Hasta">
               </div>
               <!-- Clase contenedor es generica y da el box model generico y filtros le da los estilos de los filtros para que queden inline -->
               <div class="contenedor filtros">
                 <!-- Cada filtro debe estar contenido en este div para poder respetar los margenes y paddings correspondientes, despues los nombres o id de los input son indiferentes -->
                 <div class="filtro">
                   <label for="dni">DNI / CUIT / CUIL</label>
-                  <input type="text" id="dni" placeholder="XXXXXXX">
+                  <input type="text" name="documento" placeholder="Documento" title="DNI-CUIT/CUIL">
                 </div>
                 <div class="filtro">
                   <label for="razonsocial">Razon social</label>
-                  <input type="text" id="razonsocial" placeholder="Nombre de razón social">
+                  <input type="text" name="razon_social" placeholder="Razón Social">
                 </div>
                 <div class="filtro">
                   <label for="email">E-mail</label>
-                  <input type="text" id="email" placeholder="pepe@gmail.com">
+                  <input type="text" name="email" placeholder="E-mail">
                 </div>
                 <div class="filtro">
                   <label for="telefono">Número de teléfono</label>
