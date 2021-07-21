@@ -72,7 +72,7 @@ main {
   justify-content: space-between;
   align-items: flex-start;
   align-content: flex-start;
-  width: 85%;
+  width: 100%;
   padding: 2%;
 }
 
@@ -128,6 +128,10 @@ main {
 .contenedor::-webkit-scrollbar-thumb {
   background: #007C68;
   border-radius: 20px;
+}
+
+#main {
+  width: 85%;
 }
 
 input, textarea, select {
@@ -230,6 +234,31 @@ header .hamburger {
     max-width: 30%;
   }
 }
+.login #main {
+  width: 100%;
+}
+.login #main .main-content {
+  justify-content: center;
+}
+.login #main .contenedor {
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+.login #main .contenedor h1 {
+  margin-bottom: 20px;
+}
+.login #main .contenedor button {
+  cursor: pointer;
+}
+.login input {
+  margin: 10px 0;
+}
+
 .sidebar {
   width: 15%;
   border-right: 1px solid #D0D0D0;
@@ -254,6 +283,7 @@ header .hamburger {
   padding: 20px 30px;
   width: 100%;
   transition: all 0.3s ease-in-out;
+  cursor: pointer;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -273,6 +303,20 @@ header .hamburger {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+.sidebar .logout {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 20px 30px;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   align-items: center;
   align-content: center;
 }

@@ -1,216 +1,58 @@
-<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
-<meta http-equiv="content-type" content="text/html; charset=utf-8">
-<!--<meta http-equiv="X-UA-Compatible" content="IE=11">--> 
-<!--<form>
-    <header>
-        <div class="row flex-middle">
-            <div class="col xs-2">
-                <h1 class="text-light text-uppercase">Sistema Externo</h1>
-                <h2 class="text-light text-uppercase"></h2>
-            </div>
-            <div class="col xs-7">
-                <input type="text" id='buscar' class="buscar" tabindex='1' onkeypress="ir_a(event);" placeholder="Buscar...">
-            </div>
-        </div>
-    </header>
-    <page class='main_menu' id="main_menu">
-        <div class="sin_icono"><i class='fa'></i>Utilidades</div>
-        <div type="button" name="mod_x.home"><i class='fa fa-users'></i>X | Usuarios</div>
-        <div type="button" name="mod_xi.home"><i class='fa fa-barcode'></i>XI | Códigos de Barra</div>
-        <div type="button" name="mod_xii.home"><i class='fa fa-male'></i>XII | Pagadores</div>
-        <div type="button" name="mod_xiii.home"><i class='fa fa-bank'></i>XIII | Cuentas Bancarias</div>
-        <div type="button" name="mod_xiv.home"><i class='fa fa-wrench'></i>XIV | Lote de Boletas</div>
-        <div type="button" name="mod_xv.home"><i class='fa fa-home'></i>XV | Mi Cuenta</div>
-        <div type="button" name="mod_xvi.home"><i class='fa fa-line-chart'></i>XVI | Resumen ejecutivo</div>
-        <div type="button" name="mod_xvii.home"><i class='fa fa-file-o'></i>XVII | Lote de Pagadores</div>
-        <div type="button" name="mod_xviii.home"><i class='fa fa-paint-brush'></i>XVIII | Plantillas de Boletas</div>
-        <div type="button" name="mod_xix.home"><i class='fa fa-send'></i>XIX | Cobrar Por Correo</div>
-        <div type="button" name="mod_xx.home"><i class='fa fa-suitcase'></i>XX | Productos</div>
-        <div type="button" name="mod_xxi.home"><i class='fa fa-credit-card'></i>XXI | Debitos automaticos</div>
-        <div type="button" name="mod_xxii.home"><i class='fa fa-gift'></i>XXII | Responsables</div>
-        <div type="button" name="mod_xxiii.home"><i class='fa fa-gift'></i>XXIII | Responsables CBU</div>
-        <div type="button" name="mod_xxiv.home"><i class='fa fa-key'></i>XXIV | Cambiar Mi Passsword</div>
-        <div type="button" name="mod_xxv.home"><i class='fa fa-key'></i>XXV | Lote de debitos</div>
-        <div type="button" name="mod_xxvi.home"><i class='fa fa-bar-chart'></i>XXVI | Reporte de debitos</div>
-        <div type="button" name="mod_xxvii.home"><i class='fa fa-money'></i>XXVII | Retiro con Transferencia</div>
-        <div type="button" name="mod_xxviii.home"><i class='fa fa-file-text'></i>XXVIII | Botón de Pago</div>
-        <div type="button" name="mod_xxix.home"><i class='fa fa-calendar'></i>XXIX | Calendario</div>
-        <div type="button" name="mod_xxx.home"><i class='fa fa-floppy-o'></i>XXX | Explorador</div>
-        <div type="button" name="mod_xxxi.home"><i class='fa fa-files-o'></i>XXXI | Proveedores</div>
-        <div type="button" name="mod_xxxii.home"><i class='fa fa-comments-o'></i>XXXII | Contacto</div>
-        <div type="button" name="mod_xxxiii.home"><i class='fa fa-calendar-o '></i>XXXIII | Calendario de Debitos</div>
-        <div type="button" name="mod_xxxiv.home"><i class='fa fa-code-fork  '></i>XXXIV | Estructura de Pagadores</div>
-        <div type="button" name="mod_xxxv.home"><i class='fa fa-pencil-square-o '></i>XXXV | Actualizar Pagadores en Lote</div>
-        <div type="button" name="mod_xxxvi.home"><i class='fa fa-exchange '></i>XXXVI | Transacciones</div>
-        <div type="button" name="mod_xxxvii.home"><i class='fa fa-square'></i>XXXVII | Tarjetas de Cobranza</div>
-        <div type="button" name="mod_xxxviii.home"><i class='fa fa-magnet'></i>XXXVIII | Asociar T. Cobranza</div>
-        <div type="button" name="mod_xxxix.home"><i class='fa fa-magnet'></i>XXXIX | Asociar Lote T. Cobranza</div>
-        <div type="button" name="mod_xl.home"><i class='fa fa-envelope'></i>XL | Boletas</div>
-	 <div type="button" name="mod_xl.create"><i class='fa fa-envelope'></i>XL BIS | Generar Boleta</div>
-        <div type="button" name="mod_xli.home"><i class='fa fa-bookmark '></i>XLI | Consolidar Pagadores</div>
-        <div type="button" name="mod_xlii.home"><i class='fa fa-calculator '></i>XLII | Comisiones</div>
-        <div type="button" name="mod_xliii.home"><i class='fa fa-calculator '></i>XLIII | Creador de export Dario. #Temporal#</div>
-        <div type="button" name="mod_xliv.home"><i class='fa fa-calculator '></i>XLIV | Lote de boletas rapidas</div>
-        <div type="button" name="mod_xlv.home"><i class='fa fa-credit-card '></i>XLV | Lote de Debito TCO</div>
-        <div type="button" name="mod_xlvi.home"><i class='fa fa-credit-card '></i>XLVI | PVP</div>
-        <div type="button" name="mod_xlvii.home"><i class='fa fa-credit-card '></i>XLVII | Cobradores</div>
-        <div type="button" name="mod_xlviii.home"><i class='fa fa-money '></i>XLVIII | Carga de deudas</div>
-        <div type="button" name="mod_xlix.home"><i class='fa fa-pencil-square-o'></i>XLIX | Cupon de pago</div>
-        <div type="button" name="mod_li.home"><i class='fa fa-money'></i>LI | Servicios</div>
-        <div type="button" name="mod_lii.home"><i class='fa fa-money'></i>LII | Proveedores 2</div>
-        <div type="button" name="mod_liii.home"><i class='fa fa-money'></i>LIII | Comprobante AFIP</div>
-        <div type="button" name="mod_liv.home"><i class='fa fa-money'></i>LIV | Proveedores no login</div>
-        <div type="button" name="mod_lix.home"><i class='fa fa-money'></i>LIX | WEBSERVICE CREDITUR</div>
-        <div type="button" name="mod_lx.home"><i class='fa fa-calendar-o'></i>LX | RETIRO AUTOMATICO</div>
-        <div type="button" name="mod_lxii.home"><i class='fa fa-calendar-o'></i>LXII | ARCHIVOS BCRA</div>
-    </page>
-</form>
-<script>
-    $(function () {
-        $("#buscar").focus();
-    });
-    $('#buscar').on('keydown', function () {
-        key = $(this).val();
-        $(".main_menu div").hide();
-        $(".main_menu div").prop("disabled", true)
-        $(".main_menu div:contains('" + key + "')").show();
-        $(".main_menu div:contains('" + key + "')").prop("disabled", false)
-    })
-    $.expr[":"].contains = $.expr.createPseudo(function (arg) {
-        return function (elem) {
-            return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
-        };
-    });
-
-    function ir_a(event) {
-        if (validar_enter(event))
-            $(".main_menu div:visible:first ").click();
-    }
-
-    function validar_enter(e) {
-        var key = e.keyCode || e.which;
-        if (key == 13)
-            return true;
-        else
-            return false;
-    }
-</script>
-<style>
-    .main_menu {
-        display: table;
-    }
-
-    .main_menu div {
-        width: 320px;
-        height: 40px;
-        background-color: rgba(216, 85, 85, 0.8);
-        margin: 8px;
-        display: inline-block;
-        color: white;
-        font-size: 14px;
-        text-transform: uppercase;
-        vertical-align: middle;
-        cursor: pointer;
-        text-align: left;
-        padding: 0;
-        text-decoration: none;
-    }
-
-    .main_menu div:hover {
-        background-color: rgba(220, 106, 106, 0.8);
-    }
-
-    .main_menu a {
-        color: white;
-        text-decoration: none;
-        line-height: 20px;
-        padding: 0px;
-    }
-
-    .main_menu i {
-        border: 1px #DF7777 solid;
-        font-size: 25px;
-        vertical-align: middle;
-        color: #DF7777;
-        height: 28px;
-        background-color: #FFFFFF;
-        width: 30px;
-        padding: 5px;
-        margin-right: 10px;
-        line-height: 30px;
-        text-align: center;
-    }
-
-    .sin_icono {
-        background-color: rgb(150, 47, 47)!important;
-        color: white;
-        cursor: initial;
-    }
-
-    .sin_icono a {
-        line-height: 40px!important;
-        vertical-align: middle;
-    }
-    .titulo{
-        line-height: 32px;
-    }
-    #buscar {
-        float: right;
-        width: 80%;
-        height: 30px;
-        padding-left: 20px;
-        font-size: 20px;
-    }
-</style>-->
-
-<form id="miFormulario">
-    <div class="contenedor-contenido">
-        <div class="bienvenida">
-            <h1>¡Bienvenidos al BackOffice de Efectivo Digital!</h1>
-            <h5>
-                Efectivo Digital es tu nueva billetera digital
-            </h5>
-            <canvas id="CashFlow" width="400" height="400"></canvas>
-            <h5 class="manual">Para descargar el manual de implementación técnico, <a class="rojo bold underline" href="#">click aquí</a>.</h5>
-        </div>	
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<form class="main-content" id="miFormulario">
+  <div class="content-80">
+    <div class="encabezado">
+      <h1>¡Bienvenidos al BackOffice de Efectivo Digital!</h1>
+      <p>Efectivo Digital es tu nueva billetera digital</p>
+      <canvas id="CashFlow" width="400" height="400"></canvas>
+      <h2 class="manual">
+        Para descargar el manual de implementación técnico,
+        <a class="" href="#">click aquí</a>.
+      </h2>
     </div>
+  </div>
 </form>
 <script>
-    var ctx = document.getElementById('myChart');
-var myChart = new Chart(ctx, {
-    type: 'bar',
+  var ctx = document.getElementById("myChart");
+  var myChart = new Chart(ctx, {
+    type: "bar",
     data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
+      labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+      datasets: [
+        {
+          label: "# of Votes",
+          data: [12, 19, 3, 5, 2, 3],
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
+          ],
+          borderColor: [
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+            "rgba(255, 159, 64, 1)",
+          ],
+          borderWidth: 1,
+        },
+      ],
     },
     options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
-    }
-});
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+            },
+          },
+        ],
+      },
+    },
+  });
 </script>
