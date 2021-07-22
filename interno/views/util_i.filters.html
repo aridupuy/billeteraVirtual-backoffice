@@ -58,6 +58,10 @@
                   <input type="text" name="documento" placeholder="Documento" title="DNI-CUIT/CUIL">
                 </div>
                 <div class="filtro">
+                  <label for="dni">Nombre y Apellido</label>
+                  <input type="text" type="text" name="nombre" placeholder="Nombre y Apellido">
+                </div>
+                <div class="filtro">
                   <label for="razonsocial">Razon social</label>
                   <input type="text" name="razon_social" placeholder="Razón Social">
                 </div>
@@ -68,8 +72,8 @@
                 <div class="filtro">
                   <label for="telefono">Número de teléfono</label>
                   <span class="prefijo-pais">+54</span>
-                  <input type="text" id="telefono" class="cod-area" placeholder="11">
-                  <input type="text" id="telefono" class="numero" placeholder="Numero">
+                  <input type="text" type="text" name="telefono" placeholder="Nº Telf">
+                  
                 </div>
                 <div class="filtro">
                   <label for="condicion">Condicion</label>
@@ -79,8 +83,10 @@
                 </div>
                 <div class="filtro">
                   <label for="estado">Estado</label>
-                  <select name="estado" id="estado" aria-placeholder="Todos">
-                    <option value="Opcion 1">Opcion 1</option>
+                  <select id="estado" name="id_authstat" title="Estado">
+                    <option value="">Todos los estados</option>
+                    <option value="1">Activos</option>
+                    <option value="4">Inactivos</option>
                   </select>
                 </div>
                 <div class="filtro">
