@@ -25,14 +25,13 @@ class Encabezado extends View {
 //            $span_h6_2 = $this->createElement('span',$menu_hijo.' &gt; ');
 //        $span_h6_3 = $this->createElement('span',$modulo);
 //        $span_h6_3->setAttribute('class','bold');
-        $h1 = $this->createElement('h1');
+        $h1 = $this->createElement('h1',$modulo);
         $span_h1 = $this->createElement('span',$modulo);
-        $h5 = $this->createElement('h6');
-        $h5->setAttribute('style','margin-left: 2%');
+        $h5 = $this->createElement('span',$mensaje);
+        $h5->setAttribute('class','total-count');
         $span_h5 = $this->createElement('span',$mensaje);
         
-        $h5->appendChild($span_h5);
-        $h1->appendChild($span_h1);
+
 //        $h6->appendChild($span_h6);
 //        if($arrControlador_sitio['menu_hijo'])
 //            $h6->appendChild($span_h6_2);

@@ -6,10 +6,14 @@ table
   overflow-y: auto
   overflow-x: auto
   thead
+    background: $table-bg
     tr
       border-bottom: 2px solid $secundario
+     
     th
-      padding: 10px 10px 20px 10px
+      padding: 20px
+    .checkbox
+      width: 20px
 
   tbody
     tr
@@ -17,4 +21,15 @@ table
       &:last-of-type
         border: none
     td
-      padding: 15px 10px
+      padding: 20px
+      font-size: 80%
+    .actions
+      +flexbox(row,wrap,flex-start,center,center)
+      i
+        padding-left: 10px
+        color: $principal
+        font-size: 120%
+        transition: all 0.5s ease-in-out
+        cursor: pointer
+        &:hover
+          filter: brightness(70%)
