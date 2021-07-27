@@ -69,9 +69,12 @@ class Util_i extends Controller {
             $array = $labels = array();
         }
         array_unshift($labels, "");
+        
         $acciones = array();
         $acciones[] = array('etiqueta' => 'Vista previa', 'token' => $controller_name . '.vista_previa', 'id' => 'id_bolemarchand');
         $acciones[] = array('etiqueta' => 'checkbox', 'id' => 'id_bolemarchand', 'prefijo' => self::PREFIJO_CHECKBOXES);
+        
+        
         $tabla = new Table($array, null, null, $acciones);
         $tabla->cambiar_encabezados($labels);
         $this->colocar_checkbox_todo($recordset->RowCount(), $tabla);
@@ -131,6 +134,11 @@ class Util_i extends Controller {
     }
 
     private function preparar_filtros($variables) {
+        
+        
+        print_r("<pre>");
+        var_dump($variables);
+        print_r("<pre>");
         $filter = new view();
         if (isset($variables['id'])) {
             unset($variables['id']);
