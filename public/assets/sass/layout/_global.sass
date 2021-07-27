@@ -27,27 +27,39 @@ main
     +flexbox(row,wrap,space-between,flex-start,flex-start)
     width: 100%
     padding: 2%
+.content-100
+    width: 100%
 .content-80
     width: 74.33%
+    
     +flexbox(row,wrap,space-between,flex-start,flex-start)
 .content-20
     +flexbox(row,wrap,space-between,flex-start,flex-start)
     width: 24.33%
-@media screen and ( max-width: $break-md )
-    .main-content
-        width: 100%
-        flex-direction: column-reverse
-    .content-80
-        width: 100%
-    .content-20
-        width: 100%
+
 // Contenedor
 .contenedor
     width: 100%
     box-shadow: $box-shadow
     border-radius: 5px
     padding: 20px
-    background: $white
+    background: $filters-bg
+    margin: 10px 0
+    overflow: hidden
+    overflow-x: auto
+    &::-webkit-scrollbar
+        width: 2px
+        height: 5px
+        background: $body-bg
+    &::-webkit-scrollbar-thumb
+        background: $principal
+        border-radius: 20px
+.contenedor-tabla
+    width: 100%
+    box-shadow: $box-shadow
+    border-radius: 5px
+    padding: 0px
+    background: $filters-bg
     margin: 10px 0
     overflow: hidden
     overflow-x: auto
@@ -60,32 +72,39 @@ main
         border-radius: 20px
 #main
     width: 85%
-// INPUTS
-input, textarea, select
-    padding: 10px 5px
-    border: none
-    border-bottom: 1px solid $border
+.encabezado-wrapper
     width: 100%
-    background: none
-    color: $light-gray
+    +flexbox(row,wrap,space-between,center,center)
+    margin-bottom: 20px
+// INPUTS
+input:not([type='checkbox']), textarea, select
+    padding: 12px 15px
+    border: none
+    width: 100%
+    background: $input-bg
+    border-radius: 5px
+    color: $dark-gray
     -webkit-appearance: none
     &:focus
         outline: none
     &::placeholder
         color: $light-gray
+input[type='checkbox']
+    cursor: pointer
 select
     background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat right
     background-size: 10px
     background-position: 95%
-
+    color: $light-gray
 .btn-outline
     border: 2px solid $principal
-    background: $white
+    background: transparent
     color: $principal
     border-radius: 20px
     padding: 10px 25px
     font-weight: $semi-bold
     text-align: center
+    cursor: pointer
 .btn
     border: 2px solid $principal
     border-radius: 20px
@@ -94,6 +113,7 @@ select
     color: $white
     background: $principal
     text-align: center
+    cursor: pointer
 .check
     &::after
         content: '\f00c'
@@ -132,8 +152,49 @@ header
         font-size: 150%
         padding-left: 10px
         display: none
+    
+.encabezado
+    width: auto
+    height: auto
+    +flexbox(row,wrap,flex-start,flex-end,flex-end)
+    h1
+      width: auto
+    .total-count
+      padding-left: 10px
+      width: auto
+
+.popup-wrapper
+    width: 100%
+    height: 100%
+    background: rgba(0,0,0,0.3)
+    display: none
+    position: absolute
+    top: 0%
+    .popup
+        box-shadow: $box-shadow
+        border-radius: 5px
+        padding: 20px
+        background: $filters-bg
+        width: 50vw
+        height: 50vh
+        position: absolute
+        top: 25%
+        left: 25%
+        margin: 0 auto
+    &.active
+        display: flex
 @media screen and ( max-width: $break-md )
     header .hamburger
         display: block
     header .logo
         max-width: 30%
+    .encabezado-wrapper .btn-outline
+        margin: 0 auto
+    #main
+        width: 100%
+    .main-content
+        width: 100%
+    .content-80
+        width: 100%
+    .content-20
+        width: 100%
