@@ -271,7 +271,9 @@ class Usuario extends Model {
     /* para ser llamada cueando es auth */
 
     public function select_usuarios() {
-        $sql = " select A.*, b.authstat as estado from ef_usuario a left join ho_authstat b on  a.id_authstat = b.id_authstat ";
+        $sql = " select a.id_cuenta, a.email, a.nombre_completo, a.celular, a.fecha_creacion, c.authstat, b.motivo, a.mensaje 
+from ef_usuario a left join ef_motivos b on a.id_motivo = b.id_motivo 
+left join ho_authstat c on a.id_authstat = c.id_authstat ";
         return self::execute($sql);
     }
     public function updatePassword_auth($password) {
