@@ -43,11 +43,10 @@ class Util_i extends Controller {
         $form = $this->view->createElement('form');
         $form->setAttribute('id', 'miFormulario');
         $form->setAttribute('class', 'main-content usuarios');
-        $div_80 = $this->view->createElement('div');
+        $div_100_encabezado = $this->view->createElement('div');
         $total_usr = "Total Usuarios: ". $recordset->rowCount();
         $encabezado = new Encabezado(self::$modulo, $total_usr);
-        $div_80->setAttribute('class', 'content-80');
-        $div_80->appendChild($this->view->importNode($encabezado->documentElement, true));
+        $div_100_encabezado->setAttribute('class', 'content-100 encabezado-wrapper');
         $lupa = $this->view->createElement('div');
         $lupa->setAttribute('class', 'search-bar');
         $buscador = $this->view->createElement('input');
@@ -60,6 +59,14 @@ class Util_i extends Controller {
         $btn_lupa->appendChild($icono_lupa);
         $lupa->appendChild($buscador);
         $lupa->appendChild($btn_lupa);
+        $exportar = $this->view->createElement('div');
+        $exportar->setAttribute('class', 'btn-outline');
+        $exportar->appendChild($this->view->createTextNode("Exportar"));
+        
+        $icono_exportar = $this->view->createElement('i');
+        $icono_exportar->setAttribute('class', 'fas fa-download');
+        $exportar->appendChild($icono_exportar);
+        
         $detalle = new Detalle("nombre_completo");
         $detalle->preparar_arrays($recordset);
         $pager = new Pager($recordset, $pagina_a_mostrar, $controller_name . '.filter');
@@ -78,13 +85,20 @@ class Util_i extends Controller {
         $tabla = new Table($array, null, null, $acciones);
         $tabla->cambiar_encabezados($labels);
         $this->colocar_checkbox_todo($recordset->RowCount(), $tabla);
-        $div_cajita = $this->view->createElement('div');
-        $div_cajita->setAttribute('class', 'contenedor');
-        $div_cajita->appendChild($lupa);
-        $div_cajita->appendChild($this->view->importNode($tabla->documentElement, true));
-        $div_80->appendChild($div_cajita);
-        $form->appendChild($div_80);
+        $div_100_tabla = $this->view->createElement('div');
+        $div_contenedor = $this->view->createElement('div');
+        $div_100_tabla->setAttribute('class', 'content-100');
+        $div_contenedor->setAttribute('class', 'contenedor-tabla');
+//        $div_100_tabla->appendChild($lupa);
+        $div_contenedor->appendChild($this->view->importNode($tabla->documentElement, true));
+        $div_100_encabezado->appendChild($this->view->importNode($encabezado->documentElement, true));
+        $div_100_tabla->appendChild($div_contenedor);
+        $div_100_encabezado->appendChild($lupa);
+        $div_100_encabezado->appendChild($exportar);
+        
+        $form->appendChild($div_100_encabezado);
         $form->appendChild($this->view->importNode($filters->documentElement, true));
+        $form->appendChild($div_100_tabla);
         $this->view->appendChild($form);
         return $this->view;
     }
@@ -136,9 +150,9 @@ class Util_i extends Controller {
     private function preparar_filtros($variables) {
         
         
-        print_r("<pre>");
-        var_dump($variables);
-        print_r("<pre>");
+//        print_r("<pre>");
+//        var_dump($variables);
+//        print_r("<pre>");
         $filter = new view();
         if (isset($variables['id'])) {
             unset($variables['id']);
