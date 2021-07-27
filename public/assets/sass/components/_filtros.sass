@@ -1,23 +1,27 @@
 // Search Bar
 .search-bar
-  width: 100%
-  +flexbox(row,wrap,space-between,center,center)
-  margin-bottom: 20px
+  width: 50%
+  +flexbox(row,wrap,flex-start,center,center)
   input
-    width: 96%
-    padding: 10px 0
+    width: 85%
+    padding: 15px 15px
     border: none
+    border-radius: 0 !important
+    background: none
     border-bottom: 1px solid $border
     &:focus
       outline: none
   .btn-search
     background: $secundario
-    padding: 5px
-    border-radius: 5px
-    width: 30px
-    height: 30px
+    padding: 15px
+    border-top-right-radius: 5px
+    border-bottom-right-radius: 5px
+    border-bottom: 2px solid $secundario !important
+    width: 46px
+    height: 46px
     color: $white
     text-align: center
+    cursor: pointer
 
 .filtros-wrapper
   h3
@@ -25,27 +29,62 @@
     padding-bottom: 10px
     width: 100%
   .fecha
-    width: 100%
+    width: 20%
     +flexbox(row,wrap,space-between,center,center)
     input
-      width: 45%
+      width: 48%
+    label
+      width: 100%
+        
   .filtros
+    width: 100%
+    display: grid
+    grid-template-columns: repeat(4, 1fr)
+    grid-column-gap: 10px
     .filtro
-      margin: 20px 0
-      +flexbox(row,wrap,space-between,center,center)
+      margin: 10px 10px
+      +flexbox(row,wrap,flex-start,center,center)
+      width: 100%
       input
         width: 100%
       label
         width: 100%
         padding-bottom: 10px
-      .prefijo-pais
-        width: 10%
-        color: $dark-gray
-      .cod-area
-        width: 10%
-      .numero
-        width: 65%
+      &.telefono
+        .prefijo-pais
+          width: 15%
+          color: $dark-gray
+        .cod-area
+          width: 23%
+          margin: 0 2%
+        .numero
+          width: 58%
+      &.fecha
+        input
+          width: 48%
+          &:nth-of-type(1)
+            margin-right: 2%
+          &:nth-of-type(2)
+            margin-left: 2%
+          
+            
+      &.monto
+        input
+          width: 48%
+          &:nth-of-type(1)
+            margin-right: 2%
+          &:nth-of-type(2)
+            margin-left: 2%
     .filtros-actions
-      +flexbox(row,wrap,space-between,center,center)
+      +flexbox(row,wrap,flex-end,flex-end,flex-end)
+      margin: 20px 10px
+      width: 100%
       .btn,.btn-outline
-        width: 45%
+        width: auto
+        margin: 0 5px
+@media screen and ( max-width: $break-md )
+  .search-bar
+    width: 100%
+    margin: 4% 0
+  .filtros-wrapper .filtros
+    grid-template-columns: repeat(2,1fr)

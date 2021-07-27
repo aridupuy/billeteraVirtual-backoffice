@@ -1,171 +1,130 @@
 <html>
-  <head>
-    <!-- Meta Tags -->
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Efectivo Digital, la billetera virtual que tiene todo lo que necesitás. Pagá y cobrá de forma fácil y segura desde tu celular. No hace falta que tengas cuenta bancaria."
-    />
-    <!-- Facebook Meta Tags -->
-    <meta property="og:url" content="https://efectivodigital.com.ar/" />
-    <meta property="og:type" content="website" />
-    <meta name="title" property="og:title" content="Efectivo Digital" />
-    <meta
-      property="og:description"
-      content="Efectivo Digital, la billetera virtual que tiene todo lo que necesitás. Pagá y cobrá de forma fácil y segura desde tu celular. No hace falta que tengas cuenta bancaria."
-    />
-    <meta property="og:image" content="public/assets/img/ogimage.jpg" />
-    <!-- Twitter Meta Tags -->
-    <meta property="twitter:url" content="https://efectivodigital.com.ar/" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Efectivo Digital" />
-    <meta
-      name="twitter:description"
-      content="Efectivo Digital, la billetera virtual que tiene todo lo que necesitás. Pagá y cobrá de forma fácil y segura desde tu celular. No hace falta que tengas cuenta bancaria."
-    />
-    <meta name="twitter:image" content="public/assets/img/ogimage.jpg" />
 
-    <meta
-      name="keywords"
-      content="billetera virtual, billetera online, pagos online, cobros online, comprar online, pagar online, billetera integral, pagos QR, billetera virtual argentina"
-    />
+<head>
+  <!-- Meta Tags -->
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Efectivo Digital, la billetera virtual que tiene todo lo que necesitás. Pagá y cobrá de forma fácil y segura desde tu celular. No hace falta que tengas cuenta bancaria." />
+  <!-- Facebook Meta Tags -->
+  <meta property="og:url" content="https://efectivodigital.com.ar/" />
+  <meta property="og:type" content="website" />
+  <meta name="title" property="og:title" content="Efectivo Digital" />
+  <meta property="og:description"
+    content="Efectivo Digital, la billetera virtual que tiene todo lo que necesitás. Pagá y cobrá de forma fácil y segura desde tu celular. No hace falta que tengas cuenta bancaria." />
+  <meta property="og:image" content="public/assets/img/ogimage.jpg" />
+  <!-- Twitter Meta Tags -->
+  <meta property="twitter:url" content="https://efectivodigital.com.ar/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Efectivo Digital" />
+  <meta name="twitter:description"
+    content="Efectivo Digital, la billetera virtual que tiene todo lo que necesitás. Pagá y cobrá de forma fácil y segura desde tu celular. No hace falta que tengas cuenta bancaria." />
+  <meta name="twitter:image" content="public/assets/img/ogimage.jpg" />
 
-    <title>Efectivo Digital</title>
-    <!-- Favicon -->
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="public/assets/favicon/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="public/assets/favicon/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="public/assets/favicon/favicon-16x16.png"
-    />
-    <link rel="manifest" href="public/assets/favicon/site.webmanifest" />
-    <link
-      rel="mask-icon"
-      href="public/assets/favicon/safari-pinned-tab.svg"
-      color="#5bbad5"
-    />
-    <link rel="shortcut icon" href="public/assets/favicon/favicon.ico" />
-    <meta name="msapplication-TileColor" content="#da532c" />
-    <meta
-      name="msapplication-config"
-      content="public/assets/favicon/browserconfig.xml"
-    />
-    <meta name="theme-color" content="#ffffff" />
-    <!-- Google Font -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Css -->
-    <link rel="stylesheet" href="public/assets/css/style.css" />
-    <!-- Font Awesome -->
-    <link
-      rel="stylesheet"
-      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
-      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
-      crossorigin="anonymous"
-    />
-    <!-- Carga de scripts -->
-    <script src="public/jquery-1.11.2.min.js"></script>
-    <script src="public/plugins/jquery-1.11.3.min.js"></script>
-    <script src="public/jquery-ui.js"></script>
-    <script src="public/plugins/bootstrap.min.js"></script>
-    <script src="public/plugins/jquery.dataTables.js"></script>
-    <script src="public/efectivo_digital.js"></script>
-    <!--<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>-->
-    <!--<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-messaging.js"></script>-->
-    <!--<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
-    <script src="public/modernizr-custom.js"></script>
-    <!--<script src="public/js/firebase-messaging.js"></script>-->
-    <script src="public/js/global.js"></script>
-    <script src="public/js/sweetalert2.all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <link rel="stylesheet" href="public/css/sweetalert2.min.css" />
-    <link rel="manifest" href="public/js/manifest.json" />
-    <link
-      rel="stylesheet"
-      href="public/Font-Awesome/css/font-awesome.min.css"
-    />
+  <meta name="keywords"
+    content="billetera virtual, billetera online, pagos online, cobros online, comprar online, pagar online, billetera integral, pagos QR, billetera virtual argentina" />
 
-    <link rel="stylesheet" href="public/css/reset.css" />
+  <title>Efectivo Digital</title>
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="public/assets/favicon/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="public/assets/favicon/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="public/assets/favicon/favicon-16x16.png" />
+  <link rel="manifest" href="public/assets/favicon/site.webmanifest" />
+  <link rel="mask-icon" href="public/assets/favicon/safari-pinned-tab.svg" color="#5bbad5" />
+  <link rel="shortcut icon" href="public/assets/favicon/favicon.ico" />
+  <meta name="msapplication-TileColor" content="#da532c" />
+  <meta name="msapplication-config" content="public/assets/favicon/browserconfig.xml" />
+  <meta name="theme-color" content="#ffffff" />
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <!-- Css -->
+  <link rel="stylesheet" href="public/assets/css/style.css" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+  <!-- Carga de scripts -->
+  <script type="text/javascript" src="public/jquery-1.11.2.min.js"></script>
+  <script type="text/javascript" src="public/plugins/jquery-1.11.3.min.js"></script>
+  <script type="text/javascript" src="public/jquery-ui.js"></script>
+  <script type="text/javascript" src="public/plugins/bootstrap.min.js"></script>
+  <script type="text/javascript" src="public/plugins/jquery.dataTables.js"></script>
+  <script type="text/javascript" src="public/efectivo_digital.js"></script>
+  <!--<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>-->
+  <!--<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-messaging.js"></script>-->
+  <!--<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>-->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+  <script type="text/javascript" src="public/modernizr-custom.js"></script>
+  <!--<script src="public/js/firebase-messaging.js"></script>-->
+  <script type="text/javascript" src="public/js/global.js"></script>
+  <script type="text/javascript" src="public/js/sweetalert2.all.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+  <link rel="stylesheet" href="public/css/sweetalert2.min.css" />
+  <link rel="manifest" href="public/js/manifest.json" />
+  <link rel="stylesheet" href="public/Font-Awesome/css/font-awesome.min.css" />
 
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.js"
-      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-      crossorigin="anonymous"
-    ></script>
-    <script src="public/assets/js/global.js"></script>
-  </head>
-  <header>
-    <div class="hamburger">
-      <i class="fas fa-bars"></i>
-    </div>
-    <img src="public/assets/img/logo.svg" alt="" />
-  </header>
+  <!-- <link rel="stylesheet" href="public/css/reset.css" /> -->
 
-  <body>
-    <main>
-      <aside class="sidebar">
-        <!-- Carga de menu -->
-        <nav id="menu_principal"></nav>
-        <a class="logout header-logout"
-          ><i class="fas fa-sign-out-alt"></i> Cerrar sesión
-        </a>
-      </aside>
-      <!-- Carga de Main Div -->
-      <div id="main"></div>
-    </main>
-    <script>
-      var date = new Date();
-      var day = date.getDay();
-      var month = date.getMonth();
-      if (month <= 10) {
-        month = "0" + month;
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+  <script src="public/assets/js/global.js"></script>
+</head>
+<header>
+  <div class="hamburger">
+    <i class="fas fa-bars"></i>
+  </div>
+  <img src="public/assets/img/logo.svg" alt="" />
+</header>
+
+<body>
+  <main>
+    <aside class="sidebar">
+      <!-- Carga de menu -->
+      <nav id="menu_principal"></nav>
+      <a class="logout header-logout"><i class="fas fa-sign-out-alt"></i> Cerrar sesión
+      </a>
+    </aside>
+    <!-- Carga de Main Div -->
+    <div id="main"></div>
+  </main>
+  <script>
+    var date = new Date();
+    var day = date.getDay();
+    var month = date.getMonth();
+    if (month <= 10) {
+      month = "0" + month;
+    }
+    var year = date.getFullYear();
+    var fecha = "01" + month + year;
+    var hasta = "30" + month + year;
+    var dominio = document.domain;
+    var port = location.port;
+    var token = localStorage.getItem("abcd1478");
+
+    $.post(
+      "https://" +
+      dominio +
+      ":" +
+      port +
+      "/externo/script_landing_service.php", {
+        token: token,
+        metodo_service: "estadisticas_tenencias",
+        fecha_desde: fecha,
+        fecha_hasta: hasta,
+        sentido_transaccion: "ingresos",
       }
-      var year = date.getFullYear();
-      var fecha = "01" + month + year;
-      var hasta = "30" + month + year;
-      var dominio = document.domain;
-      var port = location.port;
-      var token = localStorage.getItem("abcd1478");
-
-      $.post(
-        "https://" +
-          dominio +
-          ":" +
-          port +
-          "/externo/script_landing_service.php",
-        {
-          token: token,
-          metodo_service: "estadisticas_tenencias",
-          fecha_desde: fecha,
-          fecha_hasta: hasta,
-          sentido_transaccion: "ingresos",
-        }
-      ).done(function (data) {});
-      $(document).ready(function () {
-        popLogout();
-        $("#cerrar").click(function () {
-          $("#popNoti").removeClass("active");
-        });
+    ).done(function (data) {});
+    $(document).ready(function () {
+      popLogout();
+      $("#cerrar").click(function () {
+        $("#popNoti").removeClass("active");
       });
-    </script>
-  </body>
+    });
+  </script>
+</body>
+
 </html>
