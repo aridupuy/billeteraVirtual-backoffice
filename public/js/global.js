@@ -656,7 +656,7 @@ function camposBtnPago() {
     $(".btn-pago-vencimiento").hide();
     $(".btn-pago-comentarios").hide();
     var params = $("#JSON").val();
-    console.log(params);
+//    console.log(params);
     $("input[type='checkbox'").click(function () {
         var input = $("input[type='checkbox'").parent().children("input[type='text']");
         input.attr('disabled', false);
