@@ -96,6 +96,16 @@ class Transferencia_enviada extends Model {
         return $this;
     }
 
+    public function select_cashout($variables=false){
+        $filtros = self::preparar_filtros($variables);
 
+        $sql = "SELECT a.id_transferencia,a.fecha_gen,e.email as email_origen,c.cuil as cuil_origen,a.monto,a.status,b.referencia,b.email as email_destino ,b.cvu,b.cbu,b.alias,b.nombre,b.apellido,b.cuit as cuit_destino,b.nombre_banco,b.cod_banco from ef_transferencia_enviada
+a left join ef_destinatario b on a.id_destinatario = b.id_destinatario 
+left join ef_cuenta c on a.id_cuenta = c.id_cuenta 
+left join ho_authstat d on a.id_authstat = d.id_authstat 
+left join ef_usuario e on a.id_usuario = e.id_usuario  $filtros";
+
+        return self::execute_select($sql,$variables,10000);
+    }
 
 }

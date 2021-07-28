@@ -1,0 +1,78 @@
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<div class="content-100 filtros-wrapper">
+    <!-- Encabezado -->
+    <div class="contenedor filtros">
+
+
+        <!-- Clase contenedor es generica y da el box model generico y fecha le da los estilos de los filtros de la fecha para que queden inline -->
+        <div class="filtro fecha">
+            <h3>Fecha</h3>
+            <input type="date" name="fecha_desde" title="Desde">
+            <input type="date" name="fecha_hasta" title="Hasta">
+        </div>
+        <!-- Clase contenedor es generica y da el box model generico y filtros le da los estilos de los filtros para que queden inline -->
+        
+            <!-- Cada filtro debe estar contenido en este div para poder respetar los margenes y paddings correspondientes, despues los nombres o id de los input son indiferentes -->
+            <div class="filtro">
+                <label for="dni">DNI / CUIT / CUIL</label>
+                <input type="text" name="documento" placeholder="Documento" title="DNI-CUIT/CUIL">
+            </div>
+            <div class="filtro">
+                <label for="nombre">Nombre y Apellido</label>
+                <input type="text" name="nombre" placeholder="Nombre y Apellido">
+            </div>
+            <div class="filtro">
+                <label for="email">E-mail</label>
+                <input type="text" name="email" placeholder="E-mail">
+            </div>
+            <div class="filtro">
+                <label for="telefono">CBU/CVU</label>
+                <input type="text"name="cbucvu" placeholder="CBU/CVU">
+            </div>
+            <div class="filtro fecha">
+                <h3>Monto</h3>
+                <input type="number" name="monto_desde" title="Desde" placeholder="Desde">
+                <input type="number" name="monto_hasta" title="Hasta" placeholder="Hasta">
+            </div>
+            <div class="filtro">
+                <label for="telefono">Nro Transferencia</label>
+                <input type="text" name="id_transferencia" placeholder="Nro Transferencia">
+            </div>
+            <div class="filtro">
+                <label for="estado">Estado de Movimiento</label>
+                <select name="status" id="status" aria-placeholder="Todos">
+                    <!--<option value="Opcion 1">Opcion 1</option>-->
+                    <option value="1">Acreditado</option>
+                    <option value="2">Rechazado</option>
+                    <option value="3">Pendiente</option>
+                </select>
+            </div>
+            <div class="filtro">
+                <label for="estado">Estado</label>
+                <select id="estado" name="id_authstat" title="Estado">
+                    <option value="">Todos los estados</option>
+                    <option value="1">Activos</option>
+                    <option value="4">Inactivos</option>
+                    <option value="3">Suspendido</option>
+                    <option value="6">Pendiente de Validación</option>
+                    <option value="13">Rechazado</option>
+                </select>
+            </div>
+            <div class="filtro">
+                <label for="cuenta">Cuenta</label>
+                <select name="cuenta" id="cuenta" aria-placeholder="Todos">
+                </select>
+            </div>
+            <div class="filtro">
+                <label for="motivo">Motivo</label>
+                <select name="motivo" id="motivo" aria-placeholder="Todos">
+                </select>
+            </div>
+            <div class="filtros-actions">
+                <div class="btn-outline">Limpiar</div>
+                <div type="submit" name="util_ii.filter" class="btn">Filtrar</div>
+            </div>
+        
+
+    </div>
+</div>
