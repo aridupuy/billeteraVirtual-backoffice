@@ -71,7 +71,7 @@ main
         background: $principal
         border-radius: 20px
 #main
-    width: 85%
+    width: 100%
 .encabezado-wrapper
     width: 100%
     +flexbox(row,wrap,space-between,center,center)
@@ -141,17 +141,30 @@ select
         font-weight: $regular
 // Header
 header
-    +flexbox(row,wrap,flex-start,center,center)
+    +flexbox(row,wrap,space-between,center,center)
     padding: 20px 2%
     background: $principal
     .logo
-        max-width: 8%
+        width: 70%
+        img
+            max-width: 8%
     .hamburger
         color: $white
-        width: 15%
+        width: 30%
         font-size: 150%
         padding-left: 10px
-        display: none
+        display: flex
+    .logout-wrapper
+        width: 30%
+        +flexbox(row,wrap,flex-end,center,center)
+        .logout
+            width: 50px
+            height: 50px
+            border-radius: 50%
+            background: $white
+            color: $principal
+            cursor: pointer
+            +flexbox(row,wrap,center,center,center)
     
 .encabezado
     width: auto
@@ -184,8 +197,6 @@ header
     &.active
         display: flex
 @media screen and ( max-width: $break-md )
-    header .hamburger
-        display: block
     header .logo
         max-width: 30%
     .encabezado-wrapper .btn-outline
