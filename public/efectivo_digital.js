@@ -67,7 +67,7 @@ else{
     $("[type='submit']").on('click', function (event) {
         if ($('#miFormulario')[0].checkValidity()) {
             $(this).attr('type', 'button');
-            if ($("[type='file']").size() == '1')
+            if ($("[type='file']").length == '1')
                 file_link($(this).attr('name'), $("#miFormulario [type='file']").eq(0).attr('name'), $("#miFormulario [type='file']").eq(0).attr('id'));
             else
                 link($(this).attr('name'), event.target.getAttribute('id'), '');
@@ -123,7 +123,7 @@ else{
            
         });
     }
-//    $.fn.DataTable.ext.pager.numbers_length = 4;
+    $.fn.DataTable.ext.pager.numbers_length = 4;
 
     jQuery.extend( jQuery.fn.dataTableExt.oSort, {
         "date-arg-pre": function ( a ) {
@@ -177,7 +177,7 @@ else{
     escuchar_mensaje_log();
     escuchar_paginador();
     if(nav==null){
-        dropdown(null);
+//        dropdown(null);
         $("#miFormulario").html(mensaje_error);
         $("#main").html(mensaje_error);
     }
@@ -538,11 +538,11 @@ function antes_de_navegar() {
     // Hacer esto si el pedido supera determinado tiempo!
 }
 function isJson(str) {
-    console.log('ENTRO');
+//    console.log('ENTRO');
     try {
         JSON.parse($.trim(str));
     } catch (e) {
-        console.log(e);
+//        console.log(e);
         return false;
     }
     return true;
@@ -607,13 +607,13 @@ function despues_de_navegar(response) {
         $(destino_respuesta_servidor).html(response);
         despues_de_cargar();
     }
-    var nav=$("#nav_marchand").attr("name");
-    var id = null
-    var elemento="minirs";
-    if(cargar){
-        $("#minirs").html("Cargando");
-        link_reemplazo(nav,id,elemento);
-    }
+//    var nav=$("#nav_marchand").attr("name");
+//    var id = null
+//    var elemento="minirs";
+//    if(cargar){
+//        $("#minirs").html("Cargando");
+//        link_reemplazo(nav,id,elemento);
+//    }
 }
 var cargar=true;
 function despues_de_navegar_logout(response) {
