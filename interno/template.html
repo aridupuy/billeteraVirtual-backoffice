@@ -46,24 +46,16 @@
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
     integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
   <!-- Carga de scripts -->
-  <script type="text/javascript" src="public/jquery-1.11.2.min.js"></script>
-  <script type="text/javascript" src="public/plugins/jquery-1.11.3.min.js"></script>
-  <script type="text/javascript" src="public/jquery-ui.js"></script>
-  <script type="text/javascript" src="public/plugins/bootstrap.min.js"></script>
-  <script type="text/javascript" src="public/plugins/jquery.dataTables.js"></script>
-  <script type="text/javascript" src="public/efectivo_digital.js"></script>
+<!--  <script type="text/javascript" src="public/jquery-1.11.2.min.js"></script>
+  <script type="text/javascript" src="public/plugins/jquery-1.11.3.min.js"></script>-->
   <!--<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>-->
   <!--<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-messaging.js"></script>-->
   <!--<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>-->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
-  <script type="text/javascript" src="public/modernizr-custom.js"></script>
+  <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>-->
   <!--<script src="public/js/firebase-messaging.js"></script>-->
-  <script type="text/javascript" src="public/js/global.js"></script>
-  <script type="text/javascript" src="public/js/sweetalert2.all.min.js"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<!--  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
-  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-  <link rel="stylesheet" href="public/css/sweetalert2.min.css" />
+  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>-->
   <link rel="manifest" href="public/js/manifest.json" />
   <link rel="stylesheet" href="public/Font-Awesome/css/font-awesome.min.css" />
 
@@ -71,7 +63,16 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
     crossorigin="anonymous"></script>
+  <script type="text/javascript" src="public/jquery-ui.js"></script>
+  <script type="text/javascript" src="public/plugins/bootstrap.min.js"></script>
+  <script type="text/javascript" src="public/plugins/jquery.dataTables.js"></script>
+  <script type="text/javascript" src="public/modernizr-custom.js"></script>
+  <script type="text/javascript" src="public/js/sweetalert2.all.min.js"></script>
+  <link rel="stylesheet" href="public/css/sweetalert2.min.css" />
   <script src="public/assets/js/global.js"></script>
+  <script type="text/javascript" src="public/js/global.js"></script>
+  <script type="text/javascript" src="public/efectivo_digital.js"></script>
+  
 </head>
 <header>
   <div class="hamburger">
@@ -109,19 +110,19 @@
     var port = location.port;
     var token = localStorage.getItem("abcd1478");
 
-    $.post(
-      "https://" +
-      dominio +
-      ":" +
-      port +
-      "/externo/script_landing_service.php", {
-        token: token,
-        metodo_service: "estadisticas_tenencias",
-        fecha_desde: fecha,
-        fecha_hasta: hasta,
-        sentido_transaccion: "ingresos",
-      }
-    ).done(function (data) {});
+//    $.post(
+//      "https://" +
+//      dominio +
+//      ":" +
+//      port +
+//      "/externo/script_landing_service.php", {
+//        token: token,
+//        metodo_service: "estadisticas_tenencias",
+//        fecha_desde: fecha,
+//        fecha_hasta: hasta,
+//        sentido_transaccion: "ingresos",
+//      }
+//    ).done(function (data) {});
     $(document).ready(function () {
       popLogout();
       $("#cerrar").click(function () {
