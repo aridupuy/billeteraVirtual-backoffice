@@ -18,10 +18,10 @@ class Util_ii extends Controller {
                 $view = $this->home($variables);
                 break;
             case 'filter':
+                var_dump($variables);
                 developer_log(json_encode($variables));
                 $view = $this->home($variables);
                 break;
-
             default:
                 $view = $this->home();
                 break;
@@ -38,7 +38,7 @@ class Util_ii extends Controller {
             unset($variables['pagina']);
         }
         $controller_name = strtolower(get_class($this));
-        $recordset = Transferencia_enviada::select_cashout($variables = null);
+        $recordset = Transferencia_enviada::select_cashout($variables);
         $filters = $this->preparar_filtros($variables);
         $form = $this->view->createElement('form');
         $form->setAttribute('id', 'miFormulario');
@@ -80,7 +80,6 @@ class Util_ii extends Controller {
         $acciones = array();
         $acciones[] = array('etiqueta' => 'Vista previa', 'token' => $controller_name . '.vista_previa', 'id' => 'id_bolemarchand');
         $acciones[] = array('etiqueta' => 'checkbox', 'id' => 'id_bolemarchand', 'prefijo' => self::PREFIJO_CHECKBOXES);
-        
         
         $tabla = new Table($array, null, null, $acciones);
         $tabla->cambiar_encabezados($labels);
@@ -136,6 +135,7 @@ class Util_ii extends Controller {
                 $array[] = $registro['cuil_origen'];
                 $array[] = $registro['monto'];
                 $array[] = $registro['status'];
+                $array[] = $registro['motivo'];
                 $array[] = $registro['referencia'];
                 $array[] = $registro['email_destino'];
                 $array[] = $registro['cvu'];
@@ -166,13 +166,13 @@ class Util_ii extends Controller {
         }
         $filter->cargar("views/util_ii.filters.html");
 
-        $recordset = Motivos::select();
-        $motivo = $filter->getElementById("motivo");
-        foreach ($recordset as $row) {
-            $option = $filter->createElement('option', $row['motivo']);
-            $option->setAttribute('value', $row['id_motivo']);
-            $motivo->appendChild($option);
-        }
+        // $recordset = Motivos::select();
+        // $motivo = $filter->getElementById("motivo");
+        // foreach ($recordset as $row) {
+        //     $option = $filter->createElement('option', $row['motivo']);
+        //     $option->setAttribute('value', $row['id_motivo']);
+        //     $motivo->appendChild($option);
+        // }
         $filter->cargar_variables($variables);
         return $filter;
     }

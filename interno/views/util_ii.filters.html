@@ -14,7 +14,7 @@
         
             <!-- Cada filtro debe estar contenido en este div para poder respetar los margenes y paddings correspondientes, despues los nombres o id de los input son indiferentes -->
             <div class="filtro">
-                <label for="dni">DNI / CUIT / CUIL</label>
+                <label for="documento">DNI / CUIT / CUIL</label>
                 <input type="text" name="documento" placeholder="Documento" title="DNI-CUIT/CUIL">
             </div>
             <div class="filtro">
@@ -26,7 +26,7 @@
                 <input type="text" name="email" placeholder="E-mail">
             </div>
             <div class="filtro">
-                <label for="telefono">CBU/CVU</label>
+                <label for="cbucvu">CBU/CVU</label>
                 <input type="text"name="cbucvu" placeholder="CBU/CVU">
             </div>
             <div class="filtro fecha">
@@ -35,39 +35,29 @@
                 <input type="number" name="monto_hasta" title="Hasta" placeholder="Hasta">
             </div>
             <div class="filtro">
-                <label for="telefono">Nro Transferencia</label>
+                <label for="id_transferencia">Nro Transferencia</label>
                 <input type="text" name="id_transferencia" placeholder="Nro Transferencia">
             </div>
             <div class="filtro">
                 <label for="estado">Estado de Movimiento</label>
                 <select name="status" id="status" aria-placeholder="Todos">
-                    <!--<option value="Opcion 1">Opcion 1</option>-->
-                    <option value="1">Acreditado</option>
-                    <option value="2">Rechazado</option>
-                    <option value="3">Pendiente</option>
+                    <option value>Todos</option>
+                    <option value="COMPLETED">Acreditado</option>
+                    <option value="FAILED">Rechazado</option>
+                    <option value="PENDING">Pendiente</option>
+                    <option value="IN_PROGRESS">En Proceso</option>
                 </select>
             </div>
-            <div class="filtro">
-                <label for="estado">Estado</label>
-                <select id="estado" name="id_authstat" title="Estado">
-                    <option value="">Todos los estados</option>
-                    <option value="1">Activos</option>
-                    <option value="4">Inactivos</option>
-                    <option value="3">Suspendido</option>
-                    <option value="6">Pendiente de Validación</option>
-                    <option value="13">Rechazado</option>
-                </select>
-            </div>
-            <div class="filtro">
+            <!-- <div class="filtro">
                 <label for="cuenta">Cuenta</label>
                 <select name="cuenta" id="cuenta" aria-placeholder="Todos">
                 </select>
-            </div>
-            <div class="filtro">
+            </div> -->
+            <!-- <div class="filtro">
                 <label for="motivo">Motivo</label>
                 <select name="motivo" id="motivo" aria-placeholder="Todos">
                 </select>
-            </div>
+            </div> -->
             <div class="filtros-actions">
                 <div class="btn-outline">Limpiar</div>
                 <div type="submit" name="util_ii.filter" class="btn">Filtrar</div>

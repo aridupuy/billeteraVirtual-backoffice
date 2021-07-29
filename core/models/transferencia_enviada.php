@@ -97,14 +97,62 @@ class Transferencia_enviada extends Model {
     }
 
     public function select_cashout($variables=false){
+        unset($variables['status']);
+        unset($variables['motivo']);
+        unset($variables['dataTable_length']);
+        unset($variables['checkbox_todo']);
+        unset($variables['selector_']);
+        
+        if (isset($variables['id_transferencia'])) {
+            $variables['a.id_transferencia'] = $variables['id_transferencia'];
+            unset($variables['id_transferencia']);
+        }
+
+        $and="";
+        if(isset($variables['email'])){
+            $and= "OR e.email ilike '%".$variables['email']."%'";
+            unset($variables['email']);
+        }
+
+        if (isset($variables['monto_desde']) || isset($variables['monto_hasta'])) {
+            if(isset($variables['monto_desde']) && isset($variables['monto_hasta'])){
+                $and= "WHERE a.monto BETWEEN ".$variables['monto_desde']." and ".$variables['monto_hasta'];
+            }if(isset($variables['monto_desde']) && !isset($variables['monto_hasta'])){
+                $and= "WHERE a.monto >= ".$variables['monto_desde'];
+            }else{
+                $and= "WHERE a.monto <= ".$variables['monto_hasta'];
+            }
+            
+            unset($variables['monto_desde']);
+            unset($variables['monto_hasta']);
+        }
+
+        if (isset($variables['fecha_desde']) || isset($variables['fecha_hasta'])) {
+            if(isset($variables['fecha_desde']) && isset($variables['fecha_hasta'])){
+                $and= "WHERE a.fecha_gen BETWEEN '".$variables['fecha_desde']."' and '".$variables['fecha_hasta']."'";
+            }if(isset($variables['fecha_desde']) && !isset($variables['fecha_hasta'])){
+                $and= "WHERE a.fecha_gen >= '".$variables['fecha_desde']."'";
+            }else{
+                $and= "WHERE a.fecha_gen <= '".$variables['fecha_hasta']."'";
+            }
+            
+            unset($variables['fecha_desde']);
+            unset($variables['fecha_hasta']);
+        }
+
         $filtros = self::preparar_filtros($variables);
+        
+        //Falta Referencia y Motivo en CashOut
+        $sql = "SELECT a.id_transferencia,a.fecha_gen,e.email as email_origen,c.cuil as cuil_origen,a.monto,a.status,b.email as email_destino ,b.cvu,b.cbu,b.alias,b.nombre,b.apellido,b.cuit as cuit_destino,b.nombre_banco,b.cod_banco 
+        from ef_transferencia_enviada
+        a left join ef_destinatario b on a.id_destinatario = b.id_destinatario 
+        left join ef_cuenta c on a.id_cuenta = c.id_cuenta 
+        left join ho_authstat d on a.id_authstat = d.id_authstat 
+        left join ef_usuario e on a.id_usuario = e.id_usuario $filtros $and";
 
-        $sql = "SELECT a.id_transferencia,a.fecha_gen,e.email as email_origen,c.cuil as cuil_origen,a.monto,a.status,b.referencia,b.email as email_destino ,b.cvu,b.cbu,b.alias,b.nombre,b.apellido,b.cuit as cuit_destino,b.nombre_banco,b.cod_banco from ef_transferencia_enviada
-a left join ef_destinatario b on a.id_destinatario = b.id_destinatario 
-left join ef_cuenta c on a.id_cuenta = c.id_cuenta 
-left join ho_authstat d on a.id_authstat = d.id_authstat 
-left join ef_usuario e on a.id_usuario = e.id_usuario  $filtros";
-
+        echo $sql;
+        // var_dump($sql);
+        // exit;
         return self::execute_select($sql,$variables,10000);
     }
 
