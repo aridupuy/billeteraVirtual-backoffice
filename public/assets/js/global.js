@@ -4,15 +4,19 @@ $(function desplegableMobile() {
 
   $('.hamburger').click(function () {
     if (contador == 1) {
-      $('.sidebar').css('left', '0');
+      $('.sidebar').css('transform', 'translateX(0%');
 
       contador = 0;
     } else {
       contador = 1;
-      $('.sidebar').css('left', '-300px');
+      $('.sidebar').css('transform', 'translateX(-100%)');
 
 
     }
+  });
+  $('.cerrar-menu').click(function () {
+    $('.sidebar').css('transform', 'translateX(-100%)');
+    contador = 1;
   });
 });
 $(function triggerPopup() {

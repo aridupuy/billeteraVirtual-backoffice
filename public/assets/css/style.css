@@ -141,7 +141,7 @@ main {
 }
 
 #main {
-  width: 85%;
+  width: 100%;
 }
 
 .encabezado-wrapper {
@@ -236,21 +236,47 @@ header {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   align-content: center;
   padding: 20px 2%;
   background: #007C68;
 }
 header .logo {
+  width: 70%;
+}
+header .logo img {
   max-width: 8%;
 }
 header .hamburger {
   color: #fff;
-  width: 15%;
+  width: 30%;
   font-size: 150%;
   padding-left: 10px;
-  display: none;
+  display: flex;
+}
+header .logout-wrapper {
+  width: 30%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  align-content: center;
+}
+header .logout-wrapper .logout {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #fff;
+  color: #007C68;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
 }
 
 .encabezado {
@@ -296,10 +322,6 @@ header .hamburger {
 }
 
 @media screen and (max-width: 800px) {
-  header .hamburger {
-    display: block;
-  }
-
   header .logo {
     max-width: 30%;
   }
@@ -356,6 +378,18 @@ header .hamburger {
   height: 100vh;
   font-weight: 700;
   transition: all 0.3s ease-in-out;
+  transform: translateX(-100%);
+  position: fixed;
+  top: 0;
+}
+.sidebar .cerrar-menu {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 20px 30px;
+  width: 100%;
+  cursor: pointer;
+  text-align: center;
 }
 .sidebar nav {
   display: flex;
