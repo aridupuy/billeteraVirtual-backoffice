@@ -36,8 +36,8 @@ class Table extends View {
 
         $table = $this->createElement('table');
         $table->setAttribute("id", "dataTable");
-        $table->setAttribute("class", "table hover border bordered table-data dataTable no-footer");
-        $table->setAttribute("role", "grid");
+        $table->setAttribute("class", "tabla");
+//        $table->setAttribute("role", "grid");
         $this->appendChild($table);
         if ($registros === false)
             return $table;
@@ -66,9 +66,12 @@ class Table extends View {
         $table->appendChild($table_head);
         $tr = $this->createElement('tr');
         $tr->setAttribute("role", "row");
-        foreach ($registros->fields as $columna => $valor):
+        
+        foreach ($registros as $columna => $valor): #Registros originalmente llamaba a fields ($registros->fields )pero no esta funcionando
             if (is_numeric($columna)) {
                 $meta = $registros->FetchField($columna);
+                if($meta->name!=false){ #esta validacion es para que la tabla no muestre campos en false del Thead
+                    
                 switch ($registros->MetaType($meta->type)) {
                     case 'X':
                         #Si son textos (o xml) recorto 50 caracteres
@@ -77,10 +80,10 @@ class Table extends View {
 //                            $th->setAttribute('style', 'min-width: 158px;');
                         $th->setAttribute('title', 'Se muestran los primeros ' . MAXIMO_CARACTERES_CELDA . ' caracteres.');
                         $text = $this->createTextNode(ucfirst($meta->name));
-                        $span = $this->createElement('span');
-                        $span->setAttribute('class', 'fa fa-sort');
-                        $span->setAttribute('style', 'margin-right: 3%; margin-left: 0%');
-                        $th->appendChild($span);
+//                        $span = $this->createElement('span');
+//                        $span->setAttribute('class', 'fa fa-sort');
+//                        $span->setAttribute('style', 'margin-right: 3%; margin-left: 0%');
+//                        $th->appendChild($span);
                         $th->appendChild($text);
 //                        $th->setAttribute('style', "text-align:left");
                         $tr->appendChild($th);
@@ -93,11 +96,11 @@ class Table extends View {
 //                        else
                         $th->setAttribute('style', 'white-space: nowrap');
                         $text = $this->createTextNode(ucfirst($meta->name));
-                        $span = $this->createElement('span');
-                        $span->setAttribute('class', 'fa fa-sort');
-                        $span->setAttribute('style', 'margin-right: 3%;  margin-left: 0%');
+//                        $span = $this->createElement('span');
+//                        $span->setAttribute('class', 'fa fa-sort');
+//                        $span->setAttribute('style', 'margin-right: 3%;  margin-left: 0%');
                         $th->appendChild($text);
-                        $th->appendChild($span);
+//                        $th->appendChild($span);
 //                        $th->setAttribute('style', "text-align:left");
                         $tr->appendChild($th);
                         break;
@@ -108,11 +111,11 @@ class Table extends View {
 //                        else
 //                            $th->setAttribute('style', 'min-width: 1%; white-space: nowrap');
                         $text = $this->createTextNode(ucfirst($meta->name));
-                        $span = $this->createElement('span');
-                        $span->setAttribute('class', 'fa fa-sort');
-                        $span->setAttribute('style', 'margin-left: 0%');
+//                        $span = $this->createElement('span');
+//                        $span->setAttribute('class', 'fa fa-sort');
+//                        $span->setAttribute('style', 'margin-left: 0%');
                         $th->appendChild($text);
-                        $th->appendChild($span);
+//                        $th->appendChild($span);
                         $tr->appendChild($th);
                         break;
                     case 'T':
@@ -123,34 +126,35 @@ class Table extends View {
 //                        else
 //                            $th->setAttribute('style', 'min-width: 1%; white-space: nowrap');
                         $text = $this->createTextNode(ucfirst($meta->name));
-                        $span = $this->createElement('span');
-                        $span->setAttribute('class', 'fa fa-sort');
-                        $span->setAttribute('style', 'margin-left: 0%');
+//                        $span = $this->createElement('span');
+//                        $span->setAttribute('class', 'fa fa-sort');
+//                        $span->setAttribute('style', 'margin-left: 0%');
                         $th->appendChild($text);
-                        $th->appendChild($span);
+//                        $th->appendChild($span);
                         $tr->appendChild($th);
                         break;
                     default:
-                        $th = $this->createElement('th');
+//                        break;
+                            $th = $this->createElement('th');
 //                        if(strlen($meta->name)>20)
-                        $th->setAttribute('style', 'white-space: nowrap');
+                            $th->setAttribute('style', 'white-space: nowrap');
 //                        else
 //                            $th->setAttribute('style', 'min-width: 1%; white-space: nowrap');
-                        $text = $this->createTextNode(ucfirst($meta->name));
-                        $span = $this->createElement('span');
-                        $span->setAttribute('class', 'fa fa-sort');
-                        $span->setAttribute('style', 'margin-left: 0%');
-                        $th->appendChild($text);
-                        $th->appendChild($span);
-                        $tr->appendChild($th);
-                        break;
+                            $text = $this->createTextNode(ucfirst($meta->name));
+                            $span = $this->createElement('span');
+                            $span->setAttribute('class', 'fa fa-sort');
+                            $span->setAttribute('style', 'margin-left: 0%');
+                            $th->appendChild($text);
+                            $th->appendChild($span);
+                            $tr->appendChild($th);
+                            break;
+                    }
                 }
             }
         endforeach;
         if ($acciones != null)
             foreach ($acciones as $accion):
                 $th = $this->createElement('th');
-                $tr->appendChild($th);
                 $tr->appendChild($th);
             endforeach;
 
@@ -179,7 +183,7 @@ class Table extends View {
                                 $reemplazo = self::REEMPLAZO_FALSE;
                             $td = $this->createElement('td', $reemplazo);
                             $td->setAttribute('style', "text-align:center");
-                            $td->setAttribute('title', 'Es una campo booleano.');
+                            $td->setAttribute('title', 'Es un campo booleano.');
                             $tr->appendChild($td);
                             break;
                         case 'B':
@@ -319,10 +323,10 @@ class Table extends View {
                 $th->setAttribute('class', 'dateorder');
             }
 
-            $span = $this->createElement('span');
-            $span->setAttribute('class', 'fa fa-sort');
-            $span->setAttribute('style', 'margin-right: 3%; margin-left: 0%');
-            $th->appendChild($span);
+//            $span = $this->createElement('span');
+//            $span->setAttribute('class', 'fa fa-sort');
+//            $span->setAttribute('style', 'margin-right: 3%; margin-left: 0%');
+//            $th->appendChild($span);
             $tr->appendChild($th);
         }
         if (!$acciones == null) {
@@ -378,7 +382,9 @@ class Table extends View {
     }
 
     private function procesar_acciones($tr, $registro, $acciones, $fcond = false) {
-
+//        print_r("<pre>");
+//        var_dump($acciones);
+//        print_r("</pre>");
         $lacc = true; //default
         if (is_array($acciones) AND count($acciones)) {
             foreach ($acciones as $accion):
@@ -413,7 +419,7 @@ class Table extends View {
                     }
                 } else {
                     $td = $this->createElement('td');
-                    $td->setAttribute('class', 'link acciones');
+                    $td->setAttribute('style', 'cursor: pointer;');
                     $td->setAttribute('type', 'button');
                     if (isset($accion['token']))
                         $td->setAttribute('name', $accion['token']);
@@ -479,6 +485,7 @@ class Table extends View {
         $td = $this->createElement('td');
         $checkbox = $this->createElement('input');
         $checkbox->setAttribute('type', 'checkbox');
+        $checkbox->setAttribute('style', '-webkit-appearance: auto');
         $checkbox->setAttribute('name', $prefijo_para_names . $valor);
         if ($checked != null and in_array($valor, $checked)) {
             $checkbox->setAttribute('value', '1');

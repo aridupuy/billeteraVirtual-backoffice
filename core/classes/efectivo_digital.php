@@ -567,6 +567,33 @@ class Efectivo_digital extends Application {
                         $span2->appendChild($documento->createTextNode("Usuarios"));
                         $this->obtener_elementos_menu_lateral($site->get_ordi(), $ul, $documento);
                         break;
+                    case Permiso::PUEDE_MENU_MOVIMIENTOS:
+                        //sordi 20
+                        $a->setAttribute("class", "primary  reportes-movimientos");
+                        $a->setAttribute("type", "button");
+                        $a->setAttribute("name", "util_ii.home");
+//                        $img->setAttribute("src", "public/img/icono-rep-movimientos.svg");
+                        $span2->appendChild($documento->createTextNode("Movimientos"));
+                        $this->obtener_elementos_menu_lateral($site->get_ordi(), $ul, $documento);
+                        break;
+                    case Permiso::PUEDE_MENU_REPORTES:
+                        //sordi 20
+                        $a->setAttribute("class", "primary  reportes-movimientos");
+                        $a->setAttribute("type", "button");
+                        $a->setAttribute("name", "util_iii.home");
+//                        $img->setAttribute("src", "public/img/icono-rep-movimientos.svg");
+                        $span2->appendChild($documento->createTextNode("Reportes"));
+                        $this->obtener_elementos_menu_lateral($site->get_ordi(), $ul, $documento);
+                        break;
+                    case Permiso::PUEDE_MENU_ADMINISTRACION:
+                        //sordi 20
+                        $a->setAttribute("class", "primary  reportes-movimientos");
+                        $a->setAttribute("type", "button");
+                        $a->setAttribute("name", "util_iv.home");
+//                        $img->setAttribute("src", "public/img/icono-rep-movimientos.svg");
+                        $span2->appendChild($documento->createTextNode("Administracion"));
+                        $this->obtener_elementos_menu_lateral($site->get_ordi(), $ul, $documento);
+                        break;
                     case Permiso::PUEDE_MENU_RETIROS:
                         //sordi 30
                         $a->setAttribute("class", "primary  retiros-de-fondos");
