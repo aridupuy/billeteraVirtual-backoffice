@@ -141,7 +141,7 @@ main {
 }
 
 #main {
-  width: 85%;
+  width: 100%;
 }
 
 .encabezado-wrapper {
@@ -155,7 +155,7 @@ main {
   margin-bottom: 20px;
 }
 
-input:not([type=checkbox]), textarea, select {
+input:not([type=checkbox]), textarea {
   padding: 12px 15px;
   border: none;
   width: 100%;
@@ -164,10 +164,10 @@ input:not([type=checkbox]), textarea, select {
   color: #414141;
   -webkit-appearance: none;
 }
-input:not([type=checkbox]):focus, textarea:focus, select:focus {
+input:not([type=checkbox]):focus, textarea:focus {
   outline: none;
 }
-input:not([type=checkbox])::placeholder, textarea::placeholder, select::placeholder {
+input:not([type=checkbox])::placeholder, textarea::placeholder {
   color: #D0D0D0;
 }
 
@@ -176,10 +176,15 @@ input[type=checkbox] {
 }
 
 select {
-  background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat right;
-  background-size: 10px;
-  background-position: 95%;
-  color: #D0D0D0;
+  padding: 12px 15px;
+  border: none;
+  width: 100%;
+  background: #EDEDED;
+  border-radius: 5px;
+  color: #414141;
+}
+select:focus {
+  outline: none;
 }
 
 .btn-outline {
@@ -236,21 +241,48 @@ header {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   align-content: center;
   padding: 20px 2%;
   background: #007C68;
 }
 header .logo {
+  width: 70%;
+}
+header .logo img {
   max-width: 8%;
 }
 header .hamburger {
   color: #fff;
-  width: 15%;
+  width: 30%;
   font-size: 150%;
   padding-left: 10px;
-  display: none;
+  display: flex;
+  cursor: pointer;
+}
+header .logout-wrapper {
+  width: 30%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  align-content: center;
+}
+header .logout-wrapper .logout {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #fff;
+  color: #007C68;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
 }
 
 .encabezado {
@@ -296,10 +328,6 @@ header .hamburger {
 }
 
 @media screen and (max-width: 800px) {
-  header .hamburger {
-    display: block;
-  }
-
   header .logo {
     max-width: 30%;
   }
@@ -356,6 +384,21 @@ header .hamburger {
   height: 100vh;
   font-weight: 700;
   transition: all 0.3s ease-in-out;
+  transform: translateX(-100%);
+  position: fixed;
+  top: 0;
+}
+.sidebar.active {
+  transform: translateX(0);
+}
+.sidebar .cerrar-menu {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 20px 30px;
+  width: 100%;
+  cursor: pointer;
+  text-align: center;
 }
 .sidebar nav {
   display: flex;
@@ -434,9 +477,12 @@ table thead tr {
 }
 table thead th {
   padding: 20px;
+  text-align: center;
+  font-size: 90%;
 }
 table thead .checkbox {
   width: 20px;
+  text-align: center;
 }
 table tbody tr {
   border-bottom: 1px solid #D0D0D0;
@@ -447,6 +493,7 @@ table tbody tr:last-of-type {
 table tbody td {
   padding: 20px;
   font-size: 80%;
+  text-align: center;
 }
 table tbody .actions {
   display: flex;
@@ -455,6 +502,7 @@ table tbody .actions {
   justify-content: flex-start;
   align-items: center;
   align-content: center;
+  text-align: center;
 }
 table tbody .actions i {
   padding-left: 10px;
@@ -465,6 +513,83 @@ table tbody .actions i {
 }
 table tbody .actions i:hover {
   filter: brightness(70%);
+}
+
+#dataTable_wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  width: 100%;
+}
+#dataTable_wrapper .dataTables_actions {
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: center;
+  font-size: 90%;
+}
+#dataTable_wrapper .dataTables_actions select {
+  width: auto;
+  padding: 5px 0;
+  font-size: 90%;
+}
+#dataTable_wrapper .dataTables_actions button {
+  width: auto;
+  background: #007C68;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+}
+#dataTable_wrapper .dataTables_actions button:focus {
+  outline: none;
+}
+#dataTable_wrapper .dataTables_length {
+  width: 50%;
+  padding: 10px 20px;
+  font-size: 90%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  align-content: center;
+}
+#dataTable_wrapper .dataTables_length select {
+  width: auto;
+  padding: 5px 0;
+  font-size: 90%;
+}
+#dataTable_wrapper .dataTables_info {
+  padding: 10px 20px;
+  width: 50%;
+  background: #EDEDED;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: center;
+}
+#dataTable_wrapper .dataTables_paginate {
+  padding: 10px 20px;
+  width: 50%;
+  background: #EDEDED;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  align-content: center;
+}
+#dataTable_wrapper .dataTables_paginate .paginate_button {
+  margin: 0 10px;
+  cursor: pointer;
 }
 
 .search-bar {

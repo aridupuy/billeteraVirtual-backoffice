@@ -71,13 +71,13 @@ main
         background: $principal
         border-radius: 20px
 #main
-    width: 85%
+    width: 100%
 .encabezado-wrapper
     width: 100%
     +flexbox(row,wrap,space-between,center,center)
     margin-bottom: 20px
 // INPUTS
-input:not([type='checkbox']), textarea, select
+input:not([type='checkbox']), textarea
     padding: 12px 15px
     border: none
     width: 100%
@@ -92,10 +92,15 @@ input:not([type='checkbox']), textarea, select
 input[type='checkbox']
     cursor: pointer
 select
-    background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat right
-    background-size: 10px
-    background-position: 95%
-    color: $light-gray
+    padding: 12px 15px
+    border: none
+    width: 100%
+    background: $input-bg
+    border-radius: 5px
+    color: $dark-gray
+    &:focus
+        outline: none
+    
 .btn-outline
     border: 2px solid $principal
     background: transparent
@@ -141,17 +146,31 @@ select
         font-weight: $regular
 // Header
 header
-    +flexbox(row,wrap,flex-start,center,center)
+    +flexbox(row,wrap,space-between,center,center)
     padding: 20px 2%
     background: $principal
     .logo
-        max-width: 8%
+        width: 70%
+        img
+            max-width: 8%
     .hamburger
         color: $white
-        width: 15%
+        width: 30%
         font-size: 150%
         padding-left: 10px
-        display: none
+        display: flex
+        cursor: pointer
+    .logout-wrapper
+        width: 30%
+        +flexbox(row,wrap,flex-end,center,center)
+        .logout
+            width: 50px
+            height: 50px
+            border-radius: 50%
+            background: $white
+            color: $principal
+            cursor: pointer
+            +flexbox(row,wrap,center,center,center)
     
 .encabezado
     width: auto
@@ -184,8 +203,6 @@ header
     &.active
         display: flex
 @media screen and ( max-width: $break-md )
-    header .hamburger
-        display: block
     header .logo
         max-width: 30%
     .encabezado-wrapper .btn-outline

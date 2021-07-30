@@ -12,8 +12,11 @@ table
      
     th
       padding: 20px
+      text-align: center
+      font-size: 90%
     .checkbox
       width: 20px
+      text-align: center
 
   tbody
     tr
@@ -23,8 +26,10 @@ table
     td
       padding: 20px
       font-size: 80%
+      text-align: center
     .actions
       +flexbox(row,wrap,flex-start,center,center)
+      text-align: center
       i
         padding-left: 10px
         color: $principal
@@ -33,3 +38,44 @@ table
         cursor: pointer
         &:hover
           filter: brightness(70%)
+#dataTable_wrapper
+  +flexbox(row,wrap,space-between,center,center)
+  width: 100%
+  .dataTables_actions
+    width: 50%
+    +flexbox(row,wrap,flex-start,center,center)
+    font-size: 90%
+    select
+      width: auto
+      padding: 5px 0
+      font-size: 90%
+    button
+      width: auto
+      background: $principal
+      color: $white
+      padding: 5px 10px
+      border: none
+      &:focus
+        outline: none
+  .dataTables_length
+    width: 50%
+    padding: 10px 20px
+    font-size: 90%
+    +flexbox(row,wrap,flex-end,center,center)
+    select
+      width: auto
+      padding: 5px 0
+      font-size: 90%
+  .dataTables_info 
+    padding: 10px 20px
+    width: 50%
+    background: $table-bg
+    +flexbox(row,wrap,flex-start,center,center)
+  .dataTables_paginate
+    padding: 10px 20px
+    width: 50%
+    background: $table-bg
+    +flexbox(row,wrap,flex-end,center,center)
+    .paginate_button
+      margin: 0 10px
+      cursor: pointer
