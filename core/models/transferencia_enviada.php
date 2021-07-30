@@ -11,11 +11,12 @@
  *
  * @author ariel
  */
-class Transferencia_enviada extends Model {
+class Transferencia_enviada extends Model
+{
 
     //put your code here
     public static $id_tabla = "id_transferencia";
-    
+
     public $id_transferencia;
     public $id_destinatario;
     public $status;
@@ -24,124 +25,153 @@ class Transferencia_enviada extends Model {
     public $id_cuenta;
     public $id_usuario;
     public $respuesta_servicio;
-    public function get_id_transferencia() {
+    public function get_id_transferencia()
+    {
         return $this->id_transferencia;
     }
 
-    public function get_id_destinatario() {
+    public function get_id_destinatario()
+    {
         return $this->id_destinatario;
     }
 
-    public function get_status() {
+    public function get_status()
+    {
         return $this->status;
     }
 
-    public function get_monto() {
+    public function get_monto()
+    {
         return $this->monto;
     }
 
-    public function get_id_authstat() {
+    public function get_id_authstat()
+    {
         return $this->id_authstat;
     }
 
-    public function get_id_cuenta() {
+    public function get_id_cuenta()
+    {
         return $this->id_cuenta;
     }
 
-    public function get_id_usuario() {
+    public function get_id_usuario()
+    {
         return $this->id_usuario;
     }
 
-    public function get_respuesta_servicio() {
+    public function get_respuesta_servicio()
+    {
         return $this->respuesta_servicio;
     }
 
-    public function set_id_transferencia($id_transferencia) {
+    public function set_id_transferencia($id_transferencia)
+    {
         $this->id_transferencia = $id_transferencia;
         return $this;
     }
 
-    public function set_id_destinatario($id_destinatario) {
+    public function set_id_destinatario($id_destinatario)
+    {
         $this->id_destinatario = $id_destinatario;
         return $this;
     }
 
-    public function set_status($status) {
+    public function set_status($status)
+    {
         $this->status = $status;
         return $this;
     }
 
-    public function set_monto($monto) {
+    public function set_monto($monto)
+    {
         $this->monto = $monto;
         return $this;
     }
 
-    public function set_id_authstat($id_authstat) {
+    public function set_id_authstat($id_authstat)
+    {
         $this->id_authstat = $id_authstat;
         return $this;
     }
 
-    public function set_id_cuenta($id_cuenta) {
+    public function set_id_cuenta($id_cuenta)
+    {
         $this->id_cuenta = $id_cuenta;
         return $this;
     }
 
-    public function set_id_usuario($id_usuario) {
+    public function set_id_usuario($id_usuario)
+    {
         $this->id_usuario = $id_usuario;
         return $this;
     }
 
-    public function set_respuesta_servicio($respuesta_servicio) {
+    public function set_respuesta_servicio($respuesta_servicio)
+    {
         $this->respuesta_servicio = $respuesta_servicio;
         return $this;
     }
 
-    public function select_cashout($variables=false){
+    public function select_cashout($variables = false)
+    {
         unset($variables['status']);
         unset($variables['motivo']);
         unset($variables['dataTable_length']);
         unset($variables['checkbox_todo']);
         unset($variables['selector_']);
-        
+
         if (isset($variables['id_transferencia'])) {
             $variables['a.id_transferencia'] = $variables['id_transferencia'];
             unset($variables['id_transferencia']);
+        }else{
+            $and = "WHERE TRUE ";
         }
 
-        $and="";
-        if(isset($variables['email'])){
-            $and= "OR e.email ilike '%".$variables['email']."%'";
+        $and = "";
+
+        if (isset($variables['email'])) {
+            $and .= "AND (e.email like '%" . $variables['email'] . "%') OR (b.email like '%" . $variables['email'] . "%') ";
             unset($variables['email']);
         }
 
         if (isset($variables['monto_desde']) || isset($variables['monto_hasta'])) {
-            if(isset($variables['monto_desde']) && isset($variables['monto_hasta'])){
-                $and= "WHERE a.monto BETWEEN ".$variables['monto_desde']." and ".$variables['monto_hasta'];
-            }if(isset($variables['monto_desde']) && !isset($variables['monto_hasta'])){
-                $and= "WHERE a.monto >= ".$variables['monto_desde'];
-            }else{
-                $and= "WHERE a.monto <= ".$variables['monto_hasta'];
+            if (isset($variables['monto_desde']) && isset($variables['monto_hasta'])) {
+                $and .= "AND a.monto >= " . $variables['monto_desde'] . " AND a.monto <=" . $variables['monto_hasta'] . " ";
             }
-            
+            if (isset($variables['monto_hasta']) === false) {
+                $and .= "AND a.monto >= " . $variables['monto_desde'] . " ";
+            }
+            if (isset($variables['monto_desde']) === false){
+                $and .= "AND a.monto <= " . $variables['monto_hasta'] . " ";
+            }
+
             unset($variables['monto_desde']);
             unset($variables['monto_hasta']);
         }
 
         if (isset($variables['fecha_desde']) || isset($variables['fecha_hasta'])) {
-            if(isset($variables['fecha_desde']) && isset($variables['fecha_hasta'])){
-                $and= "WHERE a.fecha_gen BETWEEN '".$variables['fecha_desde']."' and '".$variables['fecha_hasta']."'";
-            }if(isset($variables['fecha_desde']) && !isset($variables['fecha_hasta'])){
-                $and= "WHERE a.fecha_gen >= '".$variables['fecha_desde']."'";
-            }else{
-                $and= "WHERE a.fecha_gen <= '".$variables['fecha_hasta']."'";
+            if (isset($variables['fecha_desde']) && isset($variables['fecha_hasta'])) {
+                $and .= "AND a.fecha_gen >= '" . $variables['fecha_desde'] . "' and a.fecha_gen <= '" . $variables['fecha_hasta'] . "' ";
             }
-            
+            if (isset($variables['fecha_hasta']) === false) {
+                $and .= "AND a.fecha_gen >= '" . $variables['fecha_desde'] . "' ";
+            }
+            if (isset($variables['fecha_desde']) === false) {
+                $and .= "AND a.fecha_gen <= '" . $variables['fecha_hasta'] . "' ";
+            }
+
             unset($variables['fecha_desde']);
             unset($variables['fecha_hasta']);
         }
 
+        if (isset($variables['cbucvu'])) {
+            $and .= "AND b.cvu ilike '%" . $variables['cbucvu'] . "%' OR b.cbu ilike '%" . $variables['cbucvu'] . "%' ";
+            unset($variables['cbucvu']);
+        }
+
         $filtros = self::preparar_filtros($variables);
-        
+
         //Falta Referencia y Motivo en CashOut
         $sql = "SELECT a.id_transferencia,a.fecha_gen,e.email as email_origen,c.cuil as cuil_origen,a.monto,a.status,b.email as email_destino ,b.cvu,b.cbu,b.alias,b.nombre,b.apellido,b.cuit as cuit_destino,b.nombre_banco,b.cod_banco 
         from ef_transferencia_enviada
@@ -153,7 +183,6 @@ class Transferencia_enviada extends Model {
         echo $sql;
         // var_dump($sql);
         // exit;
-        return self::execute_select($sql,$variables,10000);
+        return self::execute_select($sql, $variables, 10000);
     }
-
 }
