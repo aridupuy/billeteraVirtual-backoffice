@@ -125,13 +125,11 @@ class Transferencia_enviada extends Model
             $variables['a.id_transferencia'] = $variables['id_transferencia'];
             unset($variables['id_transferencia']);
         }else{
-            $and = "WHERE TRUE ";
+            $and = "WHERE true ";
         }
 
-        $and = "";
-
         if (isset($variables['email'])) {
-            $and .= "AND (e.email like '%" . $variables['email'] . "%') OR (b.email like '%" . $variables['email'] . "%') ";
+            $and .= "AND (e.email ilike '%" . $variables['email'] . "%' OR b.email ilike '%" . $variables['email'] . "%') ";
             unset($variables['email']);
         }
 
@@ -152,7 +150,7 @@ class Transferencia_enviada extends Model
 
         if (isset($variables['fecha_desde']) || isset($variables['fecha_hasta'])) {
             if (isset($variables['fecha_desde']) && isset($variables['fecha_hasta'])) {
-                $and .= "AND a.fecha_gen >= '" . $variables['fecha_desde'] . "' and a.fecha_gen <= '" . $variables['fecha_hasta'] . "' ";
+                $and .= "AND a.fecha_gen >= '" . $variables['fecha_desde'] . "' AND a.fecha_gen <= '" . $variables['fecha_hasta'] . "' ";
             }
             if (isset($variables['fecha_hasta']) === false) {
                 $and .= "AND a.fecha_gen >= '" . $variables['fecha_desde'] . "' ";
@@ -166,7 +164,7 @@ class Transferencia_enviada extends Model
         }
 
         if (isset($variables['cbucvu'])) {
-            $and .= "AND b.cvu ilike '%" . $variables['cbucvu'] . "%' OR b.cbu ilike '%" . $variables['cbucvu'] . "%' ";
+            $and .= "OR b.cvu ilike '%" . $variables['cbucvu'] . "%' OR b.cbu ilike '%" . $variables['cbucvu'] . "%' ";
             unset($variables['cbucvu']);
         }
 

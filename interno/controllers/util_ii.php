@@ -119,7 +119,7 @@ class Util_ii extends Controller {
     private function preparar_array(ADORecordSet $recordset, $desde_registro, $hasta_registro) {
 
         $matriz = array();
-        $labels = array('Nro', 'Fecha y Hora', 'Email Origen', 'Cuil Origen', 'Monto', 'Estado', 'Mensaje', 'Email Destino', 'CVU', 'CBU', 'Alias', 'Nombre', 'Apellido', 'Cuit Destino', 'Banco', 'Cod Banco');
+        $labels = array('Nro', 'Fecha y Hora', 'Email Origen', 'Cuil Origen', 'Monto', 'Estado', 'Mensaje', 'Email Destino', 'CVU', 'CBU', 'Alias', 'Nombre', 'Apellido', 'Cuit Destino', 'Banco');
         if (!$recordset or $recordset->RowCount() == 0) {
             return array($matriz, $labels);
         }
@@ -145,7 +145,6 @@ class Util_ii extends Controller {
                 $array[] = $registro['apellido'];
                 $array[] = $registro['cuit_destino'];
                 $array[] = $registro['nombre_banco'];
-                $array[] = $registro['cod_banco'];
                 $matriz[] = $array;
             }
             $desde_registro++;
