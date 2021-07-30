@@ -1,22 +1,10 @@
 //MENU DESPLEGABLE
 $(function desplegableMobile() {
-  var contador = 1;
-
   $('.hamburger').click(function () {
-    if (contador == 1) {
-      $('.sidebar').css('transform', 'translateX(0%');
-
-      contador = 0;
-    } else {
-      contador = 1;
-      $('.sidebar').css('transform', 'translateX(-100%)');
-
-
-    }
+    $('.sidebar').toggleClass("active");
   });
   $('.cerrar-menu').click(function () {
-    $('.sidebar').css('transform', 'translateX(-100%)');
-    contador = 1;
+    $('.sidebar').toggleClass("active");
   });
 });
 $(function triggerPopup() {

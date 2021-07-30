@@ -254,6 +254,7 @@ header .hamburger {
   font-size: 150%;
   padding-left: 10px;
   display: flex;
+  cursor: pointer;
 }
 header .logout-wrapper {
   width: 30%;
@@ -381,6 +382,9 @@ header .logout-wrapper .logout {
   transform: translateX(-100%);
   position: fixed;
   top: 0;
+}
+.sidebar.active {
+  transform: translateX(0);
 }
 .sidebar .cerrar-menu {
   color: #fff;
