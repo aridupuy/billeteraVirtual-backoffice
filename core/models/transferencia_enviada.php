@@ -115,7 +115,6 @@ class Transferencia_enviada extends Model
 
     public function select_cashout($variables = false)
     {
-        unset($variables['status']);
         unset($variables['motivo']);
         unset($variables['dataTable_length']);
         unset($variables['checkbox_todo']);
@@ -131,6 +130,21 @@ class Transferencia_enviada extends Model
         if (isset($variables['email'])) {
             $and .= "AND (e.email ilike '%" . $variables['email'] . "%' OR b.email ilike '%" . $variables['email'] . "%') ";
             unset($variables['email']);
+        }
+
+        if (isset($variables['nombre'])) {
+            $and .= "AND (b.nombre ilike '%" . $variables['nombre'] . "%')";
+            unset($variables['nombre']);
+        }
+
+        if (isset($variables['apellido'])) {
+            $and .= "AND (b.apellido ilike '%" . $variables['apellido'] . "%')";
+            unset($variables['apellido']);
+        }
+
+        if (isset($variables['status'])) {
+            $and .= "AND (a.status ilike '%" . $variables['status'] . "%')";
+            unset($variables['status']);
         }
 
         if (isset($variables['monto_desde']) || isset($variables['monto_hasta'])) {

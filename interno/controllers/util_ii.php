@@ -39,6 +39,7 @@ class Util_ii extends Controller {
         }
         $controller_name = strtolower(get_class($this));
         $recordset = Transferencia_enviada::select_cashout($variables);
+        // $recordset =Transaccion::select_min($variables);
         $filters = $this->preparar_filtros($variables);
         $form = $this->view->createElement('form');
         $form->setAttribute('id', 'miFormulario');

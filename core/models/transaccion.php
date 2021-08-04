@@ -137,32 +137,70 @@ class Transaccion extends \Model{
       return $this;
   }
 
-  public static function select_min($id_cuenta,$filtros=null){
-      $where = " id_cuenta = ? ";
-      $variables=array($id_cuenta);
-      if(isset($filtros["desde"])){
-          $where.=" and fecha_gen>=?";
-          $desde = DateTime::createFromFormat("Ymd", $filtros["desde"]);
-          if(!$desde){
-            $formato = explode("T",  $filtros["desde"]);
-//            var_dump($formato);
-            $desde = DateTime::createFromFormat("Y-m-d",$formato[0]);
-//            var_dump($desde);
-          }
-          $variables[]=$desde->format("Y-m-d");
-      }
-      if(isset($filtros["hasta"])){
-          $where.=" and fecha_gen<=?";
-          $hasta= DateTime::createFromFormat("Ymd", $filtros["hasta"]);
-          if(!$hasta){
-            $formato = explode("T", $filtros["hasta"]);
-            $hasta= DateTime::createFromFormat("Y-m-d", $formato[0]);
-          }
-          $variables[]=$hasta->format("Y-m-d");
-      }
-      $sql = "select * from ef_transaccion A left join ho_authstat B on A.id_authstat = B.id_authstat
-               left join ef_mp C on A.id_mp = C.id_mp
-               where $where order by 1 desc ";
-      return self::execute_select($sql,$variables);
+  public function select_min($variables = false,$tabla){
+    
+    if($tabla == 'ef_transferencia_enviada'){
+      $sql = "SELECT * FROM ef_transaccion A 
+LEFT JOIN ho_authstat B on A.id_authstat = B.id_authstat
+LEFT JOIN ef_mp C on A.id_mp = C.id_mp
+LEFT JOIN ef_transferencia_enviada D on A.id_referencia = D.id_transferencia
+LEFT JOIN ho_entidad E on A.id_entidad = E.id_entidad
+LEFT JOIN ef_cuenta F on A.id_cuenta = F.id_cuenta
+LEFT JOIN ef_usuario G on F.id_usuario_titular = G.id_usuario
+LEFT JOIN ef_destinatario H on D.id_destinatario = H.id_destinatario
+left join ef_gateway_transaccion I on A.id_transaccion_gateway = I.id_transaccion";
+    }else{
+      $sql = "SELECT * FROM ef_transaccion A 
+LEFT JOIN ho_authstat B on A.id_authstat = B.id_authstat
+LEFT JOIN ef_mp C on A.id_mp = C.id_mp
+LEFT JOIN ef_transferencia_recibida D on A.id_referencia = D.id_transferencia
+LEFT JOIN ho_entidad E on A.id_entidad = E.id_entidad
+LEFT JOIN ef_cuenta F on A.id_cuenta = F.id_cuenta
+LEFT JOIN ef_usuario G on F.id_usuario_titular = G.id_usuario
+LEFT JOIN ef_destinatario H on D.id_destinatario = H.id_destinatario
+left join ef_gateway_transaccion I on A.id_transaccion_gateway = I.id_transaccion";
+    }
   }
+
+//   public static function select_min($id_cuenta,$filtros=null){
+//     unset($variables['motivo']);
+//     unset($variables['dataTable_length']);
+//     unset($variables['checkbox_todo']);
+//     unset($variables['selector_']);
+
+
+//       $where = " id_cuenta = ? ";
+//       $variables=array($id_cuenta);
+//       if(isset($filtros["desde"])){
+//           $where.=" and fecha_gen>=?";
+//           $desde = DateTime::createFromFormat("Ymd", $filtros["desde"]);
+//           if(!$desde){
+//             $formato = explode("T",  $filtros["desde"]);
+// //            var_dump($formato);
+//             $desde = DateTime::createFromFormat("Y-m-d",$formato[0]);
+// //            var_dump($desde);
+//           }
+//           $variables[]=$desde->format("Y-m-d");
+//       }
+//       if(isset($filtros["hasta"])){
+//           $where.=" and fecha_gen<=?";
+//           $hasta= DateTime::createFromFormat("Ymd", $filtros["hasta"]);
+//           if(!$hasta){
+//             $formato = explode("T", $filtros["hasta"]);
+//             $hasta= DateTime::createFromFormat("Y-m-d", $formato[0]);
+//           }
+//           $variables[]=$hasta->format("Y-m-d");
+//       }
+
+//       /* SELECT * from ef_transaccion A 
+// left join ho_authstat B on A.id_authstat = B.id_authstat
+// left join ef_mp C on A.id_mp = C.id_mp
+// left join ef_transferencia_recibida D on A.id_referencia = D.id_transferencia
+// left join ho_entidad E on A.id_entidad = E.id_entidad */
+
+//       $sql = "select * from ef_transaccion A left join ho_authstat B on A.id_authstat = B.id_authstat
+//                left join ef_mp C on A.id_mp = C.id_mp
+//                where $where order by 1 desc ";
+//       return self::execute_select($sql,$variables);
+//   }
 }
