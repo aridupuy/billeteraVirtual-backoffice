@@ -38,8 +38,8 @@ class Util_ii extends Controller {
             unset($variables['pagina']);
         }
         $controller_name = strtolower(get_class($this));
-        $recordset = Transferencia_enviada::select_cashout($variables);
-        // $recordset =Transaccion::select_min($variables);
+        // $recordset = Transferencia_enviada::select_cashout($variables);
+        $recordset =Transaccion::select_min($variables,'ef_transferencia_enviada');
         $filters = $this->preparar_filtros($variables);
         $form = $this->view->createElement('form');
         $form->setAttribute('id', 'miFormulario');
@@ -120,7 +120,7 @@ class Util_ii extends Controller {
     private function preparar_array(ADORecordSet $recordset, $desde_registro, $hasta_registro) {
 
         $matriz = array();
-        $labels = array('Nro', 'Fecha y Hora', 'Email Origen', 'Cuil Origen', 'Monto', 'Estado', 'Mensaje', 'Email Destino', 'CVU', 'CBU', 'Alias', 'Nombre', 'Apellido', 'Cuit Destino', 'Banco');
+        $labels = array('Nro', 'Fecha y Hora', 'Titular', 'Email Origen', 'Doc/Cuil', 'Monto', 'MP', 'Estado', 'Motivo', 'Referencia', 'Email Destino', 'CVU', 'CBU', 'Alias', 'Nombre', 'Apellido', 'Cuit Destino', 'Banco', 'Cod Banco');
         if (!$recordset or $recordset->RowCount() == 0) {
             return array($matriz, $labels);
         }
@@ -130,14 +130,16 @@ class Util_ii extends Controller {
             if ($registro = $recordset->FetchRow()) {
                 $array = array();
                 
-                $array[] = $registro['id_transferencia'];
+                $array[] = $registro['id_transaccion'];
                 $array[] = $registro['fecha_gen'];
+                $array[] = $registro['titular'];
                 $array[] = $registro['email_origen'];
-                $array[] = $registro['cuil_origen'];
+                $array[] = $registro['documento'];
                 $array[] = $registro['monto'];
+                $array[] = $registro['mp'];
                 $array[] = $registro['status'];
                 $array[] = $registro['motivo'];
-                $array[] = $registro['referencia'];
+                $array[] = $registro['concepto'];
                 $array[] = $registro['email_destino'];
                 $array[] = $registro['cvu'];
                 $array[] = $registro['cbu'];
@@ -146,6 +148,7 @@ class Util_ii extends Controller {
                 $array[] = $registro['apellido'];
                 $array[] = $registro['cuit_destino'];
                 $array[] = $registro['nombre_banco'];
+                $array[] = $registro['cod_banco'];
                 $matriz[] = $array;
             }
             $desde_registro++;
