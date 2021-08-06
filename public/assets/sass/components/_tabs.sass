@@ -35,15 +35,15 @@
       content: '\f023'
 
     &.active
-      background: $principal
-      color: $white
+      background: $table-bg
+      color: $dark-gray
       &::before
-        color: $white
+        color: $dark-gray
 
 .tab-content
   margin: 0
   display: grid
-  grid-template-columns: repeat(4, 1fr)
+  grid-template-columns: repeat(3, 1fr)
   grid-gap: 10px
   .cardbox
     +flexbox(row,wrap,center,center,flex-start)
@@ -52,7 +52,7 @@
     width: 100%
     border-radius: 10px
     &.multiple
-      background: $white
+      background: $filters-bg
       padding: 0
       .cardbox
         margin-bottom: 10px
@@ -76,10 +76,27 @@
         width: 100%
         display: block
         padding: 2px 0
+    .condicion-alcanzada
+      position: relative
+      .riesgo
+        border-top: 1px solid $border
+        padding: 15px 0
+        width: 100%
+        margin-top: 50px
+        +flexbox(row,wrap,space-between,center,center)
+        h4
+          font-weight: $medium
+          width: 50%
+        .nivel
+          color: $principal
+          font-size: 160%
+          font-weight: $regular
+          width: 50%
+          text-align: right
     .documento
       background: $white
       border-radius: 5px
-      padding: 15px 25px
+      padding: 15px 0px
       margin: 5px 0
       width: 100%
       position: relative
@@ -97,8 +114,8 @@
         font-family: 'Font Awesome 5 Pro'
         color: $dark-gray
         font-weight: $bold
-        padding-left: 20%
-        right: 15px
+        position: absolute
+        right: 0
         transition: all 0.3s ease-in-out
       &:hover
         &::after
@@ -107,5 +124,15 @@
       text-align: left
       width: 100%
       color: $secundario
-      font-size: 160%
+      font-size: 210%
       font-weight: $regular
+    .blanqueo-pass
+      border: 2px solid $principal
+      border-radius: 5px
+      padding: 10px 25px
+      font-weight: $semi-bold
+      color: $white
+      background: $principal
+      text-align: center
+      cursor: pointer
+      width: 100%
