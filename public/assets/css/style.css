@@ -393,11 +393,10 @@ header .logout-wrapper .logout {
   align-content: flex-start;
   width: 100%;
 }
-.sidebar nav a {
+.sidebar nav .principal {
   color: #fff;
   text-decoration: none;
   font-weight: 700;
-  padding: 20px 30px;
   width: 100%;
   transition: all 0.3s ease-in-out;
   cursor: pointer;
@@ -408,13 +407,7 @@ header .logout-wrapper .logout {
   align-items: center;
   align-content: center;
 }
-.sidebar nav a:hover {
-  background: rgba(0, 124, 103, 0.4);
-}
-.sidebar nav a.active {
-  background: rgba(0, 124, 103, 0.4);
-}
-.sidebar nav a .icon {
+.sidebar nav .principal .icon {
   width: 20%;
   display: flex;
   flex-direction: row;
@@ -422,6 +415,27 @@ header .logout-wrapper .logout {
   justify-content: center;
   align-items: center;
   align-content: center;
+}
+.sidebar nav .principal .button, .sidebar nav .principal .dropdown {
+  padding: 15px 15px;
+  width: 100%;
+}
+.sidebar nav .principal .button:hover, .sidebar nav .principal .dropdown:hover {
+  background: rgba(0, 124, 103, 0.4);
+}
+.sidebar nav .principal .secundario {
+  width: 100%;
+  background: #007C68;
+  display: none;
+}
+.sidebar nav .principal .secundario.active {
+  display: block;
+}
+.sidebar nav .principal .secundario .button {
+  padding: 15px 15px;
+}
+.sidebar nav .principal .secundario .button:hover {
+  background: rgba(0, 124, 103, 0.4);
 }
 .sidebar .logout {
   color: #fff;

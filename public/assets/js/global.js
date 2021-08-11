@@ -18,6 +18,9 @@ $(function desplegableMobile() {
     $('.sidebar').css('transform', 'translateX(-100%)');
     contador = 1;
   });
+  $(".principal .dropdown").click(function () {
+    $(this).next().toggleClass("active")
+  })
 });
 $(function triggerPopup() {
   $('.trigger-popup').click(function () {

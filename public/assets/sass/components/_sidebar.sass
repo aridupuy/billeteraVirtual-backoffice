@@ -21,22 +21,34 @@
   nav
     +flexbox(column,wrap,flex-start,flex-start,flex-start)
     width: 100%
-    a
+    .principal
       color: $white
       text-decoration: none
       font-weight: $bold
-      padding: 20px 30px
       width: 100%
       transition: all 0.3s ease-in-out
       cursor: pointer
       +flexbox(row,wrap,flex-start,center,center)
-      &:hover
-        background: rgba(0, 124, 103, 0.4)
-      &.active
-        background: rgba(0, 124, 103, 0.4)
+     
       .icon
         width: 20%
         +flexbox(row,wrap,center,center,center)
+      .button, .dropdown
+        padding: 15px 15px
+        width: 100%
+        &:hover
+          background: rgba(0, 124, 103, 0.4)
+      .secundario
+        width: 100%
+        background: $principal
+        display: none
+        &.active
+          display: block
+        .button
+          padding: 15px 15px
+          &:hover
+            background: rgba(0, 124, 103, 0.4)
+
   .logout 
     color: $white
     text-decoration: none
