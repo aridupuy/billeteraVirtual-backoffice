@@ -1,0 +1,28 @@
+.popup-wrapper
+    width: 100%
+    min-height: 150vh
+    max-height: 300vh
+    background: rgba(0,0,0,0.3)
+    display: none
+    position: absolute
+    top: 0%
+    left: 0
+    .popup
+        box-shadow: $box-shadow
+        border-radius: 5px
+        padding: 20px
+        background: $filters-bg
+        width: 50vw
+        height: auto
+        position: absolute
+        top: 10%
+        left: 25%
+        margin: 0 auto
+        .contenedor
+            box-shadow: none
+            &.filtros
+              +flexbox(row,wrap,center,center,center)
+              .filtros-actions
+                justify-content: center
+    &.active
+        display: flex

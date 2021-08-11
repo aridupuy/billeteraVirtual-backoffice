@@ -27,6 +27,13 @@ table
       padding: 20px
       font-size: 80%
       text-align: center
+    .btn-action
+      background: $medium-gray
+      padding: 5px 15px
+      color: $white
+      margin: 5px 0
+      cursor: pointer
+      border-radius: 5px
     .actions
       +flexbox(row,wrap,flex-start,center,center)
       text-align: center
@@ -38,6 +45,36 @@ table
         cursor: pointer
         &:hover
           filter: brightness(70%)
+      .activo
+        border-radius: 20px
+        padding: 5px 15px
+        background: $principal
+        color: $white
+      .inactivo
+        border-radius: 20px
+        padding: 5px 15px
+        background: $action-violeta
+        color: $white
+      .pre-registro
+        border-radius: 20px
+        padding: 5px 15px
+        background: $action-naranja
+        color: $white
+      .pendiente
+        border-radius: 20px
+        padding: 5px 15px
+        background: $action-celeste
+        color: $white
+      .rechazado
+        border-radius: 20px
+        padding: 5px 15px
+        background: $action-rojo
+        color: $white
+      .suspendido
+        border-radius: 20px
+        padding: 5px 15px
+        background: $action-amarillo
+        color: $dark-gray
 #dataTable_wrapper
   +flexbox(row,wrap,space-between,center,center)
   width: 100%
@@ -79,3 +116,9 @@ table
     .paginate_button
       margin: 0 10px
       cursor: pointer
+      color: $dark-gray
+      &.current
+        background: $principal
+        color: $white
+        padding: 5px 10px
+        border-radius: 50%

@@ -1,8 +1,9 @@
 .usuarios_interno
   .usuario-info
-    width: 100%
+    width: 59%
     +flexbox(row,wrap,flex-start,center,center)
     margin-bottom: 30px
+    background: $white
     .avatar
       width: 100px
       height: 100px
@@ -22,28 +23,39 @@
       .link
         padding-left: 20px
         width: auto
-      .cardbox
+      .data-user
         margin-top: 15px
         +flexbox(row,wrap,flex-start,center,center)
         background: $body-bg
-        padding: 10px 15px
         color: $dark-gray
         border-radius: 5px
-        width: 80%
-        position: relative
+        width: 60%
         .dato
-          margin: 5px 10px
+          margin: 7px 27px 7px 0px
           &.mitad
             width: 20%
-    .payment-info
-      width: 30%
-      +flexbox(row,wrap,flex-start,flex-start,flex-start)
-      .qrcode
-        width: 135px
-        height: 135px
-        img
-          width: 100%
-          height: 100%
-          object-fit: contain
-      .cvu
-        padding-left: 20px
+    .user-actions
+      +flexbox(column,wrap,flex-end,flex-end,flex-end)
+      width: 25%
+      .suspender
+        color: $action-violeta
+        padding: 2px 0
+      .bloquear
+        color: $action-rojo
+        padding: 2px 0
+      .cerrar-sesion
+        color: $action-negro
+        padding: 2px 0
+  .payment-info
+    width: 39%
+    +flexbox(row,wrap,flex-start,flex-start,flex-start)
+    background: $white
+    .qrcode
+      width: 100px
+      height: 100px
+      img
+        width: 100%
+        height: 100%
+        object-fit: contain
+    .cvu
+      padding-left: 20px
