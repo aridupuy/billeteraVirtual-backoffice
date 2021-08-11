@@ -40,6 +40,7 @@ body {
   font-size: 14px;
   color: #606060;
   background: #fff;
+  overflow: hidden;
 }
 
 ::-moz-selection {
@@ -63,6 +64,10 @@ main {
   justify-content: flex-start;
   align-items: flex-start;
   align-content: flex-start;
+  height: 100vh;
+  position: relative;
+  margin: 0 auto;
+  overflow: scroll;
 }
 
 .main-content {
@@ -142,6 +147,7 @@ main {
 
 #main {
   width: 100%;
+  min-height: 150vh;
 }
 
 .encabezado-wrapper {
@@ -244,14 +250,15 @@ header {
   justify-content: space-between;
   align-items: center;
   align-content: center;
-  padding: 20px 2%;
+  padding: 10px 2%;
   background: #007C68;
 }
 header .logo {
-  width: 70%;
+  width: 40%;
+  text-align: center;
 }
 header .logo img {
-  max-width: 8%;
+  max-width: 15%;
 }
 header .hamburger {
   color: #fff;
@@ -271,8 +278,8 @@ header .logout-wrapper {
   align-content: center;
 }
 header .logout-wrapper .logout {
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background: #fff;
   color: #007C68;
@@ -301,30 +308,6 @@ header .logout-wrapper .logout {
 .encabezado .total-count {
   padding-left: 10px;
   width: auto;
-}
-
-.popup-wrapper {
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.3);
-  display: none;
-  position: absolute;
-  top: 0%;
-}
-.popup-wrapper .popup {
-  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
-  padding: 20px;
-  background: #F8F8F8;
-  width: 50vw;
-  height: 50vh;
-  position: absolute;
-  top: 25%;
-  left: 25%;
-  margin: 0 auto;
-}
-.popup-wrapper.active {
-  display: flex;
 }
 
 @media screen and (max-width: 800px) {
@@ -494,6 +477,14 @@ table tbody td {
   padding: 20px;
   font-size: 80%;
   text-align: center;
+}
+table tbody .btn-action {
+  background: #606060;
+  padding: 5px 15px;
+  color: #fff;
+  margin: 5px 0;
+  cursor: pointer;
+  border-radius: 5px;
 }
 table tbody .actions {
   display: flex;
@@ -949,6 +940,46 @@ table tbody .actions .suspendido {
   text-align: center;
   cursor: pointer;
   width: 100%;
+}
+
+.popup-wrapper {
+  width: 100%;
+  min-height: 150vh;
+  max-height: 300vh;
+  background: rgba(0, 0, 0, 0.3);
+  display: none;
+  position: absolute;
+  top: 0%;
+  left: 0;
+}
+.popup-wrapper .popup {
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 20px;
+  background: #F8F8F8;
+  width: 50vw;
+  height: auto;
+  position: absolute;
+  top: 10%;
+  left: 25%;
+  margin: 0 auto;
+}
+.popup-wrapper .popup .contenedor {
+  box-shadow: none;
+}
+.popup-wrapper .popup .contenedor.filtros {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+.popup-wrapper .popup .contenedor.filtros .filtros-actions {
+  justify-content: center;
+}
+.popup-wrapper.active {
+  display: flex;
 }
 
 .usuarios_interno .usuario-info {
