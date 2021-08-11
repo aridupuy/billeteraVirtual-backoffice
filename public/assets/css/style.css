@@ -148,6 +148,7 @@ main {
 #main {
   width: 100%;
   min-height: 150vh;
+  padding-bottom: 80px;
 }
 
 .encabezado-wrapper {

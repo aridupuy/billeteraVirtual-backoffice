@@ -46,14 +46,14 @@
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
     integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
   <!-- Carga de scripts -->
-<!--  <script type="text/javascript" src="public/jquery-1.11.2.min.js"></script>
+  <!--  <script type="text/javascript" src="public/jquery-1.11.2.min.js"></script>
   <script type="text/javascript" src="public/plugins/jquery-1.11.3.min.js"></script>-->
   <!--<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>-->
   <!--<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-messaging.js"></script>-->
   <!--<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>-->
   <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>-->
   <!--<script src="public/js/firebase-messaging.js"></script>-->
-<!--  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+  <!--  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
   <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>-->
   <link rel="manifest" href="public/js/manifest.json" />
@@ -72,13 +72,16 @@
   <script src="public/assets/js/global.js"></script>
   <script type="text/javascript" src="public/js/global.js"></script>
   <script type="text/javascript" src="public/efectivo_digital.js"></script>
-  
+
 </head>
 <header>
   <div class="hamburger">
     <i class="fas fa-bars"></i>
   </div>
-  <img src="public/assets/img/logo.svg" alt="" />
+  <div class="logo">
+    <img src="public/assets/img/logo.svg" alt="" />
+  </div>
+
   <div class="logout-wrapper">
     <div class="logout header-logout"><i class="fas fa-sign-out-alt"></i></div>
   </div>
@@ -90,7 +93,7 @@
       <div class="cerrar-menu"><i class="fas fa-times"></i> Cerrar menu</div>
       <!-- Carga de menu -->
       <nav id="menu_principal"></nav>
-<!--      <a class="logout header-logout"><i class="fas fa-sign-out-alt"></i> Cerrar sesión
+      <!--      <a class="logout header-logout"><i class="fas fa-sign-out-alt"></i> Cerrar sesión
       </a>-->
     </aside>
     <!-- Carga de Main Div -->
@@ -110,19 +113,19 @@
     var port = location.port;
     var token = localStorage.getItem("abcd1478");
 
-//    $.post(
-//      "https://" +
-//      dominio +
-//      ":" +
-//      port +
-//      "/externo/script_landing_service.php", {
-//        token: token,
-//        metodo_service: "estadisticas_tenencias",
-//        fecha_desde: fecha,
-//        fecha_hasta: hasta,
-//        sentido_transaccion: "ingresos",
-//      }
-//    ).done(function (data) {});
+    //    $.post(
+    //      "https://" +
+    //      dominio +
+    //      ":" +
+    //      port +
+    //      "/externo/script_landing_service.php", {
+    //        token: token,
+    //        metodo_service: "estadisticas_tenencias",
+    //        fecha_desde: fecha,
+    //        fecha_hasta: hasta,
+    //        sentido_transaccion: "ingresos",
+    //      }
+    //    ).done(function (data) {});
     $(document).ready(function () {
       popLogout();
       $("#cerrar").click(function () {
