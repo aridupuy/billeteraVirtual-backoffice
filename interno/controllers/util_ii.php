@@ -169,13 +169,13 @@ class Util_ii extends Controller {
         }
         $filter->cargar("views/util_ii.filters.html");
 
-        // $recordset = Motivos::select();
-        // $motivo = $filter->getElementById("motivo");
-        // foreach ($recordset as $row) {
-        //     $option = $filter->createElement('option', $row['motivo']);
-        //     $option->setAttribute('value', $row['id_motivo']);
-        //     $motivo->appendChild($option);
-        // }
+        $recordset = Motivos::select();
+        $motivo = $filter->getElementById("motivo");
+        foreach ($recordset as $row) {
+            $option = $filter->createElement('option', $row['motivo']);
+            $option->setAttribute('value', $row['id_motivo']);
+            $motivo->appendChild($option);
+        }
         $filter->cargar_variables($variables);
         return $filter;
     }
