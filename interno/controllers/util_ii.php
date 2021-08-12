@@ -18,10 +18,12 @@ class Util_ii extends Controller{
                 $view = $this->home($variables);
                 break;
             case 'cash_out':
+                unset($variables['tipo_cash']);
                 Gestor_de_instancias::inicializar_instancia_actual();
                 $view = $this->home($variables, 'out');
                 break;
             case 'cash_in':
+                unset($variables['tipo_cash']);
                 Gestor_de_instancias::inicializar_instancia_actual();
                 $view = $this->home($variables, 'in');
                 break;
@@ -136,7 +138,7 @@ class Util_ii extends Controller{
         if ($tipo_cash == 'out') {
             $labels = array('Nro', 'Fecha y Hora', 'Titular', 'Email Origen', 'Doc/Cuil', 'Monto', 'MP', 'Estado', 'Motivo', 'Referencia', 'Email Destino', 'CVU', 'CBU', 'Alias', 'Nombre', 'Apellido', 'Cuit Destino', 'Banco', 'Cod Banco');
         } else {
-            $labels = array('Nro', 'Fecha y Hora', 'Titular', 'Email Origen', 'Doc/Cuil', 'Monto', 'MP', 'Estado', 'Motivo', 'Referencia', 'Email Destino', 'CVU', 'CBU', 'Alias', 'Nombre', 'Apellido', 'Cuit Destino', 'Banco', 'Cod Banco');
+            $labels = array('Nro', 'Fecha y Hora', 'Titular', 'Email', 'Doc/Cuil', 'Cuit Cliente', 'CVU Cliente', 'Monto', 'MP', 'Estado', 'Motivo', 'Nombre Pagador', 'CBU Pagador');
         }
 
         if (!$recordset or $recordset->RowCount() == 0) {
@@ -170,6 +172,20 @@ class Util_ii extends Controller{
                     $array[] = $registro['cod_banco'];
                     $matriz[] = $array;
                 } else {
+                    $array[] = $registro['id_transaccion'];
+                    $array[] = $registro['fecha_gen'];
+                    $array[] = $registro['titular'];
+                    $array[] = $registro['email'];
+                    $array[] = $registro['documento'];
+                    $array[] = $registro['cuit_cliente'];
+                    $array[] = $registro['cvu_cliente'];
+                    $array[] = $registro['monto'];
+                    $array[] = $registro['mp'];
+                    $array[] = $registro['status'];
+                    $array[] = $registro['concepto'];
+                    $array[] = $registro['nombre_pagador'];
+                    $array[] = $registro['cbu_pagador'];
+                    $matriz[] = $array;
                 }
             }
             $desde_registro++;
@@ -204,6 +220,7 @@ class Util_ii extends Controller{
         }
 
         $input_motivo = $filter->getElementById('tipo_cash');
+        $input_motivo->removeAttribute('value',$tipo_cash);
         $input_motivo->setAttribute('value',$tipo_cash);
 
         $filter->cargar_variables($variables);

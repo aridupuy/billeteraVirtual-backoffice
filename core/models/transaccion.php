@@ -234,15 +234,14 @@ class Transaccion extends \Model{
                 $filtros $and AND A.id_entidad IN (1,18,7,3) AND A.id_tipo_trans in (1)";
             break;
         case 'in':
-            $sql = "SELECT * FROM ef_transaccion A 
+            $sql = "SELECT A.id_transaccion,A.fecha_gen,F.titular,G.email,F.documento,D.cuit_cliente,D.cvu_cliente,A.monto,C.mp,D.status,A.concepto,D.nombre_pagador,D.cbu_pagador FROM ef_transaccion A 
                 LEFT JOIN ho_authstat B on A.id_authstat = B.id_authstat
                 LEFT JOIN ef_mp C on A.id_mp = C.id_mp
                 LEFT JOIN ef_transferencia_recibida D on A.id_referencia = D.id_transferencia
                 LEFT JOIN ho_entidad E on A.id_entidad = E.id_entidad
                 LEFT JOIN ef_cuenta F on A.id_cuenta = F.id_cuenta
                 LEFT JOIN ef_usuario G on F.id_usuario_titular = G.id_usuario
-                LEFT JOIN ef_destinatario H on D.id_destinatario = H.id_destinatario
-                left join ef_gateway_transaccion I on A.id_transaccion_gateway = I.id_transaccion $filtros $and";
+                $filtros $and AND A.id_tipo_trans IN (2,4,6)";
             break;
         
         default:
@@ -253,47 +252,5 @@ class Transaccion extends \Model{
     // var_dump($sql);
     // exit;
     return self::execute_select($sql, $variables, 10000);
-}
-
-//   public static function select_min($id_cuenta,$filtros=null){
-//     unset($variables['motivo']);
-//     unset($variables['dataTable_length']);
-//     unset($variables['checkbox_todo']);
-//     unset($variables['selector_']);
-
-
-//       $where = " id_cuenta = ? ";
-//       $variables=array($id_cuenta);
-//       if(isset($filtros["desde"])){
-//           $where.=" and fecha_gen>=?";
-//           $desde = DateTime::createFromFormat("Ymd", $filtros["desde"]);
-//           if(!$desde){
-//             $formato = explode("T",  $filtros["desde"]);
-// //            var_dump($formato);
-//             $desde = DateTime::createFromFormat("Y-m-d",$formato[0]);
-// //            var_dump($desde);
-//           }
-//           $variables[]=$desde->format("Y-m-d");
-//       }
-//       if(isset($filtros["hasta"])){
-//           $where.=" and fecha_gen<=?";
-//           $hasta= DateTime::createFromFormat("Ymd", $filtros["hasta"]);
-//           if(!$hasta){
-//             $formato = explode("T", $filtros["hasta"]);
-//             $hasta= DateTime::createFromFormat("Y-m-d", $formato[0]);
-//           }
-//           $variables[]=$hasta->format("Y-m-d");
-//       }
-
-//       /* SELECT * from ef_transaccion A 
-// left join ho_authstat B on A.id_authstat = B.id_authstat
-// left join ef_mp C on A.id_mp = C.id_mp
-// left join ef_transferencia_recibida D on A.id_referencia = D.id_transferencia
-// left join ho_entidad E on A.id_entidad = E.id_entidad */
-
-//       $sql = "select * from ef_transaccion A left join ho_authstat B on A.id_authstat = B.id_authstat
-//                left join ef_mp C on A.id_mp = C.id_mp
-//                where $where order by 1 desc ";
-//       return self::execute_select($sql,$variables);
-//   }
+  }
 }
