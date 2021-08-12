@@ -138,7 +138,6 @@ class Transaccion extends \Model{
   }
 
   public function select_min($variables = false,$tabla){
-    unset($variables['motivo']);
     unset($variables['dataTable_length']);
     unset($variables['checkbox_todo']);
     unset($variables['selector_']);
@@ -205,6 +204,16 @@ class Transaccion extends \Model{
         unset($variables['fecha_hasta']);
     }
 
+    if (isset($variables['motivo'])) {
+        $and .= "AND A.concepto ilike '%" . $variables['motivo'] . "%'";
+        unset($variables['motivo']);
+    }
+    
+    if (isset($variables['cuenta'])) {
+        $and .= "AND H.cod_banco ilike '%" . $variables['cuenta'] . "%'";
+        unset($variables['cuenta']);
+    }
+    
     if (isset($variables['cbucvu'])) {
         $and .= "OR H.cvu ilike '%" . $variables['cbucvu'] . "%' OR H.cbu ilike '%" . $variables['cbucvu'] . "%' ";
         unset($variables['cbucvu']);
@@ -212,26 +221,32 @@ class Transaccion extends \Model{
     
     $filtros = self::preparar_filtros($variables);
     
-    if($tabla == 'ef_transferencia_enviada'){
-        $sql = "SELECT A.id_transaccion,A.fecha_gen,F.titular,G.email as email_origen,F.documento,A.monto,C.mp,D.status,D.motivo,A.concepto,H.email as email_destino,H.cbu,H.cvu,H.alias,H.nombre,H.apellido,H.cuit as cuit_destino,H.nombre_banco,H.cod_banco FROM ef_transaccion A 
-        LEFT JOIN ho_authstat B on A.id_authstat = B.id_authstat
-        LEFT JOIN ef_mp C on A.id_mp = C.id_mp
-        LEFT JOIN ef_transferencia_enviada D on A.id_referencia = D.id_transferencia
-        LEFT JOIN ho_entidad E on A.id_entidad = E.id_entidad
-        LEFT JOIN ef_cuenta F on A.id_cuenta = F.id_cuenta
-        LEFT JOIN ef_usuario G on F.id_usuario_titular = G.id_usuario
-        LEFT JOIN ef_destinatario H on D.id_destinatario = H.id_destinatario
-        $filtros $and AND A.id_entidad IN (1,18,7,3) AND A.id_tipo_trans in (1)";
-    }else{
-        $sql = "SELECT * FROM ef_transaccion A 
-        LEFT JOIN ho_authstat B on A.id_authstat = B.id_authstat
-        LEFT JOIN ef_mp C on A.id_mp = C.id_mp
-        LEFT JOIN ef_transferencia_recibida D on A.id_referencia = D.id_transferencia
-        LEFT JOIN ho_entidad E on A.id_entidad = E.id_entidad
-        LEFT JOIN ef_cuenta F on A.id_cuenta = F.id_cuenta
-        LEFT JOIN ef_usuario G on F.id_usuario_titular = G.id_usuario
-        LEFT JOIN ef_destinatario H on D.id_destinatario = H.id_destinatario
-        left join ef_gateway_transaccion I on A.id_transaccion_gateway = I.id_transaccion $filtros $and";
+    switch ($tabla) {
+        case 'out':
+            $sql = "SELECT A.id_transaccion,A.fecha_gen,F.titular,G.email as email_origen,F.documento,A.monto,C.mp,D.status,D.motivo,A.concepto,H.email as email_destino,H.cbu,H.cvu,H.alias,H.nombre,H.apellido,H.cuit as cuit_destino,H.nombre_banco,H.cod_banco FROM ef_transaccion A 
+                LEFT JOIN ho_authstat B on A.id_authstat = B.id_authstat
+                LEFT JOIN ef_mp C on A.id_mp = C.id_mp
+                LEFT JOIN ef_transferencia_enviada D on A.id_referencia = D.id_transferencia
+                LEFT JOIN ho_entidad E on A.id_entidad = E.id_entidad
+                LEFT JOIN ef_cuenta F on A.id_cuenta = F.id_cuenta
+                LEFT JOIN ef_usuario G on F.id_usuario_titular = G.id_usuario
+                LEFT JOIN ef_destinatario H on D.id_destinatario = H.id_destinatario
+                $filtros $and AND A.id_entidad IN (1,18,7,3) AND A.id_tipo_trans in (1)";
+            break;
+        case 'in':
+            $sql = "SELECT * FROM ef_transaccion A 
+                LEFT JOIN ho_authstat B on A.id_authstat = B.id_authstat
+                LEFT JOIN ef_mp C on A.id_mp = C.id_mp
+                LEFT JOIN ef_transferencia_recibida D on A.id_referencia = D.id_transferencia
+                LEFT JOIN ho_entidad E on A.id_entidad = E.id_entidad
+                LEFT JOIN ef_cuenta F on A.id_cuenta = F.id_cuenta
+                LEFT JOIN ef_usuario G on F.id_usuario_titular = G.id_usuario
+                LEFT JOIN ef_destinatario H on D.id_destinatario = H.id_destinatario
+                left join ef_gateway_transaccion I on A.id_transaccion_gateway = I.id_transaccion $filtros $and";
+            break;
+        
+        default:
+            break;
     }
 
     echo $sql;

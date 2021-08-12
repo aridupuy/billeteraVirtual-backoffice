@@ -468,7 +468,7 @@ class Efectivo_digital extends Application {
 
             $a = $view->createElement("li");
             if (!$site->get_submenu()) {
-                $a->setAttribute("class", "second");
+                $a->setAttribute("class", "secundario");
                 $div = $view->createElement("div");
                 $a->appendChild($div);
                 $div->setAttribute("class", "button");
@@ -530,7 +530,7 @@ class Efectivo_digital extends Application {
             $site = new Controlador_sitio($menu);
             $a = $documento->createElement("a");
             $div = $documento->createElement("div");
-            $div->setAttribute("class", "button");
+            $div->setAttribute("class", "button principal");
             $div->setAttribute("type", "button");
             $a->appendChild($div);
             $span = $documento->createElement("span");
