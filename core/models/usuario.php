@@ -270,10 +270,38 @@ class Usuario extends Model {
 
     /* para ser llamada cueando es auth */
 
-    public function select_usuarios() {
+    public function select_usuarios($variables=null) {
+        $where = "Where true ";
+        
+        if(isset($variables["fecha_desde"]) and isset($variables["fecha_hasta"])){
+            $where .= "AND fecha_creacion::date between '". $variables["fecha_desde"] ."' and '". $variables["fecha_hasta"]."'";
+        }
+        if(isset($variables["email"])){
+            $where .= "AND email ilike '%". $variables["email"] ."%'";
+        }
+        if(isset($variables["documento"])){
+            $where .= "AND d.documento ilike '%". $variables["documento"] ."%'";
+        }
+        if(isset($variables["nombre_completo"])){
+            $where .= "AND a.nombre_completo ilike '%". $variables["nombre_completo"] ."%'";
+        }
+        if(isset($variables["telefono"])){
+            $where .= "AND a.telefono ilike '%". $variables["telefono"] ."%'";
+        }
+        if(isset($variables["condicion"])){
+            $where .= "AND e.id_pep = " .$variables["condicion"];
+        }
+        
+        
         $sql = " select a.id_cuenta, a.email, a.nombre_completo, a.celular, a.fecha_creacion, c.authstat, b.motivo, a.mensaje 
-from ef_usuario a left join ef_motivos b on a.id_motivo = b.id_motivo 
-left join ho_authstat c on a.id_authstat = c.id_authstat ";
+                from ef_usuario a left join ef_motivos b on a.id_motivo = b.id_motivo 
+                left join ho_authstat c on a.id_authstat = c.id_authstat
+                left join ef_cuenta d on a.id_cuenta = d.id_cuenta 
+                left join ho_pep e on d.id_pep = e.id_pep 
+                $where ";
+        
+        print_r($sql);
+//        exit();
         return self::execute($sql);
     }
     public function updatePassword_auth($password) {

@@ -21,10 +21,7 @@
                 <label for="dni">Nombre y Apellido</label>
                 <input type="text" type="text" name="nombre" placeholder="Nombre y Apellido">
             </div>
-            <div class="filtro">
-                <label for="razonsocial">Razon social</label>
-                <input type="text" name="razon_social" placeholder="Razón Social">
-            </div>
+            
             <div class="filtro">
                 <label for="email">E-mail</label>
                 <input type="text" name="email" placeholder="E-mail">
@@ -37,11 +34,11 @@
             </div>
             <div class="filtro">
                 <label for="condicion">Condicion</label>
-                <select name="condicion" id="condicion" aria-placeholder="Todos">
-                    <!--<option value="Opcion 1">Opcion 1</option>-->
-                    <option value="1">Persona Expuesta Politicamente</option>
+                <select name="condicion" id="condicion">
+                    <option value="" selected="selected">Seleccionar...</option>
+<!--                    <option value="1">Persona Expuesta Politicamente</option>
                     <option value="2">Sujeto Obligado</option>
-                    <option value="3">FATCA</option>
+                    <option value="3">FATCA</option>-->
                 </select>
             </div>
             <div class="filtro">
@@ -58,6 +55,7 @@
             <div class="filtro">
                 <label for="motivo">Motivo</label>
                 <select name="motivo" id="motivo" aria-placeholder="Todos">
+                <option value="" selected="selected">Seleccionar...</option>
                 </select>
             </div>
             <div class="filtros-actions">
