@@ -39,8 +39,17 @@ class Cuenta extends Model {
     public $piso;
     public $depto;
     public $id_proceso_alta;
+    public $id_pep;
     
-    public function get_id_proceso_alta() {
+    public function get_id_pep() {
+        return $this->id_pep;
+    }
+
+    public function set_id_pep($id_pep): void {
+        $this->id_pep = $id_pep;
+    }
+
+        public function get_id_proceso_alta() {
         return $this->id_proceso_alta;
     }
 

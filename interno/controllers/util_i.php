@@ -38,7 +38,7 @@ class Util_i extends Controller {
             unset($variables['pagina']);
         }
         $controller_name = strtolower(get_class($this));
-        $recordset = Usuario::select_usuarios($variables = null);
+        $recordset = Usuario::select_usuarios($variables);
         $filters = $this->preparar_filtros($variables);
         $form = $this->view->createElement('form');
         $form->setAttribute('id', 'miFormulario');
@@ -150,9 +150,9 @@ class Util_i extends Controller {
     private function preparar_filtros($variables) {
         
         
-//        print_r("<pre>");
-//        var_dump($variables);
-//        print_r("<pre>");
+        print_r("<pre>");
+        var_dump($variables);
+        print_r("<pre>");
         $filter = new view();
         if (isset($variables['id'])) {
             unset($variables['id']);
@@ -165,6 +165,14 @@ class Util_i extends Controller {
             $option = $filter->createElement('option', $row['motivo']);
             $option->setAttribute('value', $row['id_motivo']);
             $motivo->appendChild($option);
+        }
+        $rsd_pep = Pep::select();
+//        var_dump($rsd_pep);
+        $pep = $filter->getElementById("condicion");
+        foreach ($rsd_pep as $row) {
+            $option_pep = $filter->createElement('option', $row['pep']);
+            $option_pep->setAttribute('value', $row['id_pep']);
+            $pep->appendChild($option_pep);
         }
         $filter->cargar_variables($variables);
         return $filter;
