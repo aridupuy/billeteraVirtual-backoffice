@@ -466,11 +466,10 @@ class Efectivo_digital extends Application {
             if (!Gestor_de_permisos::puede($permiso->get_puede()))
                 continue;
 
-            $a = $view->createElement("li");
             if (!$site->get_submenu()) {
-                $a->setAttribute("class", "second");
+                // $a->setAttribute("class", "secundario");
                 $div = $view->createElement("div");
-                $a->appendChild($div);
+                // $a->appendChild($div);
                 $div->setAttribute("class", "button");
                 $div->setAttribute("type", "button");
                 $name = str_replace("javascript: dispatch('", "", str_replace("')", "", $site->get_ds_dothis()));
@@ -480,8 +479,9 @@ class Efectivo_digital extends Application {
                 }
                 $div->setAttribute("name", $name);
                 $div->appendChild($view->createTextNode($site->get_ds_descrip()));
-                $destino->appendChild($a);
+                $destino->appendChild($div);
             } else {
+                $a = $view->createElement("li");
                 //developer_log($site->get_submenu());
                 $a->setAttribute("class", "second trigger-third");
                 $rs_site2 = Controlador_sitio::select_menu($site->get_submenu());
@@ -529,21 +529,24 @@ class Efectivo_digital extends Application {
 //            developer_log("####### VUELTA");
             $site = new Controlador_sitio($menu);
             $a = $documento->createElement("a");
+            // $a->setAttribute('class','principal');
             $div = $documento->createElement("div");
-            $div->setAttribute("class", "button");
-            $div->setAttribute("type", "button");
+            $div->setAttribute("class", "principal");
+            // $div->setAttribute("type", "button");
             $a->appendChild($div);
-            $span = $documento->createElement("span");
-            $span2 = $documento->createElement("span");
+            // $span = $documento->createElement("div");
+            $span2 = $documento->createElement("div");
 //            $img = $documento->createElement("img");
 //            $span->appendChild($img);
-            $span->setAttribute("class", "icono-sidebar");
-            $span2->setAttribute("class", "txt");
-            $div->appendChild($span);
+            // $span->setAttribute("class", "icono-sidebar");
+            // $span2->setAttribute("class", "txt");
+            $span2->setAttribute("class", "dropdown");
+            // $div->appendChild($span);
             $div->appendChild($span2);
-            $ul = $documento->createElement("ul");
-            $ul->setAttribute("class", "desplegable");
-            $a->appendChild($ul);
+            $ul = $documento->createElement("div");
+            // $ul->setAttribute("class", "desplegable");
+            $ul->setAttribute("class", "secundario");
+            $div->appendChild($ul);
             $permiso = new Permiso();
             $permiso->get($site->get_id_permiso());
             if (Gestor_de_permisos::puede($permiso->get_puede())){
@@ -553,51 +556,51 @@ class Efectivo_digital extends Application {
                         $a->setAttribute("type", "button");
                         $a->setAttribute("name", "main_controller.dashboard");
 
-//                        $img->setAttribute("src", "public/img_2/icono-redes-cobranza.png");
+                    //    $img->setAttribute("src", "public/img_2/icono-redes-cobranza.png");
                         $span2->appendChild($documento->createTextNode("DashBoard"));
 
                         $this->obtener_elementos_menu_lateral($site->get_ordi(), $ul, $documento);
                         break;
                     case Permiso::PUEDE_MENU_USUARIOS:
                         //sordi 20
-                        $a->setAttribute("class", "primary  reportes-movimientos");
+                        // $a->setAttribute("class", "primary  reportes-movimientos");
                         $a->setAttribute("type", "button");
                         $a->setAttribute("name", "util_i.home");
-//                        $img->setAttribute("src", "public/img/icono-rep-movimientos.svg");
+                    //    $img->setAttribute("src", "public/img/icono-rep-movimientos.svg");
                         $span2->appendChild($documento->createTextNode("Usuarios"));
                         $this->obtener_elementos_menu_lateral($site->get_ordi(), $ul, $documento);
                         break;
                     case Permiso::PUEDE_MENU_MOVIMIENTOS:
                         //sordi 20
-                        $a->setAttribute("class", "primary  reportes-movimientos");
+                        // $a->setAttribute("class", "dropdown");
                         $a->setAttribute("type", "button");
-                        $a->setAttribute("name", "util_ii.home");
-//                        $img->setAttribute("src", "public/img/icono-rep-movimientos.svg");
+                        // $a->setAttribute("name", "util_ii.home");
+                    //    $img->setAttribute("src", "public/img/icono-rep-movimientos.svg");
                         $span2->appendChild($documento->createTextNode("Movimientos"));
                         $this->obtener_elementos_menu_lateral($site->get_ordi(), $ul, $documento);
                         break;
                     case Permiso::PUEDE_MENU_REPORTES:
                         //sordi 20
-                        $a->setAttribute("class", "primary  reportes-movimientos");
+                        // $a->setAttribute("class", "primary  reportes-movimientos");
                         $a->setAttribute("type", "button");
                         $a->setAttribute("name", "util_iii.home");
-//                        $img->setAttribute("src", "public/img/icono-rep-movimientos.svg");
+                    //    $img->setAttribute("src", "public/img/icono-rep-movimientos.svg");
                         $span2->appendChild($documento->createTextNode("Reportes"));
                         $this->obtener_elementos_menu_lateral($site->get_ordi(), $ul, $documento);
                         break;
                     case Permiso::PUEDE_MENU_ADMINISTRACION:
                         //sordi 20
-                        $a->setAttribute("class", "primary  reportes-movimientos");
+                        // $a->setAttribute("class", "primary  reportes-movimientos");
                         $a->setAttribute("type", "button");
                         $a->setAttribute("name", "util_iv.home");
-//                        $img->setAttribute("src", "public/img/icono-rep-movimientos.svg");
+                    //    $img->setAttribute("src", "public/img/icono-rep-movimientos.svg");
                         $span2->appendChild($documento->createTextNode("Administracion"));
                         $this->obtener_elementos_menu_lateral($site->get_ordi(), $ul, $documento);
                         break;
                     case Permiso::PUEDE_MENU_RETIROS:
                         //sordi 30
                         $a->setAttribute("class", "primary  retiros-de-fondos");
-//                        $img->setAttribute("src", "public/img/icono-ret-fondos.svg");
+                    //    $img->setAttribute("src", "public/img/icono-ret-fondos.svg");
                         $span2->appendChild($documento->createTextNode("Retiros de Fondos / Pagos"));
                         $this->obtener_elementos_menu_lateral($site->get_ordi(), $ul, $documento);
                         break;

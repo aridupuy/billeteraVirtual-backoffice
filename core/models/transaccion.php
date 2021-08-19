@@ -137,32 +137,192 @@ class Transaccion extends \Model{
       return $this;
   }
 
-  public static function select_min($id_cuenta,$filtros=null){
-      $where = " id_cuenta = ? ";
-      $variables=array($id_cuenta);
-      if(isset($filtros["desde"])){
-          $where.=" and fecha_gen>=?";
-          $desde = DateTime::createFromFormat("Ymd", $filtros["desde"]);
-          if(!$desde){
-            $formato = explode("T",  $filtros["desde"]);
-//            var_dump($formato);
-            $desde = DateTime::createFromFormat("Y-m-d",$formato[0]);
-//            var_dump($desde);
-          }
-          $variables[]=$desde->format("Y-m-d");
-      }
-      if(isset($filtros["hasta"])){
-          $where.=" and fecha_gen<=?";
-          $hasta= DateTime::createFromFormat("Ymd", $filtros["hasta"]);
-          if(!$hasta){
-            $formato = explode("T", $filtros["hasta"]);
-            $hasta= DateTime::createFromFormat("Y-m-d", $formato[0]);
-          }
-          $variables[]=$hasta->format("Y-m-d");
-      }
-      $sql = "select * from ef_transaccion A left join ho_authstat B on A.id_authstat = B.id_authstat
-               left join ef_mp C on A.id_mp = C.id_mp
-               where $where order by 1 desc ";
-      return self::execute_select($sql,$variables);
+  public function select_min($variables = false,$tabla){
+    unset($variables['dataTable_length']);
+    unset($variables['checkbox_todo']);
+    unset($variables['selector_']);
+    
+    switch ($tabla) {
+        case 'out':
+            //CASH OUT
+            if (isset($variables['id_transaccion'])) {
+                $variables['A.id_transaccion'] = $variables['id_transaccion'];
+                unset($variables['id_transaccion']);
+            }else{
+                $and = "WHERE true ";
+            }
+
+            if (isset($variables['email'])) {
+                $and .= "AND (G.email ilike '%" . $variables['email'] . "%' OR H.email ilike '%" . $variables['email'] . "%') ";
+                unset($variables['email']);
+            }
+
+            if (isset($variables['documento'])) {
+                $and .= "AND (F.documento ilike '%" . $variables['documento'] . "%' OR H.cuit ilike '%" . $variables['documento'] . "%') ";
+                unset($variables['documento']);
+            }
+
+            if (isset($variables['nombre'])) {
+                $and .= "AND (H.nombre ilike '%" . $variables['nombre'] . "%')";
+                unset($variables['nombre']);
+            }
+
+            if (isset($variables['apellido'])) {
+                $and .= "AND (H.apellido ilike '%" . $variables['apellido'] . "%')";
+                unset($variables['apellido']);
+            }
+
+            if (isset($variables['status'])) {
+                $and .= "AND (D.status ilike '%" . $variables['status'] . "%')";
+                unset($variables['status']);
+            }
+
+            if (isset($variables['monto_desde']) || isset($variables['monto_hasta'])) {
+                if (isset($variables['monto_desde']) && isset($variables['monto_hasta'])) {
+                    $and .= "AND A.monto >= " . $variables['monto_desde'] . " AND A.monto <=" . $variables['monto_hasta'] . " ";
+                }
+                if (isset($variables['monto_hasta']) === false) {
+                    $and .= "AND A.monto >= " . $variables['monto_desde'] . " ";
+                }
+                if (isset($variables['monto_desde']) === false){
+                    $and .= "AND A.monto <= " . $variables['monto_hasta'] . " ";
+                }
+
+                unset($variables['monto_desde']);
+                unset($variables['monto_hasta']);
+            }
+
+            if (isset($variables['fecha_desde']) || isset($variables['fecha_hasta'])) {
+                if (isset($variables['fecha_desde']) && isset($variables['fecha_hasta'])) {
+                    $and .= "AND A.fecha_gen >= '" . $variables['fecha_desde'] . "' AND A.fecha_gen <= '" . $variables['fecha_hasta'] . "' ";
+                }
+                if (isset($variables['fecha_hasta']) === false) {
+                    $and .= "AND A.fecha_gen >= '" . $variables['fecha_desde'] . "' ";
+                }
+                if (isset($variables['fecha_desde']) === false) {
+                    $and .= "AND A.fecha_gen <= '" . $variables['fecha_hasta'] . "' ";
+                }
+
+                unset($variables['fecha_desde']);
+                unset($variables['fecha_hasta']);
+            }
+
+            if (isset($variables['motivo'])) {
+                $and .= "AND A.concepto ilike '%" . $variables['motivo'] . "%'";
+                unset($variables['motivo']);
+            }
+            
+            if (isset($variables['cuenta'])) {
+                $and .= "AND H.cod_banco ilike '%" . $variables['cuenta'] . "%'";
+                unset($variables['cuenta']);
+            }
+            
+            if (isset($variables['cbucvu'])) {
+                $and .= "OR H.cvu ilike '%" . $variables['cbucvu'] . "%' OR H.cbu ilike '%" . $variables['cbucvu'] . "%' ";
+                unset($variables['cbucvu']);
+            }
+            
+            $filtros = self::preparar_filtros($variables);
+
+            $sql = "SELECT A.id_transaccion,A.fecha_gen,F.titular,G.email as email_origen,F.documento,A.monto,C.mp,D.status,D.motivo,A.concepto,H.email as email_destino,H.cbu,H.cvu,H.alias,H.nombre,H.apellido,H.cuit as cuit_destino,H.nombre_banco,H.cod_banco FROM ef_transaccion A 
+                LEFT JOIN ho_authstat B on A.id_authstat = B.id_authstat
+                LEFT JOIN ef_mp C on A.id_mp = C.id_mp
+                LEFT JOIN ef_transferencia_enviada D on A.id_referencia = D.id_transferencia
+                LEFT JOIN ho_entidad E on A.id_entidad = E.id_entidad
+                LEFT JOIN ef_cuenta F on A.id_cuenta = F.id_cuenta
+                LEFT JOIN ef_usuario G on F.id_usuario_titular = G.id_usuario
+                LEFT JOIN ef_destinatario H on D.id_destinatario = H.id_destinatario
+                $filtros $and AND A.id_entidad IN (1,18,7,3) AND A.id_tipo_trans in (1)";
+            break;
+        case 'in':
+            //CASH IN
+            if (isset($variables['id_transaccion'])) {
+                $variables['A.id_transaccion'] = $variables['id_transaccion'];
+                unset($variables['id_transaccion']);
+            }else{
+                $and = "WHERE true ";
+            }
+
+            if (isset($variables['fecha_desde']) || isset($variables['fecha_hasta'])) {
+                if (isset($variables['fecha_desde']) && isset($variables['fecha_hasta'])) {
+                    $and .= "AND A.fecha_gen >= '" . $variables['fecha_desde'] . "' AND A.fecha_gen <= '" . $variables['fecha_hasta'] . "' ";
+                }
+                if (isset($variables['fecha_hasta']) === false) {
+                    $and .= "AND A.fecha_gen >= '" . $variables['fecha_desde'] . "' ";
+                }
+                if (isset($variables['fecha_desde']) === false) {
+                    $and .= "AND A.fecha_gen <= '" . $variables['fecha_hasta'] . "' ";
+                }
+
+                unset($variables['fecha_desde']);
+                unset($variables['fecha_hasta']);
+            }
+
+            if (isset($variables['email'])) {
+                $and .= "AND (G.email ilike '%" . $variables['email'] . "%'";
+                unset($variables['email']);
+            }
+
+            if (isset($variables['documento'])) {
+                $and .= "AND (F.documento ilike '%" . $variables['documento'] . "%' OR D.cuit_cliente ilike '%" . $variables['documento'] . "%') ";
+                unset($variables['documento']);
+            }
+
+            if (isset($variables['nombre']) || isset($variables['apellido'])) {
+                $and .= "AND (F.titular ilike '%" . $variables['nombre'].' '.$variables['apellido'] . "%' OR D.nombre_pagador ilike '%" . $variables['nombre'].' '.$variables['apellido'] . "%')";
+                unset($variables['nombre']);
+                unset($variables['apellido']);
+            }
+
+            if (isset($variables['cbucvu'])) {
+                $and .= "OR D.cvu_cliente ilike '%" . $variables['cbucvu'] . "%' OR D.cbu_pagador ilike '%" . $variables['cbucvu'] . "%' ";
+                unset($variables['cbucvu']);
+            }
+
+            if (isset($variables['monto_desde']) || isset($variables['monto_hasta'])) {
+                if (isset($variables['monto_desde']) && isset($variables['monto_hasta'])) {
+                    $and .= "AND A.monto >= " . $variables['monto_desde'] . " AND A.monto <=" . $variables['monto_hasta'] . " ";
+                }
+                if (isset($variables['monto_hasta']) === false) {
+                    $and .= "AND A.monto >= " . $variables['monto_desde'] . " ";
+                }
+                if (isset($variables['monto_desde']) === false){
+                    $and .= "AND A.monto <= " . $variables['monto_hasta'] . " ";
+                }
+
+                unset($variables['monto_desde']);
+                unset($variables['monto_hasta']);
+            }
+
+            if (isset($variables['status'])) {
+                $and .= "AND (D.status ilike '%" . $variables['status'] . "%')";
+                unset($variables['status']);
+            }
+
+            if (isset($variables['motivo'])) {
+                $and .= "AND A.concepto ilike '%" . $variables['motivo'] . "%'";
+                unset($variables['motivo']);
+            }
+
+            $filtros = self::preparar_filtros($variables);
+
+            $sql = "SELECT A.id_transaccion,A.fecha_gen,F.titular,G.email,F.documento,D.cuit_cliente,D.cvu_cliente,A.monto,C.mp,D.status,A.concepto,D.nombre_pagador,D.cbu_pagador FROM ef_transaccion A 
+                LEFT JOIN ho_authstat B on A.id_authstat = B.id_authstat
+                LEFT JOIN ef_mp C on A.id_mp = C.id_mp
+                LEFT JOIN ef_transferencia_recibida D on A.id_referencia = D.id_transferencia
+                LEFT JOIN ho_entidad E on A.id_entidad = E.id_entidad
+                LEFT JOIN ef_cuenta F on A.id_cuenta = F.id_cuenta
+                LEFT JOIN ef_usuario G on F.id_usuario_titular = G.id_usuario
+                $filtros $and AND A.id_tipo_trans IN (2,4,6)";
+            break;
+        
+        default:
+            break;
+    }
+
+    // echo $sql;
+    // var_dump($variables);
+    // exit;
+    return self::execute_select($sql, $variables, 10000);
   }
 }
