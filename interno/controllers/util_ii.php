@@ -32,6 +32,12 @@ class Util_ii extends Controller{
                 developer_log(json_encode($variables));
                 $view = $this->home($variables, $variables['tipo_cash']);
                 break;
+            case 'exportar':
+                unset($variables['id']);
+                $view = $this->exportar($variables, $variables['tipo_cash']);
+                // $view = $this->home($variables, $variables['tipo_cash']);
+                // unset($descarga_link);
+                break;
             default:
                 $view = $this->home();
                 break;
@@ -40,7 +46,9 @@ class Util_ii extends Controller{
         return $view;
     }
 
-    private function home($variables = null, $tipo_cash){
+    private function home($variables = null, $tipo_cash, $descargar_link = null){
+        unset($variables['id']);
+        var_dump($variables);
         $pagina_a_mostrar = 1;
         if (isset($variables['pagina'])) {
             $pagina_a_mostrar = $variables['pagina'];
@@ -71,13 +79,32 @@ class Util_ii extends Controller{
         // $btn_lupa->appendChild($icono_lupa);
         // $lupa->appendChild($buscador);
         // $lupa->appendChild($btn_lupa);
-        $exportar = $this->view->createElement('div');
+
+        $exportar = $this->view->createElement('a');
         $exportar->setAttribute('class', 'btn-outline');
+        $exportar->setAttribute('type', 'button');
+        $exportar->setAttribute('name', 'util_ii.exportar');
+        // $exportar->setAttribute('id', 'btn_exportar');
         $exportar->appendChild($this->view->createTextNode("Exportar"));
 
         $icono_exportar = $this->view->createElement('i');
         $icono_exportar->setAttribute('class', 'fas fa-download');
         $exportar->appendChild($icono_exportar);
+
+        if($descargar_link != null){
+            $descargar = $this->view->createElement('a');
+            $descargar->setAttribute('class', 'btn-outline');
+            $descargar->setAttribute('type', 'button');
+            $descargar->setAttribute('id', 'descargar');
+            $descargar->setAttribute('href', URL_DOWNLOAD . $descargar_link );
+            $descargar->setAttribute('download', $descargar_link);
+            $descargar->setAttribute('target', '_blank');
+            $descargar->appendChild($this->view->createTextNode("Descargar"));
+
+            $icono_descargar = $this->view->createElement('i');
+            $icono_descargar->setAttribute('class', 'fas fa-download');
+            $descargar->appendChild($icono_descargar);
+        }
 
         $detalle = new Detalle("nombre_completo");
         $detalle->preparar_arrays($recordset);
@@ -110,6 +137,10 @@ class Util_ii extends Controller{
 
         // $div_100_encabezado->appendChild($lupa);
         $div_100_encabezado->appendChild($exportar);
+
+        if($descargar_link != null){
+            $div_100_encabezado->appendChild($descargar);
+        }
 
         $form->appendChild($div_100_encabezado);
         $form->appendChild($this->view->importNode($filters->documentElement, true));
@@ -226,4 +257,32 @@ class Util_ii extends Controller{
         $filter->cargar_variables($variables);
         return $filter;
     }
+
+    private function exportar($variables,$tipo_cash,$retornar_view = true) {
+        $pagina_a_mostrar = 1;
+        unset($variables['tipo_cash']);
+        $recordset = Transaccion::select_min($variables, $tipo_cash);
+        $pager = new Pager($recordset, $pagina_a_mostrar, $controller_name . '.filter');
+        list($array, $labels) = $this->preparar_array($recordset, $pager->desde_registro, $recordset->RowCount(), $tipo_cash);
+        $gestor_de_disco = new Gestor_de_disco();
+        $path = '';
+        $union_array[]=$labels;
+        $union_array = array_merge($union_array,$array);
+        $filename = 'transacciones_cash'.$tipo_cash.'_' . date('Ymd_His') . '.xls';
+        if ($gestor_de_disco->exportar_xls($path, $filename, $union_array)) {
+            //Faltan Estilos para el gestor de log
+            // Gestor_de_log::set('Archivo exportado correctamente.', 1);
+            error_log('Archivo exportado correctamente.',0);
+        } else {
+            // Gestor_de_log::set('Ha ocurrido un error al exportar el archivo. ', 0);
+            error_log('Ha ocurrido un error al exportar el archivo',0);
+        }
+        if ($retornar_view) {
+            // return $this->presentar_descarga($path . $filename);
+            return $this->home($variables, $tipo_cash,$path. $filename);
+        }
+        return PATH_CDEXPORTS . $path . $filename;
+    }
+
+
 }
