@@ -226,7 +226,6 @@ class Efectivo_digital extends Application {
                     
                     $mensaje->removeChild($mensaje->firstChild);
                 }
-                
                 $mensaje->appendChild($view_mensaje->createTextNode(Gestor_de_log::ultimos_logs(1)[0]));
                 $mensaje->setAttribute('title', Gestor_de_log::ultimos_logs(10)[0]);
                 $rsulog = Gestor_de_log::ultimos_ulogs(1);
@@ -273,6 +272,7 @@ class Efectivo_digital extends Application {
                 $mensaje_bajada = $view_mensaje->getElementById("bajada");
                 $imagen = $view_mensaje->getElementById("icono");
                 $pop = $view_mensaje->getElementById("mensaje_sistema");
+                
                 switch ($logs_1->get_transaccion_correcta()) {
                     case 0 :
                         $imagen->setAttribute("src", "public/img/icono-importante.svg");
@@ -282,12 +282,10 @@ class Efectivo_digital extends Application {
                         break;
                 }
 
-
-//                    public/img/icono-importante.svg
-                $pop->setAttribute("class", "contenedor-pop-up");
+                $pop->setAttribute("class", "contenedor-pop-up swal2-container swal2-center swal2-fade swal2-shown");
                 $mensaje->appendChild($view_mensaje->createTextNode($logs_1->get_mensaje()));
                 $first_message = Gestor_de_log::ultimos_logs(10);
-                $mensaje->setAttribute('title', $first_message[0]);
+                $mensaje->appendChild($view_mensaje->createTextNode($first_message));
                 $rsulog = Gestor_de_log::ultimos_ulogs(1);
                 $mensaje_bajada->appendChild($view_mensaje->createTextNode($logs_1->get_dbmenso()));
                 if ($logs_1->get_loglevel() == 1500) {
@@ -592,7 +590,7 @@ class Efectivo_digital extends Application {
                         //sordi 20
                         // $a->setAttribute("class", "primary  reportes-movimientos");
                         $a->setAttribute("type", "button");
-                        $a->setAttribute("name", "util_iv.home");
+                        // $a->setAttribute("name", "util_iv.home");
                     //    $img->setAttribute("src", "public/img/icono-rep-movimientos.svg");
                         $span2->appendChild($documento->createTextNode("Administracion"));
                         $this->obtener_elementos_menu_lateral($site->get_ordi(), $ul, $documento);
