@@ -291,16 +291,19 @@ class Usuario extends Model {
         if(isset($variables["condicion"])){
             $where .= "AND e.id_pep = " .$variables["condicion"];
         }
+        if(isset($variables["id_authstat"])){
+            $where .= "AND a.id_authstat = " .$variables["id_authstat"];
+        }
         
         
-        $sql = " select a.id_cuenta, a.email, a.nombre_completo, a.celular, a.fecha_creacion, c.authstat, b.motivo, a.mensaje 
-                from ef_usuario a left join ef_motivos b on a.id_motivo = b.id_motivo 
+        $sql = " select a.id_usuario, a.id_cuenta, a.email, a.nombre_completo, a.celular, a.fecha_creacion, c.authstat, b.motivo, a.mensaje 
+                from ef_usuario a left join ef_motivos b on a.id_motivo = b.id_motivo and b.tipo_motivo = 1
                 left join ho_authstat c on a.id_authstat = c.id_authstat
                 left join ef_cuenta d on a.id_cuenta = d.id_cuenta 
                 left join ho_pep e on d.id_pep = e.id_pep 
                 $where ";
         
-        print_r($sql);
+//        print_r($sql);
 //        exit();
         return self::execute($sql);
     }

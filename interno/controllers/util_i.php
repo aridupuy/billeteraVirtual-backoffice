@@ -21,6 +21,14 @@ class Util_i extends Controller {
                 developer_log(json_encode($variables));
                 $view = $this->home($variables);
                 break;
+            case 'acciones':
+                developer_log(json_encode($variables));
+                $view = $this->acciones($variables);
+                break;
+            case 'vista_previa':
+                developer_log(json_encode($variables));
+                $view = $this->vista_previa($variables);
+                break;
 
             default:
                 $view = $this->home();
@@ -31,7 +39,9 @@ class Util_i extends Controller {
     }
 
     private function home($variables = null) {
-
+//        var_dump($variables);
+        $this->view->cargar("views/util_i.html");
+        
         $pagina_a_mostrar = 1;
         if (isset($variables['pagina'])) {
             $pagina_a_mostrar = $variables['pagina'];
@@ -40,8 +50,8 @@ class Util_i extends Controller {
         $controller_name = strtolower(get_class($this));
         $recordset = Usuario::select_usuarios($variables);
         $filters = $this->preparar_filtros($variables);
-        $form = $this->view->createElement('form');
-        $form->setAttribute('id', 'miFormulario');
+        $form = $this->view->getElementById('miFormulario');
+//        $form->setAttribute('id', 'miFormulario');
         $form->setAttribute('class', 'main-content usuarios');
         $div_100_encabezado = $this->view->createElement('div');
         $total_usr = "Total Usuarios: ". $recordset->rowCount();
@@ -78,11 +88,45 @@ class Util_i extends Controller {
         array_unshift($labels, "");
         
         $acciones = array();
-        $acciones[] = array('etiqueta' => 'Vista previa', 'token' => $controller_name . '.vista_previa', 'id' => 'id_bolemarchand');
-        $acciones[] = array('etiqueta' => 'checkbox', 'id' => 'id_bolemarchand', 'prefijo' => self::PREFIJO_CHECKBOXES);
+        $acciones[] = array('etiqueta' => 'Vista previa', 'token' => $controller_name . '.vista_previa', 'id' => 'id_usuario');
+        $acciones[] = array('etiqueta' => 'checkbox', 'id' => 'id_usuario', 'prefijo' => self::PREFIJO_CHECKBOXES);
+        $div_tbl_action = $this->view->createElement('div');
+        $div_tbl_action->setAttribute('class', 'dataTables_actions');
         
+        $slct_action = $this->view->createElement('select');
+        $slct_action->setAttribute('name', 'accion');
+        $slct_action->setAttribute('style', 'width: 15%;');
+        $slct_action->setAttribute('id', 'massive-actions');
+            $option_0 = $this->view->createElement('option', 'Status Usuario');
+            $option_0->setAttribute('value', '');
+            $option_1 = $this->view->createElement('option', 'Activo');
+            $option_1->setAttribute('value', '1');
+            $option_2 = $this->view->createElement('option', 'Inactivo');
+            $option_2->setAttribute('value', '4');
+            $option_3 = $this->view->createElement('option', 'Pre-registro');
+            $option_3->setAttribute('value', '6');
+            $option_4 = $this->view->createElement('option', 'Rechazado');
+            $option_4->setAttribute('value', '13');
+            $option_5 = $this->view->createElement('option', 'Suspendido');
+            $option_5->setAttribute('value', '3');
+        $slct_action->appendChild($option_0);
+        $slct_action->appendChild($option_1);
+        $slct_action->appendChild($option_2);
+        $slct_action->appendChild($option_3);
+        $slct_action->appendChild($option_4);
+        $slct_action->appendChild($option_5);
+//        <button class="actions_submit" type="submit" value="Aplicar">
         
-        $tabla = new Table($array, null, null, $acciones);
+        $btn_action = $this->view->createElement('input');
+        $btn_action->setAttribute('type','button');
+        $btn_action->setAttribute('style', 'width: 15%; margin-left: 15px; padding: 12px 15px; border: none; background: #237c69; border-radius: 5px; color: #f5f9f8; -webkit-appearance: none;');
+        $btn_action->setAttribute('class','actions_submit');
+        $btn_action->setAttribute('value','Aplicar');
+        $btn_action->setAttribute('name','util_i.acciones');
+        $div_tbl_action->appendChild($slct_action);
+        $div_tbl_action->appendChild($btn_action);
+        
+        $tabla = new Table($array,null,null,$acciones,null);
         $tabla->cambiar_encabezados($labels);
         $this->colocar_checkbox_todo($recordset->RowCount(), $tabla);
         $div_100_tabla = $this->view->createElement('div');
@@ -90,6 +134,7 @@ class Util_i extends Controller {
         $div_100_tabla->setAttribute('class', 'content-100');
         $div_contenedor->setAttribute('class', 'contenedor-tabla');
 //        $div_100_tabla->appendChild($lupa);
+        $div_contenedor->appendChild($div_tbl_action);
         $div_contenedor->appendChild($this->view->importNode($tabla->documentElement, true));
         $div_100_encabezado->appendChild($this->view->importNode($encabezado->documentElement, true));
         $div_100_tabla->appendChild($div_contenedor);
@@ -103,6 +148,22 @@ class Util_i extends Controller {
         return $this->view;
     }
 
+    private function vista_previa($variables) { 
+        
+        print_r("<pre>");
+        var_dump($variables);
+        print_r("</pre>");
+        $this->view->cargar("views/util_i.ver_mas.html");
+        
+        
+        
+        
+        return $this->view;
+    }
+    
+    
+    
+    
     private function colocar_checkbox_todo($cantidad, Table $table) {
         if (($th = $table->getElementsByTagName('th')->item(0)) !== null) {
             $checkbox = $table->createElement('input');
@@ -120,7 +181,7 @@ class Util_i extends Controller {
     private function preparar_array(ADORecordSet $recordset, $desde_registro, $hasta_registro) {
 
         $matriz = array();
-        $labels = array('Id Cuenta', 'Email', 'Nombre Completo', 'Celular', 'Fecha Creacion', 'Estado', 'Motivo', "Mensaje");
+        $labels = array('Id Usuario','Id Cuenta', 'Email', 'Nombre Completo', 'Celular', 'Fecha Creacion', 'Estado', 'Motivo', "Mensaje");
         if (!$recordset or $recordset->RowCount() == 0) {
             return array($matriz, $labels);
         }
@@ -129,7 +190,8 @@ class Util_i extends Controller {
         while ($desde_registro <= $hasta_registro):
             if ($registro = $recordset->FetchRow()) {
                 $array = array();
-
+                
+                $array['id_usuario'] = $registro['id_usuario'];
                 $array[] = $registro['id_cuenta'];
                 $array[] = $registro['email'];
                 $array[] = $registro['nombre_completo'];
@@ -148,18 +210,13 @@ class Util_i extends Controller {
     }
 
     private function preparar_filtros($variables) {
-        
-        
-        print_r("<pre>");
-        var_dump($variables);
-        print_r("<pre>");
         $filter = new view();
         if (isset($variables['id'])) {
             unset($variables['id']);
         }
         $filter->cargar("views/util_i.filters.html");
 
-        $recordset = Motivos::select();
+        $recordset = Motivos::select_usuario();
         $motivo = $filter->getElementById("motivo");
         foreach ($recordset as $row) {
             $option = $filter->createElement('option', $row['motivo']);
@@ -176,6 +233,22 @@ class Util_i extends Controller {
         }
         $filter->cargar_variables($variables);
         return $filter;
+    }
+    private function acciones($variables) {
+        
+        
+        
+        if($variables["accion"]!=null){
+            
+            print_r("<pre>");
+            var_dump($variables);
+            print_r("<pre>");
+        }else {
+            Gestor_de_log::set("Debe elegir una opció valida", 0);
+            return $this->home();
+        }
+        
+//        return $filter;
     }
 
 }
