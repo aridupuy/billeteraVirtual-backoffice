@@ -28,18 +28,15 @@ class Util_ii extends Controller{
                 $view = $this->home($variables, 'in');
                 break;
             case 'filter':
-                var_dump($variables);
                 developer_log(json_encode($variables));
                 $view = $this->home($variables, $variables['tipo_cash']);
                 break;
             case 'exportar':
                 unset($variables['id']);
                 $view = $this->exportar($variables, $variables['tipo_cash']);
-                // $view = $this->home($variables, $variables['tipo_cash']);
-                // unset($descarga_link);
                 break;
             default:
-                $view = $this->home();
+                $view = $this->home($variables);
                 break;
         }
 
@@ -48,7 +45,6 @@ class Util_ii extends Controller{
 
     private function home($variables = null, $tipo_cash, $descargar_link = null){
         unset($variables['id']);
-        var_dump($variables);
         $pagina_a_mostrar = 1;
         if (isset($variables['pagina'])) {
             $pagina_a_mostrar = $variables['pagina'];

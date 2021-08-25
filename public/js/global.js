@@ -766,6 +766,10 @@ function goodModals() {
 
 }
 
+function cerrar_modal_gestorlog(){
+    $("#mensaje_sistema").remove();
+}
+
 function despues_de_cargar() {
     scrollLinks();
     stickyHeader();
