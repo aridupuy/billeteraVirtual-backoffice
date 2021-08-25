@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 23">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2, .cls-4 {
+        fill: #ff4545;
+      }
+
+      .cls-2 {
+        font-size: 14px;
+        font-family: Raleway-Bold, Raleway;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+
+      .cls-3, .cls-4 {
+        stroke: none;
+      }
+    </style>
+  </defs>
+  <g id="Group_663" data-name="Group 663" transform="translate(-203 -299)">
+    <g id="Path_807" data-name="Path 807" class="cls-1" transform="translate(203 299)">
+      <path class="cls-3" d="M11.5,0A11.5,11.5,0,1,1,0,11.5,11.5,11.5,0,0,1,11.5,0Z"/>
+      <path class="cls-4" d="M 11.5 2 C 6.261680603027344 2 2 6.261680603027344 2 11.5 C 2 16.73831939697266 6.261680603027344 21 11.5 21 C 16.73831939697266 21 21 16.73831939697266 21 11.5 C 21 6.261680603027344 16.73831939697266 2 11.5 2 M 11.5 0 C 17.85127067565918 0 23 5.14872932434082 23 11.5 C 23 17.85127067565918 17.85127067565918 23 11.5 23 C 5.14872932434082 23 0 17.85127067565918 0 11.5 C 0 5.14872932434082 5.14872932434082 0 11.5 0 Z"/>
+    </g>
+    <text id="_" data-name="!" class="cls-2" transform="translate(212 316)"><tspan x="0" y="0">!</tspan></text>
+  </g>
+</svg>
