@@ -24,10 +24,6 @@ class Util_iv extends Controller{
             case 'filter':
                 $view = $this->home($variables);
                 break;
-            case 'exportar':
-                unset($variables['id']);
-                $view = $this->exportar($variables, $variables['tipo_cash']);
-                break;
             default:
                 $view = $this->home($variables);
                 break;
@@ -59,40 +55,25 @@ class Util_iv extends Controller{
         $exportar = $this->view->createElement('a');
         $exportar->setAttribute('class', 'btn-outline');
         $exportar->setAttribute('type', 'button');
-        $exportar->setAttribute('name', 'util_iv.exportar');
-        $exportar->appendChild($this->view->createTextNode("Exportar"));
+        $exportar->setAttribute('name', 'util_iv.add_blacklist');
+        $exportar->appendChild($this->view->createTextNode("Agregar "));
 
         $icono_exportar = $this->view->createElement('i');
-        $icono_exportar->setAttribute('class', 'fas fa-download');
+        $icono_exportar->setAttribute('class', 'fas fa-user-plus');
         $exportar->appendChild($icono_exportar);
-
-        if($descargar_link != null){
-            $descargar = $this->view->createElement('a');
-            $descargar->setAttribute('class', 'btn-outline');
-            $descargar->setAttribute('type', 'button');
-            $descargar->setAttribute('id', 'descargar');
-            $descargar->setAttribute('href', URL_DOWNLOAD . $descargar_link );
-            $descargar->setAttribute('download', $descargar_link);
-            $descargar->setAttribute('target', '_blank');
-            $descargar->appendChild($this->view->createTextNode("Descargar"));
-
-            $icono_descargar = $this->view->createElement('i');
-            $icono_descargar->setAttribute('class', 'fas fa-download');
-            $descargar->appendChild($icono_descargar);
-        }
 
         $detalle = new Detalle("nombre_completo");
         $detalle->preparar_arrays($recordset);
         $pager = new Pager($recordset, $pagina_a_mostrar, $controller_name . '.filter');
         if (is_object($recordset) and $recordset->rowCount() > 0) {
-            list($array, $labels) = $this->preparar_array($recordset, $pager->desde_registro, $pager->hasta_registro, $tipo_cash);
+            list($array, $labels) = $this->preparar_array($recordset, $pager->desde_registro, $pager->hasta_registro);
         } else {
             $array = $labels = array();
         }
         array_unshift($labels, "");
 
         $acciones = array();
-        $acciones[] = array('etiqueta' => 'Vista previa', 'token' => $controller_name . '.vista_previa', 'id' => 'id_bolemarchand');
+        $acciones[] = array('etiqueta' => 'Editar', 'token' => $controller_name . '.edit_blacklist', 'id' => 'id_bolemarchand');
         $acciones[] = array('etiqueta' => 'checkbox', 'id' => 'id_bolemarchand', 'prefijo' => self::PREFIJO_CHECKBOXES);
 
         $tabla = new Table($array, null, null, $acciones);
@@ -110,12 +91,7 @@ class Util_iv extends Controller{
         $div_100_encabezado->appendChild($this->view->importNode($encabezado->documentElement, true));
         $div_100_tabla->appendChild($div_contenedor);
 
-        // $div_100_encabezado->appendChild($lupa);
         $div_100_encabezado->appendChild($exportar);
-
-        if($descargar_link != null){
-            $div_100_encabezado->appendChild($descargar);
-        }
 
         $form->appendChild($div_100_encabezado);
         $form->appendChild($this->view->importNode($filters->documentElement, true));
@@ -143,7 +119,7 @@ class Util_iv extends Controller{
         }
     }
 
-    private function preparar_array(ADORecordSet $recordset, $desde_registro, $hasta_registro, $tipo_cash){
+    private function preparar_array(ADORecordSet $recordset, $desde_registro, $hasta_registro){
         $matriz = array();
             $labels = array('ID', 'Fecha y Hora', 'Regla', 'Comentario', 'Analista', 'Estado', 'Motivo');
 
@@ -160,8 +136,8 @@ class Util_iv extends Controller{
                 $array[] = Blacklist::procesarJSON($registro['regla']);
                 $array[] = $registro['comentario'];
                 $array[] = $registro['authname'];
-                $array[] = $registro['motivo'];
                 $array[] = $registro['authstat'];
+                $array[] = $registro['motivo'];
                 $matriz[] = $array;
             }
             $desde_registro++;
@@ -170,30 +146,29 @@ class Util_iv extends Controller{
         return array($matriz, $labels);
     }
 
-    private function preparar_filtros($variables)
-    {
+    private function preparar_filtros($variables){
         $filter = new view();
         if (isset($variables['id'])) {
             unset($variables['id']);
         }
-        $filter->cargar("views/util_ii.filters.html");
+        $filter->cargar("views/util_iv.filters.blacklist.html");
 
-        // $recordset = Motivos::select_concepto();
-        // $motivo = $filter->getElementById("motivo");
-        // foreach ($recordset as $row) {
-        //     $option = $filter->createElement('option', $row['motivo']);
-        //     $option->setAttribute('value', strtolower($row['motivo']));
-        //     $motivo->appendChild($option);
-        // }
+        $recordset = Motivos::select_blacklist();
+        $motivo = $filter->getElementById("motivo");
+        foreach ($recordset as $row) {
+            $option = $filter->createElement('option', $row['motivo']);
+            $option->setAttribute('value', $row['id_motivo']);
+            $motivo->appendChild($option);
+        }
 
-        // $recordset = Bancos::select();
-        // $cuenta = $filter->getElementById("cuenta");
+        $recordset = Auth::select_auth();
+        $analista = $filter->getElementById("analista");
 
-        // foreach ($recordset as $row) {
-        //     $option = $filter->createElement('option', $row['nombre']);
-        //     $option->setAttribute('value', strtolower($row['id_banco']));
-        //     $cuenta->appendChild($option);
-        // }
+        foreach ($recordset as $row) {
+            $option = $filter->createElement('option', $row['authname']);
+            $option->setAttribute('value', $row['id_auth']);
+            $analista->appendChild($option);
+        }
 
         $filter->cargar_variables($variables);
         return $filter;
