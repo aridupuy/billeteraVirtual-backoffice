@@ -80,12 +80,72 @@ class Blacklist extends Model {
         return $this->id_motivo;
     }
 
-    public function select_blacklist($variables=false){
+    public function select_min($variables=false){
+        unset($variables['dataTable_length']);
+        unset($variables['checkbox_todo']);
+        unset($variables['selector_']);
+    
         $filtros = self::preparar_filtros($variables);
+        $and="";
 
-        $sql = "SELECT * FROM ef_blacklist $filtros";
+        $sql = "SELECT A.id_blacklist,A.fechahora,A.regla,A.comentario,D.authname,motivo,B.authstat FROM ef_blacklist A
+                LEFT JOIN ho_authstat B ON A.id_authstat = B.id_authstat
+                LEFT JOIN ef_motivos C ON A.id_motivo = C.id_motivo
+                LEFT JOIN ho_auth D ON A.id_auth = D.id_auth $filtros $and
+                ORDER BY id_blacklist DESC";
+        
+        // var_dump($variables);
+        // exit;
 
         return self::execute_select($sql,$variables,10000);
+    }
+
+    /**
+     * Procesa el JSON para convertirlo en una sola linea de string
+     */
+    public function procesarJSON($json){
+        $array = json_decode($json,true);
+        $result = array();
+        array_walk_recursive($array, function($v) use (&$result) {
+           $result[] = $v;
+        });
+        $result = implode(',',$result);
+        return $result;
+    }
+
+    /**
+     * Convierte string en json
+     * Ejemplo: generarJSON('and','>,monto,50000,<,monto,150000,==,apellido,angeluk');
+     */
+    public function generarJSON($operacion,$valores){
+        $array = array();
+        if($operacion == 'and' || $operacion == 'or'){
+            $array['operacion']=$operacion;
+            $valores = explode(",", $valores);
+            $operacion = 0;
+            $indice = 0;
+            foreach ($valores as $valor){
+                if($operacion == 0){
+                    $array['que'][$indice]['operacion'] = $valor;
+                }else{
+                    $array['que'][$indice]['que'][]['valor'] = (is_numeric($valor))?(float)$valor:$valor;
+                }
+                if($operacion==2){
+                    $operacion=0;
+                    $indice++;
+                }else{
+                    $operacion++;
+                }
+            }
+            return json_encode($array);
+        }else{
+            $array['operacion']=$operacion;
+            $valores = explode(',',$valores);
+            foreach ($valores as $valor) {
+                $array['que'][]['valor'] = $valor;
+            }
+            return json_encode($array);
+        }
     }
 
 }

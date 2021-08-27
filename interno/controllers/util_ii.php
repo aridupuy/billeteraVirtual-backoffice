@@ -266,11 +266,10 @@ class Util_ii extends Controller{
         $union_array = array_merge($union_array,$array);
         $filename = 'transacciones_cash'.$tipo_cash.'_' . date('Ymd_His') . '.xls';
         if ($gestor_de_disco->exportar_xls($path, $filename, $union_array)) {
-            //Faltan Estilos para el gestor de log
-            // Gestor_de_log::set('Archivo exportado correctamente.', 1);
+            Gestor_de_log::set('Archivo exportado correctamente. Presione el boton descargar', 1);
             error_log('Archivo exportado correctamente.',0);
         } else {
-            // Gestor_de_log::set('Ha ocurrido un error al exportar el archivo. ', 0);
+            Gestor_de_log::set('Ha ocurrido un error al exportar el archivo. ', 0);
             error_log('Ha ocurrido un error al exportar el archivo',0);
         }
         if ($retornar_view) {
