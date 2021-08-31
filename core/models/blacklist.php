@@ -84,17 +84,50 @@ class Blacklist extends Model {
         unset($variables['dataTable_length']);
         unset($variables['checkbox_todo']);
         unset($variables['selector_']);
-    
-        $filtros = self::preparar_filtros($variables);
-        $and="";
+        unset($variables['motivo_popup']);
+   
+        if (isset($variables['id_blacklist'])) {
+            $variables['A.id_blacklist'] = $variables['id_blacklist'];
+            unset($variables['id_blacklist']);
+        }else{
+            $and = "WHERE true ";
+        }
 
-        $sql = "SELECT A.id_blacklist,A.fechahora,A.regla,A.comentario,D.authname,motivo,B.authstat FROM ef_blacklist A
+        if (isset($variables['status'])) {
+            $and .= "AND A.id_authstat in (". (int)$variables['status'] .")";
+            unset($variables['status']);
+        }
+
+        if (isset($variables['motivo'])) {
+            $and .= "AND A.id_motivo in (". (int)$variables['motivo'] .")";
+            unset($variables['motivo']);
+        }
+
+        if (isset($variables['analista'])) {
+            $and .= "AND A.id_auth in (". (int)$variables['analista'] .")";
+            unset($variables['analista']);
+        }
+
+        if (isset($variables['regla'])) {
+            $and .= "AND (A.regla ilike '%" . $variables['regla'] . "%') ";
+            unset($variables['regla']);
+        }
+
+        if (isset($variables['comentario'])) {
+            $and .= "AND (A.comentario ilike '%" . $variables['comentario'] . "%') ";
+            unset($variables['comentario']);
+        }
+
+        $filtros = self::preparar_filtros($variables);
+
+        $sql = "SELECT A.id_blacklist,A.fechahora,A.regla,A.comentario,D.authname,C.motivo,B.authstat FROM ef_blacklist A
                 LEFT JOIN ho_authstat B ON A.id_authstat = B.id_authstat
                 LEFT JOIN ef_motivos C ON A.id_motivo = C.id_motivo
                 LEFT JOIN ho_auth D ON A.id_auth = D.id_auth $filtros $and
                 ORDER BY id_blacklist DESC";
         
-        // var_dump($variables);
+        echo $sql;
+        var_dump($variables);
         // exit;
 
         return self::execute_select($sql,$variables,10000);

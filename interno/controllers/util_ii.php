@@ -113,7 +113,7 @@ class Util_ii extends Controller{
         array_unshift($labels, "");
 
         $acciones = array();
-        $acciones[] = array('etiqueta' => 'Vista previa', 'token' => $controller_name . '.vista_previa', 'id' => 'id_bolemarchand');
+        // $acciones[] = array('etiqueta' => 'Vista previa', 'token' => $controller_name . '.vista_previa', 'id' => 'id_bolemarchand');
         $acciones[] = array('etiqueta' => 'checkbox', 'id' => 'id_bolemarchand', 'prefijo' => self::PREFIJO_CHECKBOXES);
 
         $tabla = new Table($array, null, null, $acciones);

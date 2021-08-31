@@ -1,0 +1,30 @@
+
+<!-- Para mostrar el modal hay que agregar la clase active -->
+<div class="popup-wrapper agregar">
+    <div class="popup">
+        <div id="tipo_popup"></div>
+        <div class="filtros-wrapper">
+            <div class="contenedor filtros">
+                <div class="filtro">
+                    <label for="regla">Regla</label>
+                    <textarea name="regla_popup" id="regla_popup" cols="30" rows="5"></textarea>
+                </div>
+                <div class="filtro">
+                    <label for="motivo">Motivo</label>
+                    <select name="motivo_popup" id="motivo_popup" aria-placeholder="Todos">
+                    </select>
+                </div>
+                <div class="filtro">
+                    <label for="comentario">Comentario</label>
+                    <textarea name="comentario_popup" id="comentario_popup" cols="30" rows="5"></textarea>
+                </div>
+                <div class="filtro" id="div_estado" hidden>
+                </div>
+                <div class="filtros-actions">
+                    <div class="btn-outline">Cancelar</div>
+                    <div class="btn" id="btn_aceptar_blacklist">Aceptar</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -15,17 +15,19 @@ class Util_iv extends Controller{
         switch ($nav) {
             case 'home':
                 Gestor_de_instancias::inicializar_instancia_actual();
-                $view = $this->home($variables);
+                $view = $this->blacklist($variables);
                 break;
             case 'blacklist':
                 Gestor_de_instancias::inicializar_instancia_actual();
                 $view = $this->blacklist($variables);
                 break;
             case 'filter':
-                $view = $this->home($variables);
+                var_dump($variables);
+                // exit;
+                $view = $this->blacklist($variables);
                 break;
             default:
-                $view = $this->home($variables);
+                $view = $this->blacklist($variables);
                 break;
         }
 
@@ -83,8 +85,10 @@ class Util_iv extends Controller{
 
         $div_100_tabla = $this->view->createElement('div');
         $div_contenedor = $this->view->createElement('div');
+        $div_popup = $this->view->createElement('div');
 
         $div_100_tabla->setAttribute('class', 'content-100');
+        $div_popup->setAttribute('class', 'content-100');
         $div_contenedor->setAttribute('class', 'contenedor-tabla');
 
         $div_contenedor->appendChild($this->view->importNode($tabla->documentElement, true));
@@ -93,9 +97,14 @@ class Util_iv extends Controller{
 
         $div_100_encabezado->appendChild($exportar);
 
+        $popup_addedit = $this->preparar_popup($variables);
+        $div_popup->appendChild($this->view->importNode($popup_addedit->documentElement, true));
+
         $form->appendChild($div_100_encabezado);
         $form->appendChild($this->view->importNode($filters->documentElement, true));
         $form->appendChild($div_100_tabla);
+        $form->appendChild($div_popup);
+        
 
         $this->view->appendChild($form);
         return $this->view;
@@ -146,6 +155,7 @@ class Util_iv extends Controller{
         return array($matriz, $labels);
     }
 
+    //Carga la vista de filtros y termina de armar los input faltantes
     private function preparar_filtros($variables){
         $filter = new view();
         if (isset($variables['id'])) {
@@ -172,5 +182,60 @@ class Util_iv extends Controller{
 
         $filter->cargar_variables($variables);
         return $filter;
+    }
+
+    //Carga la vista del popup
+    private function preparar_popup($variables,$tipo_popup='agregar'){
+        $popup = new view();
+
+        if (isset($variables['id'])) {
+            unset($variables['id']);
+        }
+
+        $popup->cargar('views/util_iv.popup.blacklist.html');
+
+        $div_titulo = $popup->getElementById('tipo_popup');
+        $titulo = $popup->createElement('h2');
+
+        $btn_aceptar = $popup->getElementById('btn_aceptar_blacklist');
+
+        $recordset_motivos = Motivos::select_blacklist();
+        $motivo = $popup->getElementById('motivo_popup');
+        foreach ($recordset_motivos as $row){
+            $option = $popup->createElement('option', $row['motivo']);
+            $option->setAttribute('value', $row['id_motivo']);
+            $motivo->appendChild($option);
+        }
+
+        if($tipo_popup == 'agregar'){
+            //Agregar
+            $titulo->appendChild($popup->createTextNode("Agregar Regla"));
+            $btn_aceptar->setAttribute('name','util_iv.agregar_regla');
+        }else{
+            //Editar
+            $titulo->appendChild($popup->createTextNode("Editar Regla"));
+            $btn_aceptar->setAttribute('name','util_iv.editar_regla');
+
+            $div_estado = $popup->getElementById('div_estado');
+
+            $select_estado = $popup->createElement('select');
+            $select_estado->setAttribute('name','estado_popup');
+            $select_estado->setAttribute('id','estado_popup');
+            $option_activo = $popup->createElement('option', 'Activo');
+            $option_activo->setAttribute('value',1);
+            $option_inactivo = $popup->createElement('option', 'Inactivo');
+            $option_inactivo->setAttribute('value',4);
+
+            $select_estado->appendChild($option_activo);
+            $select_estado->appendChild($option_inactivo);
+
+            $div_estado->appendChild($select_estado);
+
+            $div_estado->removeAttribute('hidden');
+        }
+
+        $div_titulo->appendChild($titulo);
+
+        return $popup;
     }
 }
