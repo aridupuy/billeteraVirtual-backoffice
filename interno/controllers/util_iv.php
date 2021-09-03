@@ -13,20 +13,25 @@ class Util_iv extends Controller{
 
     public function dispatch($nav, $variables = null){
         switch ($nav) {
-            case 'home':
-                Gestor_de_instancias::inicializar_instancia_actual();
-                $view = $this->blacklist($variables);
-                break;
             case 'blacklist':
                 Gestor_de_instancias::inicializar_instancia_actual();
-                $view = $this->blacklist($variables);
+                // var_dump(Application::$usuario->get_id());
+                $view = $this->blacklist();
+                break;
+            case 'blacklist_create':
+                $view = $this->blacklist_create($variables['id'],'create');
+                break;
+            case 'blacklist_create_post':
+                $view = $this->blacklist_create_post($variables);
+                break;
+            case 'blacklist_edit':
+                $view = $this->blacklist_create($variables['id'],'edit');
+                break;
+            case 'blacklist_edit_post':
+                $view = $this->blacklist_create_post($variables);
                 break;
             case 'filter':
-                var_dump($variables);
                 // exit;
-                $view = $this->blacklist($variables);
-                break;
-            default:
                 $view = $this->blacklist($variables);
                 break;
         }
@@ -54,15 +59,15 @@ class Util_iv extends Controller{
         $encabezado = new Encabezado(self::$modulo, $total_usr);
         $div_100_encabezado->setAttribute('class', 'content-100 encabezado-wrapper');
 
-        $exportar = $this->view->createElement('a');
-        $exportar->setAttribute('class', 'btn-outline');
-        $exportar->setAttribute('type', 'button');
-        $exportar->setAttribute('name', 'util_iv.add_blacklist');
-        $exportar->appendChild($this->view->createTextNode("Agregar "));
+        $agregar = $this->view->createElement('a');
+        $agregar->setAttribute('class', 'btn-outline');
+        $agregar->setAttribute('type', 'button');
+        $agregar->setAttribute('name', "util_iv.blacklist_create");
+        $agregar->appendChild($this->view->createTextNode("Agregar "));
 
-        $icono_exportar = $this->view->createElement('i');
-        $icono_exportar->setAttribute('class', 'fas fa-user-plus');
-        $exportar->appendChild($icono_exportar);
+        $icono_agregar = $this->view->createElement('i');
+        $icono_agregar->setAttribute('class', 'fas fa-user-plus');
+        $agregar->appendChild($icono_agregar);
 
         $detalle = new Detalle("nombre_completo");
         $detalle->preparar_arrays($recordset);
@@ -75,8 +80,8 @@ class Util_iv extends Controller{
         array_unshift($labels, "");
 
         $acciones = array();
-        $acciones[] = array('etiqueta' => 'Editar', 'token' => $controller_name . '.edit_blacklist', 'id' => 'id_bolemarchand');
-        $acciones[] = array('etiqueta' => 'checkbox', 'id' => 'id_bolemarchand', 'prefijo' => self::PREFIJO_CHECKBOXES);
+        $acciones[] = array('etiqueta' => 'Editar', 'token' => $controller_name . '.blacklist_edit', 'id' => 'id_blacklist');
+        $acciones[] = array('etiqueta' => 'checkbox', 'id' => 'id_blacklist', 'prefijo' => self::PREFIJO_CHECKBOXES);
 
         $tabla = new Table($array, null, null, $acciones);
         $tabla->cambiar_encabezados($labels);
@@ -95,10 +100,7 @@ class Util_iv extends Controller{
         $div_100_encabezado->appendChild($this->view->importNode($encabezado->documentElement, true));
         $div_100_tabla->appendChild($div_contenedor);
 
-        $div_100_encabezado->appendChild($exportar);
-
-        $popup_addedit = $this->preparar_popup($variables);
-        $div_popup->appendChild($this->view->importNode($popup_addedit->documentElement, true));
+        $div_100_encabezado->appendChild($agregar);
 
         $form->appendChild($div_100_encabezado);
         $form->appendChild($this->view->importNode($filters->documentElement, true));
@@ -108,10 +110,6 @@ class Util_iv extends Controller{
 
         $this->view->appendChild($form);
         return $this->view;
-    }
-
-    private function home($variables = null){
-
     }
 
     private function colocar_checkbox_todo($cantidad, Table $table){
@@ -184,58 +182,135 @@ class Util_iv extends Controller{
         return $filter;
     }
 
-    //Carga la vista del popup
-    private function preparar_popup($variables,$tipo_popup='agregar'){
-        $popup = new view();
+    private function cargar_blacklist_para_editar(Blacklist $blacklist){
+        $hiddenblacklist = $this->view->getElementById('id_blacklist');
+        $hiddenblacklist->setAttribute('value',$blacklist->id_blacklist);
 
-        if (isset($variables['id'])) {
-            unset($variables['id']);
+        $blacklist_select = Blacklist::select(array("id_blacklist"=>$blacklist->id_blacklist));
+
+        foreach ($blacklist_select as $blackoption){
+            $regla_blacklist = $blackoption['regla'];
+            $comentario_blacklist = $blackoption['comentario'];
+            $id_motivo_blacklist = $blackoption['id_motivo'];
+            $id_authstat_blacklist = $blackoption['id_authstat'];
         }
 
-        $popup->cargar('views/util_iv.popup.blacklist.html');
+        $input_regla = $this->view->getElementById('regla');
+        $input_regla->setAttribute('value',Blacklist::procesarJSON($regla_blacklist));
 
-        $div_titulo = $popup->getElementById('tipo_popup');
-        $titulo = $popup->createElement('h2');
-
-        $btn_aceptar = $popup->getElementById('btn_aceptar_blacklist');
-
-        $recordset_motivos = Motivos::select_blacklist();
-        $motivo = $popup->getElementById('motivo_popup');
-        foreach ($recordset_motivos as $row){
-            $option = $popup->createElement('option', $row['motivo']);
-            $option->setAttribute('value', $row['id_motivo']);
-            $motivo->appendChild($option);
+        $input_motivo = $this->view->getElementById('motivo');
+        $recordset = Motivos::select_blacklist();
+        foreach($recordset as $row){
+            $option = $this->view->createElement('option', $row['motivo']);
+            $option->setAttribute('value',$row['id_motivo']);
+            if($row['id_motivo']==$id_motivo_blacklist){
+                $option->setAttribute('selected', 'selected');
+            }
+            $input_motivo->appendChild($option);
         }
 
-        if($tipo_popup == 'agregar'){
-            //Agregar
-            $titulo->appendChild($popup->createTextNode("Agregar Regla"));
-            $btn_aceptar->setAttribute('name','util_iv.agregar_regla');
+        $input_comentario = $this->view->getElementById('comentario');
+        $input_comentario->setAttribute('value',$comentario_blacklist);
+
+        //Estados del input 
+        $estados = array('activo'=>1,'inactivo'=>4);
+        $input_estado = $this->view->getElementById('estado');
+        foreach($estados as $estado => $valor){
+            $option = $this->view->createElement('option', $estado);
+            $option->setAttribute('value',$valor);
+            if($valor==$id_authstat_blacklist){
+                $option->setAttribute('selected', 'selected');
+            }
+            $input_estado->appendChild($option);
+        }
+        $div_estado = $this->view->getElementById('div_estado');
+        $div_estado->removeAttribute('hidden');
+
+        $btn = $this->view->getElementById('btn_create_blacklist');
+        $btn->setAttribute('name','util_iv.blacklist_edit_post');
+
+        return true;
+    }
+
+    private function blacklist_create($id_blacklist=null,$accion){
+        $blacklist = new Blacklist();
+
+        if($accion!='erase'){
+            $this->view->cargar('views/util_iv.create.blacklist.html');
+        
+            $titulo = $this->view->getElementById('titulo_create');
+        
+            $texto_titulo = ($id_blacklist == null)?'Crear Regla':'Editar Regla';
+            $titulo->appendChild($this->view->createTextNode($texto_titulo));
         }else{
-            //Editar
-            $titulo->appendChild($popup->createTextNode("Editar Regla"));
-            $btn_aceptar->setAttribute('name','util_iv.editar_regla');
-
-            $div_estado = $popup->getElementById('div_estado');
-
-            $select_estado = $popup->createElement('select');
-            $select_estado->setAttribute('name','estado_popup');
-            $select_estado->setAttribute('id','estado_popup');
-            $option_activo = $popup->createElement('option', 'Activo');
-            $option_activo->setAttribute('value',1);
-            $option_inactivo = $popup->createElement('option', 'Inactivo');
-            $option_inactivo->setAttribute('value',4);
-
-            $select_estado->appendChild($option_activo);
-            $select_estado->appendChild($option_inactivo);
-
-            $div_estado->appendChild($select_estado);
-
-            $div_estado->removeAttribute('hidden');
+            $blacklist->get($id_blacklist);
+            $variables['id']=$blacklist->get_id_blacklist();
+            $blacklist->borrar_regla($id_blacklist);
         }
 
-        $div_titulo->appendChild($titulo);
+        if($accion=='edit'){
+            $blacklist->get($id_blacklist);
+            unset($id_blacklist);
+        }
 
-        return $popup;
+        if($accion=='edit'){
+            $this->cargar_blacklist_para_editar($blacklist);
+        }else if($accion=='create'){
+
+            $input_motivo = $this->view->getElementById('motivo');
+            $recordset = Motivos::select_blacklist();
+            foreach($recordset as $row){
+                $option = $this->view->createElement('option', $row['motivo']);
+                $option->setAttribute('value',$row['id_motivo']);
+                $input_motivo->appendChild($option);
+            }
+
+            $inputBlacklist = $this->view->getElementById('id_blacklist');
+            $inputBlacklist->setAttribute('value',$id_blacklist);
+        }
+
+        if($accion=='erase'){
+            Gestor_de_log::set('Regla borrado correctamente', 0);
+            developer_log('Borro Regla Correctamente',0);
+            return $this->blacklist($variables);
+        }else{
+            return $this->view;
+        }
+    }
+
+    private function blacklist_create_post($variables){
+        var_dump($variables);
+        if (isset($variables['regla']))
+            $blacklist_regla['regla'] = $variables['regla'];
+        unset($variables['regla']);
+        if (isset($variables['motivo']))
+            $blacklist_regla['motivo'] = $variables['motivo'];
+        unset($variables['motivo']);
+        if (isset($variables['comentario']))
+            $blacklist_regla['comentario'] = $variables['comentario'];
+        unset($variables['comentario']);
+        $blacklist_regla['estado'] = (isset($variables['estado']))?$variables['estado']:'1';
+        unset($variables['estado']);
+        
+        $blacklist = new Blacklist();
+        if(isset($variables['id_blacklist'])){
+            $blacklist->get($variables['id_blacklsit']);
+        }
+        $blacklist->set_comentario($blacklist_regla['comentario']);
+        $blacklist->set_id_authstat($blacklist_regla['estado']);
+        $blacklist->set_id_motivo($blacklist_regla['motivo']);
+        $blacklist->set_regla(Blacklist::generarJSON($blacklist_regla['regla']));
+        $blacklist->set_id_auth(Application::$usuario->get_id());
+
+        if($blacklist->set()){
+            if($variables['id_blacklist']){
+                Gestor_de_log::set('Regla guardada correctamente',0);
+            }else{
+                Gestor_de_log::set('Regla generada correctamente',0);
+            }
+        }else{
+            Gestor_de_log::set('No se guardo la regla',0);
+        }
+    return $this->blacklist();
     }
 }

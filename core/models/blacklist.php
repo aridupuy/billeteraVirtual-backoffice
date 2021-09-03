@@ -134,6 +134,14 @@ class Blacklist extends Model {
     }
 
     /**
+     * Borrar Regla
+     */
+    public function borrar_regla($id_blacklist){
+        $sql = "DELETE FROM ef_blacklist WHERE id_blacklist='$id_blacklist'";
+        return self::execute($sql);
+    }
+
+    /**
      * Procesa el JSON para convertirlo en una sola linea de string
      */
     public function procesarJSON($json){
@@ -148,13 +156,15 @@ class Blacklist extends Model {
 
     /**
      * Convierte string en json
-     * Ejemplo: generarJSON('and','>,monto,50000,<,monto,150000,==,apellido,angeluk');
+     * Ejemplo: generarJSON('and,>,monto,50000,<,monto,150000,==,apellido,angeluk');
      */
-    public function generarJSON($operacion,$valores){
+    public function generarJSON($string){
+        $arrays = explode(",", $string);
+        $operacion = $arrays[0];
+        $valores = array_splice($arrays,1);
         $array = array();
         if($operacion == 'and' || $operacion == 'or'){
             $array['operacion']=$operacion;
-            $valores = explode(",", $valores);
             $operacion = 0;
             $indice = 0;
             foreach ($valores as $valor){
@@ -173,7 +183,6 @@ class Blacklist extends Model {
             return json_encode($array);
         }else{
             $array['operacion']=$operacion;
-            $valores = explode(',',$valores);
             foreach ($valores as $valor) {
                 $array['que'][]['valor'] = $valor;
             }

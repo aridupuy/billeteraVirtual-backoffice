@@ -424,7 +424,9 @@ class Table extends View {
                     if (isset($accion['token']))
                         $td->setAttribute('name', $accion['token']);
                     if (isset($accion['id']))
-                        $td->setAttribute('id', $registro[$accion['id']]);
+                        // Se realiza un cambio a registro[0] porque el array no es asociativo
+                        // $td->setAttribute('id', $registro[$accion['id']]);
+                        $td->setAttribute('id', $registro[0]);
 
                     if (isset($accion['etiqueta']) AND $accion['etiqueta'] == self::INTERRUPTOR) {
                         $td = $this->armar_interruptor($td, $accion, $registro);
@@ -481,7 +483,9 @@ class Table extends View {
             $checked = $accion['checked'];
         else
             $checked = null;
-        $valor = $registro[$accion['id']];
+        // Se realiza un cambio a registro[0] porque el array no es asociativo
+        // $valor = $registro[$accion['id']];
+        $valor = $registro[0];
         $td = $this->createElement('td');
         $checkbox = $this->createElement('input');
         $checkbox->setAttribute('type', 'checkbox');
