@@ -184,9 +184,9 @@ class Util_iv extends Controller{
 
     private function cargar_blacklist_para_editar(Blacklist $blacklist){
         $hiddenblacklist = $this->view->getElementById('id_blacklist');
-        $hiddenblacklist->setAttribute('value',$blacklist->id_blacklist);
+        $hiddenblacklist->setAttribute('value',$blacklist->get_id_blacklist());
 
-        $blacklist_select = Blacklist::select(array("id_blacklist"=>$blacklist->id_blacklist));
+        $blacklist_select = Blacklist::select(array("id_blacklist"=>$blacklist->get_id_blacklist()));
 
         foreach ($blacklist_select as $blackoption){
             $regla_blacklist = $blackoption['regla'];
@@ -279,7 +279,6 @@ class Util_iv extends Controller{
     }
 
     private function blacklist_create_post($variables){
-        var_dump($variables);
         if (isset($variables['regla']))
             $blacklist_regla['regla'] = $variables['regla'];
         unset($variables['regla']);
@@ -294,7 +293,7 @@ class Util_iv extends Controller{
         
         $blacklist = new Blacklist();
         if(isset($variables['id_blacklist'])){
-            $blacklist->get($variables['id_blacklsit']);
+            $blacklist->get($variables['id_blacklist']);
         }
         $blacklist->set_comentario($blacklist_regla['comentario']);
         $blacklist->set_id_authstat($blacklist_regla['estado']);
@@ -303,11 +302,7 @@ class Util_iv extends Controller{
         $blacklist->set_id_auth(Application::$usuario->get_id());
 
         if($blacklist->set()){
-            if($variables['id_blacklist']){
-                Gestor_de_log::set('Regla guardada correctamente',0);
-            }else{
-                Gestor_de_log::set('Regla generada correctamente',0);
-            }
+            Gestor_de_log::set('Regla guardada correctamente',0);
         }else{
             Gestor_de_log::set('No se guardo la regla',0);
         }

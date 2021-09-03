@@ -9,7 +9,7 @@ class Blacklist extends Model {
     const EVATEST_EXCLUIDO = 1;
     const EVATEST_INCLUIDO = 2;
 
-    private $id_blackist;
+    private $id_blacklist;
     private $regla;
     private $id_authstat;
     private $id_auth;
@@ -18,7 +18,7 @@ class Blacklist extends Model {
     private $id_motivo;
 
     public function get_id_blacklist(){
-        return $this->id_blackist;
+        return $this->id_blacklist;
     }
 
     public function get_regla(){
@@ -46,7 +46,7 @@ class Blacklist extends Model {
     }
 
     public function set_id_blacklist($variable){
-        $this->id_blacklist = $variable;
+        $this->id_blacklist= $variable;
         return $this->id_blacklist;
     }
 
