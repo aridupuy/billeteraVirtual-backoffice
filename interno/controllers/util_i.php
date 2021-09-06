@@ -150,20 +150,17 @@ class Util_i extends Controller {
 
     private function vista_previa($variables) { 
         
+        $this->view->cargar("views/util_i.ver_mas.html");
+        
         print_r("<pre>");
         var_dump($variables);
         print_r("</pre>");
-        $this->view->cargar("views/util_i.ver_mas.html");
-        
         
         
         
         return $this->view;
     }
-    
-    
-    
-    
+      
     private function colocar_checkbox_todo($cantidad, Table $table) {
         if (($th = $table->getElementsByTagName('th')->item(0)) !== null) {
             $checkbox = $table->createElement('input');
@@ -235,20 +232,77 @@ class Util_i extends Controller {
         return $filter;
     }
     private function acciones($variables) {
-        
-        
-        
         if($variables["accion"]!=null){
-            
-            print_r("<pre>");
-            var_dump($variables);
-            print_r("<pre>");
+            $variables = $this->filtrar_checkboxes($variables);
+            $selectores = array();
+            foreach ($variables as $key => $value) {
+                if (substr($key, 0, strlen(self::PREFIJO_CHECKBOXES)) == self::PREFIJO_CHECKBOXES) {
+                    $selectores[substr($key, strlen(self::PREFIJO_CHECKBOXES))] = $value;
+                    $id_usuario = substr($key, strlen(self::PREFIJO_CHECKBOXES));
+                    $variables["id_usuario"] = $id_usuario;
+                    
+                    if ($selectores[substr($key, strlen(self::PREFIJO_CHECKBOXES))] == '1') {
+                    # SELECCIONA TODOS
+                        if (!($this->obtener_todos_los_usuarios($variables))) {
+                            Gestor_de_log::set("Ha ocurrido un error. No se los estados.", 0);
+//                            exit();
+                            return $this->home($variables);
+                        }else{
+                            Gestor_de_log::set("Estados modificados con exito.", 1);
+//                            exit();
+                            return $this->home($variables);
+                            
+                        }
+                    }
+                    
+                    unset($variables[$key]);
+                }
+            }
         }else {
-            Gestor_de_log::set("Debe elegir una opció valida", 0);
+            Gestor_de_log::set("Debe elegir una opción valida", 0);
             return $this->home();
         }
         
 //        return $filter;
+    }
+    
+    private function obtener_todos_los_usuarios($variables) {
+        unset($variables['checkbox_todo']);
+        unset($variables['id']);
+        $retorno = true;
+        $id_usuario = $variables["id_usuario"];
+//        print_r($id_usuario." - ");
+        $usuarios = new Usuario();
+        $usuarios->get($id_usuario);
+        $mail = $usuarios->get_email();
+//        print_r($mail." - ");
+        
+        $usuarios->set_id_authstat($variables["accion"]);
+        if(!$usuarios->set()){
+            Gestor_de_log::set("Ha ocurrido un error.", 0);
+            $retorno = false;
+            return $retorno;
+        }else{
+            Gestor_de_log::set("Estados modificados con exito.", 1);
+
+        }
+            return $retorno;
+    }
+
+    private function obtener_una_boleta($id_bolemarchand) {
+        $boleta = new Bolemarchand();
+        if (!$boleta->get($id_bolemarchand))
+            return false;
+        return $boleta;
+    }
+    
+    private function filtrar_checkboxes($variables){
+        foreach ($variables as $key => $value) {
+            if (substr($key, 0, strlen(self::PREFIJO_CHECKBOXES)) == self::PREFIJO_CHECKBOXES and $value == 0) {
+                unset($variables[$key]);
+            }
+        }
+        return $variables;
     }
 
 }
