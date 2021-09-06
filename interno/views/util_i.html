@@ -1,60 +1,58 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<form>
-    <section class="contenedor-contenido">
-        <div class="bienvenida-seccion">
-            <h6>Configuración > <span class="bold">Gestión de Usuarios</span></h6>
-            <h1 id="h1">Gestión de Usuarios de </h1>
-            <h5>
-                En este menú podrás dar de alta usuarios y brindarles los permisos de uso de la cuenta de forma tal que estén habilitados para retirar fondos o trabajar con las herramientas de cobranza.
-            </h5>
-            <div class="contenido">
-                <div type="button" class="button btn-encabezado" name="mod_x.create" >Agregar Usuario</div>			
-
-            </div>
-        </div>	
-
-        <div class="contenido contenedor-admin-usuarios">
-            <div class="acciones-usuarios-pie">
-            </div>
-            <div></div>
-            <!--        <div class="visualizacion-usuarios">
-                        <div class="filtro-usuarios">
-                            <label for="">Ver:</label>
-                            <div type="button" class="activo">Todos</div>
-                            <div type="button" >Activos</div>
-                            <div type="button" >Inactivos</div>
-                        </div>
-                        <div class="orden-usuarios">
-                            <label for="">Ordenar por:</label>
-                            <select name="">				
-                                <option>Alfabéticamente</option>
-                                <option>Recientes</option>
-                                <option>Actividad</option>
-                            </select>
-                        </div>
-                    </div>-->
-            <div id="cajitas" class="contenedor-admin-usuarios">
-                <!--		
-                        <div class="acciones-usuario">
-                        <div class="iconos-acciones">
-                                <div type="button" name="" class="icono historial-usuario"><img src="public/img/icono-historial.svg"><span class="tooltip">Historial</span></div>
-                                <div type="button" name="" class="icono permisos-usuario"><img src="public/img/icono-permisos.svg"><span class="tooltip">Permisos</span></div>						
-                        </div>
-                        <div class="enlaces-acciones">
-                                <div type="button" name="">Editar</div>
-                        </div>					
-                                    </div>-->
-            </div>
-            <!--<div class="info-cuentas"><span>2</span> Cuentas de <span>3</span></div>-->
-
-            
-        </div>
-    </section>
+<form id="miFormulario">
+    
 </form>
-<style>
-    .btn-agregar-usuario{
-        margin-bottom: 1%;
-        margin-top: -12%;
-        z-index: 100;
-    }
-</style>
+<script>
+    $("input:checkbox").click(function () {
+        var buttons = $("input:button");
+        var checkboxes = $("input:checkbox");
+        var activos = $("input:checkbox:checked");
+        $(this).val("1");
+        $(this).attr("checked", "checked");
+        for (var i = 0, max = buttons.length; i < max; i++) {
+            if (activos.length > 0) {
+                if (buttons[i].getAttribute('class') === 'oculto')
+                    buttons[i].setAttribute('class', 'btn btn-primary visible');
+            } else {
+                if (buttons[i].getAttribute('class') === 'visible')
+                    buttons[i].setAttribute('class', 'oculto');
+            }
+        }
+    });
+
+    $("#checkbox_todo").change(function () {
+        var checkboxes = $(this).closest('form').find(':checkbox');
+        $(this).prop("indeterminate", false);
+        if ($(this).is(':checked')) {
+            checkboxes.prop('checked', true);
+            checkboxes.attr('value', '1');
+        } else {
+            checkboxes.prop('checked', false);
+            checkboxes.attr('value', '0');
+        }
+    });
+
+    $("td :checkbox").change(function () {
+
+        var elementos = "td input:checkbox";
+        var selector_principal = "#checkbox_todo";
+
+        var todos = $(elementos);
+        var activos = todos.closest(":checked");
+        var principal = $(selector_principal);
+        if (activos.length == 0) {
+            principal.prop("indeterminate", false);
+            principal.prop('checked', false);
+            principal.attr('value', '0');
+        } else if (todos.length > activos.length) {
+            principal.prop("indeterminate", true);
+        } else if (todos.length == activos.length) {
+            principal.prop("indeterminate", false);
+            principal.prop('checked', true);
+            principal.attr('value', '1');
+        }
+    });
+    
+    
+    
+</script>
