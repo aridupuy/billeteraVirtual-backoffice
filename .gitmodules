@@ -1,3 +1,6 @@
 [submodule "core/models"]
 	path = core/models
 	url = http://172.20.10.43:8888/equipo-de-desarrollo-efectivo-digital/models.git
+[submodule "core/traits"]
+	path = core/traits
+	url = http://172.20.10.43:8888/equipo-de-desarrollo-efectivo-digital/traits.git
