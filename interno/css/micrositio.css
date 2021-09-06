@@ -664,9 +664,9 @@ input:last-of-type, select:last-of-type, textarea:last-of-type {
     margin-top: 10px;
     padding-top: 10px;
 }
-    max-width: 350px;
+/*    max-width: 350px;
     width: 90%;
-}
+}*/
 
 /* line 22, ../sass/componentes/_estructura.scss */
 .container {
