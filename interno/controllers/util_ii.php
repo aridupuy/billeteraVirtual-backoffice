@@ -113,7 +113,7 @@ class Util_ii extends Controller{
         array_unshift($labels, "");
 
         $acciones = array();
-        $acciones[] = array('etiqueta' => 'Vista previa', 'token' => $controller_name . '.vista_previa', 'id' => 'id_bolemarchand');
+        // $acciones[] = array('etiqueta' => 'Vista previa', 'token' => $controller_name . '.vista_previa', 'id' => 'id_bolemarchand');
         $acciones[] = array('etiqueta' => 'checkbox', 'id' => 'id_bolemarchand', 'prefijo' => self::PREFIJO_CHECKBOXES);
 
         $tabla = new Table($array, null, null, $acciones);
@@ -266,11 +266,10 @@ class Util_ii extends Controller{
         $union_array = array_merge($union_array,$array);
         $filename = 'transacciones_cash'.$tipo_cash.'_' . date('Ymd_His') . '.xls';
         if ($gestor_de_disco->exportar_xls($path, $filename, $union_array)) {
-            //Faltan Estilos para el gestor de log
-            // Gestor_de_log::set('Archivo exportado correctamente.', 1);
+            Gestor_de_log::set('Archivo exportado correctamente. Presione el boton descargar', 1);
             error_log('Archivo exportado correctamente.',0);
         } else {
-            // Gestor_de_log::set('Ha ocurrido un error al exportar el archivo. ', 0);
+            Gestor_de_log::set('Ha ocurrido un error al exportar el archivo. ', 0);
             error_log('Ha ocurrido un error al exportar el archivo',0);
         }
         if ($retornar_view) {

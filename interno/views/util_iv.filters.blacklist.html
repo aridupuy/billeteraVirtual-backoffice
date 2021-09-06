@@ -1,0 +1,64 @@
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<div class="content-100 filtros-wrapper">
+    <!-- Encabezado -->
+    <div class="contenedor filtros">
+        <!-- Clase contenedor es generica y da el box model generico y fecha le da los estilos de los filtros de la fecha para que queden inline -->
+        <div class="filtro fecha">
+            <h3>Fecha</h3>
+            <input type="date" name="fecha_desde" title="Desde">
+            <input type="date" name="fecha_hasta" title="Hasta">
+        </div>
+        <!-- Clase contenedor es generica y da el box model generico y filtros le da los estilos de los filtros para que queden inline -->
+        
+        <!-- Cada filtro debe estar contenido en este div para poder respetar los margenes y paddings correspondientes, despues los nombres o id de los input son indiferentes -->
+        <div class="filtro">
+            <label for="regla">Regla</label>
+            <input type="text" name="regla" placeholder="Regla" title="Regla">
+        </div>
+        <div class="filtro">
+            <label for="comentario">Comentario</label>
+            <input type="text" name="comentario" placeholder="Comentario">
+        </div>
+        <div class="filtro">
+            <label for="id_blacklist">Nro de ID</label>
+            <input type="text" name="id_blacklist" placeholder="Nro de ID">
+        </div>
+        <div class="filtro">
+            <label for="estado">Estado</label>
+            <select name="status" aria-placeholder="Todos">
+                <option value>Todos</option>
+                <option value="1">Activo</option>
+                <option value="4">Inactivo</option>
+            </select>
+        </div>
+        <div class="filtro">
+            <label for="motivo">Motivo</label>
+            <select name="motivo" id="motivo" aria-placeholder="Todos">
+                <option value>Todos</option>
+            </select>
+        </div>
+        <div class="filtro">
+            <label for="analista">Analista</label>
+            <select name="analista" id="analista" aria-placeholder="Todos">
+                <option value>Todos</option>
+            </select>
+        </div>
+        <div class="filtros-actions">
+            <div type="submit" name="util_iv.blaklist" class="btn-outline">Limpiar</div>
+            <div type="submit" name="util_iv.filter" class="btn">Filtrar</div>
+        </div>
+    </div>
+</div>
+<div class="content-100 filtros-wrapper">
+    <div class="contenedor filtros">
+        <div class="filtro fecha">
+            <label for="accion">Accion</label>
+            <select name="accion" id="accion" aria-placeholder="Todos">
+                <option value>Falta Cargar Acciones</option>
+            </select>
+            <div class="filtros-actions">
+                <div type="submit" name="util_iv.blacklist_execute_action" class="btn">Realizar</div>
+            </div>
+        </div>
+    </div>
+</div>

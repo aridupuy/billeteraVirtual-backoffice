@@ -70,6 +70,11 @@ class Auth extends Usuario{
         return '';
     }
     
+    public static function select_auth(){
+        $sql = "SELECT id_auth,authname FROM ho_auth";
+        return self::execute_select($sql,null,10000);
+    }
+
     public static function select_auth_area($id_area=null){
         
         $sql="select * from ho_auth where id_area  = $id_area";
