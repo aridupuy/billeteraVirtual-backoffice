@@ -80,12 +80,15 @@ class Blacklist extends Model {
         return $this->id_motivo;
     }
 
+    /**
+     * Filtro de busqueda
+     */
     public function select_min($variables=false){
         unset($variables['dataTable_length']);
         unset($variables['checkbox_todo']);
         unset($variables['selector_']);
         unset($variables['motivo_popup']);
-   
+
         if (isset($variables['id_blacklist'])) {
             $variables['A.id_blacklist'] = $variables['id_blacklist'];
             unset($variables['id_blacklist']);
@@ -126,10 +129,6 @@ class Blacklist extends Model {
                 LEFT JOIN ho_auth D ON A.id_auth = D.id_auth $filtros $and
                 ORDER BY id_blacklist DESC";
         
-        echo $sql;
-        var_dump($variables);
-        // exit;
-
         return self::execute_select($sql,$variables,10000);
     }
 
@@ -190,4 +189,5 @@ class Blacklist extends Model {
         }
     }
 
+    
 }

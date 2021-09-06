@@ -30,8 +30,15 @@ class Util_iv extends Controller{
             case 'blacklist_edit_post':
                 $view = $this->blacklist_create_post($variables);
                 break;
+            case 'blacklist_execute_action':
+                // var_dump($variables);
+                var_dump($this->limpiar_variables($variables));
+                exit;
+                // $view = $this->blacklist_massive($variables,1);
+                // break;
             case 'filter':
                 // exit;
+                $variables = $this->limpiar_variables($variables);
                 $view = $this->blacklist($variables);
                 break;
         }
@@ -51,6 +58,8 @@ class Util_iv extends Controller{
 
         $filters = $this->preparar_filtros($variables);
         $recordset = Blacklist::select_min($variables);
+        // var_dump($recordset);
+        // exit;
         $form = $this->view->createElement('form');
         $form->setAttribute('id', 'miFormulario');
         $form->setAttribute('class', 'main-content usuarios');
@@ -80,7 +89,7 @@ class Util_iv extends Controller{
         array_unshift($labels, "");
 
         $acciones = array();
-        $acciones[] = array('etiqueta' => 'Editar', 'token' => $controller_name . '.blacklist_edit', 'id' => 'id_blacklist');
+        $acciones[] = array('etiqueta' => 'Editar', 'token' => $controller_name . '.blacklist_edit', 'id' => '0');
         $acciones[] = array('etiqueta' => 'checkbox', 'id' => 'id_blacklist', 'prefijo' => self::PREFIJO_CHECKBOXES);
 
         $tabla = new Table($array, null, null, $acciones);
@@ -290,7 +299,7 @@ class Util_iv extends Controller{
         unset($variables['comentario']);
         $blacklist_regla['estado'] = (isset($variables['estado']))?$variables['estado']:'1';
         unset($variables['estado']);
-        
+
         $blacklist = new Blacklist();
         if(isset($variables['id_blacklist'])){
             $blacklist->get($variables['id_blacklist']);
@@ -307,5 +316,22 @@ class Util_iv extends Controller{
             Gestor_de_log::set('No se guardo la regla',0);
         }
     return $this->blacklist();
+    }
+
+    private function blacklist_massive($variables,$estado){
+        var_dump($variables);
+        exit;
+    }
+
+    /** Limpiar las variables del checkout que afectan al filtro */
+    private function limpiar_variables($variables){
+        $pt = '/selector_*/';
+        foreach($variables as $key => $dato){
+            $res = preg_match($pt, $key);
+            if($res){
+                unset($variables["$key"]);
+            }
+        }
+        return $variables;
     }
 }
